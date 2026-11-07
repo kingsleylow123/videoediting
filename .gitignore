@@ -5,3 +5,4 @@ projects/*/snapshots/
 exports/.video-only.mp4
 *.tmp
 .DS_Store
+projects/*/media/

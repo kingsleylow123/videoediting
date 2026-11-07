@@ -15,6 +15,8 @@ const args = process.argv.slice(2);
 const flag = (n, d) => { const i = args.indexOf(n); if (i < 0) return d; const v = args[i + 1]; args.splice(i, 2); return v; };
 const draft = args.includes('--draft'); if (draft) args.splice(args.indexOf('--draft'), 1);
 const fpsArg = flag('--fps', null);
+const stills = flag('--stills', null); // e.g. --stills 1.5,10,42  -> writes PNGs next to the output, no video
+const fromT = +flag('--from', 0), toArg = flag('--to', null);
 const dir = path.resolve(args[0] || '.');
 const out = path.resolve(args[1] || path.join(dir, 'renders', path.basename(dir) + '.mp4'));
 const entry = path.join(dir, 'index.html');
@@ -54,6 +56,41 @@ fs.mkdirSync(path.dirname(out), { recursive: true });
   if (!(await page.evaluate(id => !!(window.__timelines && window.__timelines[id]), meta.id)))
     console.warn(`warning: no timeline registered as window.__timelines["${meta.id}"]; animation will not play`);
   await page.evaluate(() => document.querySelectorAll('audio,video').forEach(m => { m.muted = true; m.pause(); }));
+  // wait until every <video> can show frames
+  await page.waitForFunction(() => [...document.querySelectorAll('video')].every(v => v.readyState >= 2), null, { timeout: 60000 })
+    .catch(() => console.warn('warning: a <video> did not load (codec or path problem)'));
+
+  // seek the GSAP timeline, toggle data-start clips, and seek every <video> to its frame
+  const seekTo = t => page.evaluate(async ([id, t]) => {
+    const tl = window.__timelines && window.__timelines[id];
+    if (tl) { tl.seek(t, false); } // GSAP timeline, paused
+    document.querySelectorAll('[data-start][data-duration]').forEach(el => {
+      if (el.matches('[data-composition-id]')) return;
+      const s = +el.dataset.start, d = +el.dataset.duration;
+      el.style.visibility = t >= s && t < s + d ? '' : 'hidden';
+    });
+    const waits = [];
+    document.querySelectorAll('video[data-start]').forEach(v => {
+      const target = Math.max(0, t - +v.dataset.start + +(v.dataset.mediaStart || 0));
+      if (Math.abs(v.currentTime - target) < 0.0005) return;
+      waits.push(new Promise(res => { const done = () => res(); v.addEventListener('seeked', done, { once: true }); setTimeout(done, 3000); }));
+      v.currentTime = target;
+    });
+    await Promise.all(waits);
+    await new Promise(r => requestAnimationFrame(() => r()));
+  }, [meta.id, t]);
+
+  if (stills) {
+    const base = out.replace(/\.mp4$/, '');
+    for (const t of stills.split(',').map(Number)) {
+      await seekTo(t);
+      const f = `${base}-${t.toFixed(2)}.png`;
+      await page.screenshot({ path: f });
+      console.log('still', f);
+    }
+    await browser.close();
+    return;
+  }
 
   const silent = path.join(path.dirname(out), '.video-only.mp4');
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-',
@@ -61,16 +98,9 @@ fs.mkdirSync(path.dirname(out), { recursive: true });
     '-pix_fmt', 'yuv420p', '-movflags', '+faststart', silent], { stdio: ['pipe', 'inherit', 'inherit'] });
   const ffDone = new Promise((res, rej) => ff.on('close', c => c ? rej(new Error('ffmpeg ' + c)) : res()));
 
-  for (let i = 0; i < frames; i++) {
-    await page.evaluate(([id, t]) => {
-      const tl = window.__timelines && window.__timelines[id];
-      if (tl) { tl.seek(t, false); } // GSAP timeline, paused
-      document.querySelectorAll('[data-start][data-duration]').forEach(el => {
-        if (el.matches('[data-composition-id]')) return;
-        const s = +el.dataset.start, d = +el.dataset.duration;
-        el.style.visibility = t >= s && t < s + d ? '' : 'hidden';
-      });
-    }, [meta.id, i / fps]);
+  const f0 = Math.round(fromT * fps), f1 = toArg ? Math.min(frames, Math.round(+toArg * fps)) : frames;
+  for (let i = f0; i < f1; i++) {
+    await seekTo(i / fps);
     const buf = await page.screenshot({ type: 'jpeg', quality: draft ? 80 : 95 });
     if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
     if (i % fps === 0) process.stdout.write(`\rframe ${i}/${frames}`);
@@ -78,7 +108,7 @@ fs.mkdirSync(path.dirname(out), { recursive: true });
   ff.stdin.end();
   await ffDone;
   await browser.close();
-  process.stdout.write(`\rframe ${frames}/${frames}\n`);
+  process.stdout.write(`\rframe ${f1}/${frames}\n`);
 
   // mix audio
   if (meta.audio.length) {
@@ -88,7 +118,7 @@ fs.mkdirSync(path.dirname(out), { recursive: true });
       const ms = Math.round(a.start * 1000);
       filters.push(`[${k + 1}:a]adelay=${ms}|${ms},volume=${a.volume}[a${k}]`);
     });
-    const mix = meta.audio.map((_, k) => `[a${k}]`).join('') + `amix=inputs=${meta.audio.length}:normalize=0:duration=longest,apad,atrim=0:${meta.dur}[aout]`;
+    const mix = meta.audio.map((_, k) => `[a${k}]`).join('') + `amix=inputs=${meta.audio.length}:normalize=0:duration=longest,apad,atrim=${fromT}:${toArg ? Math.min(+toArg, meta.dur) : meta.dur},asetpts=PTS-STARTPTS[aout]`;
     await new Promise((res, rej) => spawn('ffmpeg', ['-y', '-loglevel', 'error', ...inputs,
       '-filter_complex', [...filters, mix].join(';'), '-map', '0:v', '-map', '[aout]',
       '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', out], { stdio: 'inherit' })

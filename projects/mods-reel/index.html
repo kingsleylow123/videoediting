@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="vendor/gsap.min.js"></script>
+<style>
+@font-face { font-family: "Mono"; src: url("fonts/jetbrains-mono-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: block; }
+@font-face { font-family: "Mono"; src: url("fonts/jetbrains-mono-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: block; }
+@font-face { font-family: "Serif"; src: url("fonts/newsreader-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: block; }
+@font-face { font-family: "Serif"; src: url("fonts/newsreader-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: block; }
+@font-face { font-family: "Sans"; src: url("fonts/inter-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: block; }
+@font-face { font-family: "Sans"; src: url("fonts/inter-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-display: block; }
+@font-face { font-family: "Sans"; src: url("fonts/inter-latin-600-normal.woff2") format("woff2"); font-weight: 600; font-display: block; }
+@font-face { font-family: "Sans"; src: url("fonts/inter-latin-700-normal.woff2") format("woff2"); font-weight: 700; font-display: block; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0d1b33; }
+#root { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Sans", sans-serif; color: #1C1B19; }
+.serif { font-family: "Serif", serif; font-weight: 400; letter-spacing: -0.01em; }
+.mono { font-family: "Mono", monospace; font-weight: 700; }
+
+#face { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; z-index: 1; }
+#panel { position: absolute; left: 0; top: 0; width: 1080px; height: 700px; background: #EFEFE8; z-index: 2; }
+.scene { position: absolute; left: 0; top: 0; width: 1080px; z-index: 3; overflow: hidden; }
+
+/* captions */
+.capwrap { position: absolute; left: 0; width: 1080px; text-align: center; z-index: 10; }
+.cap { display: inline-block; font-family: "Mono", monospace; font-weight: 700; font-size: 44px; line-height: 1;
+  letter-spacing: 0.03em; color: #fff; background: #1C1B19; padding: 14px 22px 12px; border-radius: 10px; }
+
+/* shared bits */
+.cube { position: relative; }
+.cube svg { position: absolute; left: 0; top: 0; }
+.cube-in { position: absolute; display: flex; align-items: center; justify-content: center; }
+.dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: #D97757; margin-right: 10px; vertical-align: middle; }
+.kicker { position: absolute; font-family: "Sans"; font-weight: 600; font-size: 22px; letter-spacing: 0.12em; color: #6E6C68; }
+.kicker.o { color: #B0604A; }
+.node-lab { text-align: center; font-size: 26px; font-weight: 500; color: #4A4844; margin-top: 12px; }
+
+/* intro */
+.tag-claude { position: absolute; left: 0; width: 1080px; display: flex; justify-content: center; }
+.tag-claude { gap: 0; }
+.tag-claude > * { }
+.tag-claude span, .tag-claude svg { }
+.tag-claude { }
+.tag-claude::before { content: none; }
+.tag-claude { pointer-events: none; }
+.tag-claude span { font-weight: 600; font-size: 28px; color: #fff; }
+.tag-claude { align-items: center; }
+.tag-claude > svg, .tag-claude > span { background: #D97757; }
+.tag-claude > svg { border-radius: 10px 0 0 10px; padding: 7px 0 7px 12px; width: 44px; height: 46px; }
+.tag-claude > span { border-radius: 0 10px 10px 0; padding: 7px 16px 7px 8px; line-height: 32px; }
+.title { position: absolute; left: 0; width: 1080px; text-align: center; font-size: 118px; line-height: 1.1; }
+.big-cube { position: absolute; }
+.lab-cube { position: absolute; text-align: center; width: 150px; margin-left: -38px; }
+.lab-cube .cube { margin: 0 auto; }
+.lab { font-size: 19px; color: #6E6C68; margin-top: 6px; }
+
+/* 3 ways */
+.ways-title { position: absolute; left: 120px; top: 70px; display: flex; align-items: baseline; gap: 22px; }
+.ways-title .sub { font-size: 30px; color: #6E6C68; }
+.orbit { position: absolute; left: 0; top: 0; }
+.hub { position: absolute; width: 140px; height: 140px; border-radius: 50%; background: #D97757; display: flex; align-items: center; justify-content: center; }
+.hub .glow, .mod .glow { position: absolute; inset: -22px; border-radius: 50%; background: rgba(217,119,87,0.18); z-index: -1; }
+.num-cube { position: absolute; }
+.num { font-family: "Serif"; font-size: 84px; color: #D97757; line-height: 1; }
+
+/* terminals */
+.win { position: absolute; border-radius: 18px; overflow: hidden; }
+.win.dark { background: #1F1E1D; box-shadow: 0 20px 50px rgba(0,0,0,0.18); }
+.win .bar { height: 54px; display: flex; align-items: center; padding: 0 18px; gap: 9px; }
+.win .bar i { width: 13px; height: 13px; border-radius: 50%; background: #4A4846; }
+.win .bar span { margin-left: 18px; font-size: 22px; font-weight: 600; color: #D8D5CF; }
+.win.dark .lines { padding: 24px 26px; display: flex; flex-direction: column; gap: 18px; }
+.win.dark .lines b { display: block; height: 14px; border-radius: 7px; background: #3A3936; }
+.win.dark .prompt { position: absolute; left: 26px; bottom: 26px; font-family: "Mono"; font-size: 26px; color: #B0604A; }
+.win.dark .prompt u { display: inline-block; width: 14px; height: 28px; background: #D97757; vertical-align: middle; text-decoration: none; }
+.link { position: absolute; left: 470px; top: 330px; width: 140px; height: 20px; }
+.link .dash { position: absolute; left: 0; top: 9px; width: 140px; height: 0; border-top: 4px dashed #D97757; transform-origin: left center; }
+.link .knot { position: absolute; left: 56px; top: -4px; width: 28px; height: 28px; border-radius: 50%; background: #D97757; }
+.msg { position: absolute; width: 320px; padding: 18px 20px; border-radius: 14px; background: #D97757; display: flex; flex-direction: column; gap: 12px; z-index: 4; }
+.msg b { display: block; height: 14px; border-radius: 7px; background: rgba(255,255,255,0.85); }
+.msg .send { align-self: flex-end; font-size: 20px; font-weight: 600; color: #fff; }
+.inbox { position: absolute; width: 320px; padding: 18px 20px; border-radius: 14px; background: #fff; display: flex; flex-direction: column; gap: 12px; z-index: 4; }
+.inbox .from { font-size: 20px; font-weight: 600; color: #B0604A; }
+.inbox b { display: block; height: 14px; border-radius: 7px; background: #DAD5CD; }
+
+/* plan / build */
+.node { position: absolute; width: 210px; }
+.pill-tag { position: absolute; left: 50%; top: -70px; transform: translateX(-50%); background: #D97757; color: #fff; font-weight: 700; font-size: 24px; letter-spacing: 0.08em; padding: 8px 18px; border-radius: 10px; white-space: nowrap; }
+.node .pill-tag { left: 15px; transform: none; }
+.track { position: absolute; left: 340px; top: 393px; width: 400px; height: 0; border-top: 3px solid #CFC8BE; transform-origin: left center; }
+.pkt { position: absolute; left: 330px; top: 371px; width: 44px; height: 44px; border-radius: 8px; background: #fff; border: 2px solid #D97757; }
+.pkt.back { left: 760px; top: 425px; background: #D97757; }
+.stack { position: absolute; left: 225px; top: 0; display: flex; flex-direction: column; gap: 10px; }
+.chk { width: 64px; height: 50px; border-radius: 10px; background: #fff; border: 2px solid #E3DDD4; display: flex; align-items: center; justify-content: center; color: #B0604A; font-size: 28px; font-weight: 700; }
+
+/* day pill (face scene) */
+.daypill { position: absolute; left: 0; right: 0; margin: 0 auto; top: 250px; width: 360px; height: 96px; border-radius: 48px; background: #EFEFE8;
+  display: flex; align-items: center; justify-content: center; gap: 14px; font-size: 52px; box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
+.daypill .dot { width: 18px; height: 18px; margin: 0; }
+.roll { display: inline-block; height: 64px; overflow: hidden; line-height: 64px; }
+.roll span { display: block; height: 64px; color: #B0604A; }
+.daysub { position: absolute; left: 0; width: 1080px; top: 370px; text-align: center; font-size: 34px; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.6); }
+.daysub b { color: #F2B59F; font-weight: 700; }
+
+/* claude code window */
+.win.light { background: #fff; box-shadow: 0 24px 60px rgba(60,40,20,0.14); border: 1px solid #E6E1D9; }
+.win.light .bar { border-bottom: 1px solid #EEE9E2; }
+.win.light .bar span { color: #4A4844; }
+.side { position: absolute; left: 0; top: 54px; width: 170px; bottom: 0; padding: 26px 20px; border-right: 1px solid #EEE9E2; display: flex; flex-direction: column; gap: 22px; }
+.side .row { display: flex; align-items: center; gap: 10px; }
+.side .row em { width: 14px; height: 14px; border-radius: 50%; background: #D97757; }
+.side .row b { height: 12px; border-radius: 6px; background: #E6E1D9; }
+.main { position: absolute; left: 170px; top: 54px; width: 690px; bottom: 0; padding: 24px 26px; display: flex; flex-direction: column; gap: 18px; overflow: hidden; }
+.bub { display: flex; flex-direction: column; gap: 10px; }
+.bub.r { align-items: flex-end; }
+.bub b { display: block; height: 14px; border-radius: 7px; background: #E6E1D9; max-width: 100%; }
+.bub.r b { height: 40px; border-radius: 12px; background: #F3EEE8; }
+.input { position: absolute; left: 26px; right: 26px; bottom: 24px; height: 64px; border: 2px solid #E3DDD4; border-radius: 14px; display: flex; align-items: center; padding: 0 18px; font-size: 26px; color: #1C1B19; white-space: nowrap; }
+.input u { display: inline-block; width: 3px; height: 30px; background: #D97757; margin-left: 4px; text-decoration: none; }
+.hl { position: absolute; border: 3px dashed #D97757; border-radius: 12px; background: rgba(217,119,87,0.06); }
+.hl .pen { position: absolute; right: -16px; top: -16px; width: 32px; height: 32px; border-radius: 50%; background: #D97757; }
+.hl1 { left: 110px; top: 149px; width: 172px; height: 466px; }
+.hl2 { left: 292px; top: 157px; width: 668px; height: 362px; }
+.hl3 { left: 300px; top: 527px; width: 652px; height: 80px; }
+.dashp { position: absolute; right: 22px; top: 76px; width: 280px; bottom: 22px; border: 2px solid #E3DDD4; border-radius: 16px; padding: 18px; background: #FFFCFA; }
+.dh { font-weight: 600; font-size: 24px; display: flex; align-items: center; gap: 10px; }
+.beta { font-size: 16px; color: #B0604A; border: 1.5px solid #D97757; border-radius: 6px; padding: 1px 7px; }
+.tiles { display: flex; gap: 12px; margin-top: 16px; }
+.tile { flex: 1; height: 110px; border-radius: 12px; border: 1.5px solid #EEE6DF; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.tile .big { font-family: "Serif"; font-size: 60px; line-height: 1; }
+.tile .sm { font-size: 16px; color: #6E6C68; }
+.bars { display: flex; align-items: flex-end; gap: 12px; height: 150px; margin-top: 24px; padding: 0 6px; border-bottom: 2px solid #EEE6DF; }
+.bars i { flex: 1; background: #D97757; border-radius: 6px 6px 0 0; transform-origin: bottom center; }
+
+/* dashboard full */
+.dtitle { position: absolute; left: 110px; top: 250px; display: flex; align-items: center; gap: 18px; font-size: 104px; line-height: 1; }
+.dsub { position: absolute; left: 112px; top: 372px; font-size: 32px; color: #6E6C68; }
+.card { position: absolute; left: 110px; width: 860px; background: #fff; border-radius: 24px; border: 1px solid #E6E1D9; box-shadow: 0 18px 50px rgba(60,40,20,0.10); padding: 30px 34px; }
+.card .ct { font-size: 36px; font-weight: 600; }
+.card .cs { font-size: 24px; color: #6E6C68; margin-top: 4px; }
+.agents { top: 450px; height: 430px; }
+.arow { display: flex; align-items: center; gap: 18px; margin-top: 18px; padding: 14px 16px; border-radius: 16px; background: #F7F4F0; }
+.arow .av { width: 52px; height: 52px; border-radius: 50%; background: #D97757; display: flex; align-items: center; justify-content: center; }
+.arow .av.off { background: #C9C4BC; }
+.arow div { flex: 1; display: flex; flex-direction: column; }
+.arow b { font-size: 28px; font-weight: 600; }
+.arow span { font-size: 21px; color: #6E6C68; }
+.st { font-style: normal; font-size: 20px; font-weight: 600; color: #B0604A; border: 2px solid #D97757; border-radius: 20px; padding: 4px 14px; }
+.st.w { color: #6E6C68; border-color: #C9C4BC; }
+.brain { top: 920px; height: 440px; }
+.net { position: absolute; left: 24px; top: 95px; }
+.stats { position: absolute; left: 440px; top: 120px; width: 380px; display: flex; flex-direction: column; gap: 16px; }
+.stat { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-radius: 14px; background: #F7F4F0; }
+.stat span { font-size: 26px; color: #4A4844; }
+.stat b { font-family: "Serif"; font-weight: 400; font-size: 52px; color: #D97757; line-height: 1; }
+
+/* easy stuff */
+.ecol { position: absolute; left: 90px; top: 120px; display: flex; flex-direction: column; gap: 18px; }
+.ecard { width: 460px; display: flex; align-items: center; gap: 18px; background: #fff; border-radius: 16px; border: 1px solid #E6E1D9; padding: 18px 22px; box-shadow: 0 8px 24px rgba(60,40,20,0.06); }
+.ecard em { width: 40px; height: 40px; border-radius: 50%; background: #D97757; color: #fff; font-style: normal; font-weight: 700; font-size: 22px; display: flex; align-items: center; justify-content: center; }
+.ecard div { display: flex; flex-direction: column; }
+.ecard b { font-size: 28px; font-weight: 600; }
+.ecard span { font-size: 19px; color: #B0604A; }
+.model { position: absolute; left: 620px; width: 370px; padding: 22px 26px; border-radius: 18px; background: #fff; border: 1px solid #E6E1D9; box-shadow: 0 10px 30px rgba(60,40,20,0.08); }
+.model .kicker { position: static; font-size: 19px; }
+.model.big { top: 110px; }
+.model.cheap { top: 355px; border: 3px solid #D97757; }
+.mname { font-size: 78px; line-height: 1.05; }
+.cost { font-size: 30px; font-weight: 600; color: #6E6C68; }
+
+/* router */
+.req { position: absolute; top: 300px; width: 280px; height: 100px; background: #fff; border-radius: 16px; border: 1px solid #E6E1D9; box-shadow: 0 8px 24px rgba(60,40,20,0.06); padding: 16px 20px; }
+.req b { display: block; font-size: 26px; font-weight: 600; }
+.req i { display: inline-block; margin-top: 8px; font-style: normal; font-size: 18px; font-weight: 600; padding: 2px 10px; border-radius: 8px; }
+.req i.easy { color: #B0604A; background: #FBE9E2; }
+.req i.hard { color: #fff; background: #1C1B19; }
+.wires { position: absolute; left: 0; top: 0; }
+.mod { position: absolute; width: 230px; height: 230px; border-radius: 50%; background: #D97757; display: flex; align-items: center; justify-content: center; }
+.mod span { color: #fff; font-size: 74px; }
+.mcard { position: absolute; width: 360px; padding: 22px 26px; border-radius: 18px; background: #fff; border: 1px solid #E6E1D9; box-shadow: 0 10px 30px rgba(60,40,20,0.08); }
+.mcard .kicker { position: static; font-size: 19px; }
+.mcard.haiku { border: 3px solid #D97757; }
+.mini { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.mini i { font-style: normal; font-size: 18px; font-weight: 600; color: #B0604A; border: 1.5px solid #D97757; border-radius: 8px; padding: 3px 9px; }
+.mini i.dk { color: #fff; background: #1C1B19; border-color: #1C1B19; }
+.limits { position: absolute; left: 110px; top: 1250px; width: 860px; padding: 24px 30px; border-radius: 20px; background: #fff; border: 1px solid #E6E1D9; }
+.lh { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+.lh b { font-size: 30px; font-weight: 600; }
+.lh span { font-size: 21px; color: #6E6C68; }
+.lb { height: 22px; border-radius: 11px; background: #EEE9E2; overflow: hidden; margin-top: 10px; }
+.fill { height: 100%; border-radius: 11px; }
+.fill.with { background: #D97757; }
+.fill.without { background: #8C8A84; }
+.ll { font-size: 19px; color: #6E6C68; margin-top: 4px; }
+
+/* describe */
+.chat { position: absolute; left: 110px; top: 70px; width: 860px; padding: 24px 30px; background: #fff; border-radius: 20px; border: 1px solid #E6E1D9; box-shadow: 0 10px 30px rgba(60,40,20,0.08); }
+.who { font-size: 20px; font-weight: 600; letter-spacing: 0.1em; color: #6E6C68; }
+.said { font-size: 36px; margin-top: 8px; line-height: 1.3; min-height: 94px; }
+.dcube { position: absolute; }
+.target { position: absolute; width: 230px; }
+.dbox { width: 190px; height: 190px; margin-top: 20px; border: 4px dashed #D97757; border-radius: 10px; background: rgba(217,119,87,0.05); }
+.made { position: absolute; left: 0; top: 0; text-align: left; }
+.mbars { display: flex; align-items: flex-end; gap: 8px; height: 90px; }
+.mbars i { width: 22px; background: #D97757; border-radius: 4px 4px 0 0; }
+.conn { position: absolute; left: 350px; top: 425px; width: 340px; border-top: 4px dashed #D97757; transform-origin: left center; }
+.fchip { position: absolute; left: 300px; top: 400px; font-size: 22px; font-weight: 600; color: #B0604A; background: #fff; border: 2px solid #D97757; border-radius: 10px; padding: 4px 12px; }
+
+/* code */
+.codep { position: absolute; left: 0; top: 0; width: 1080px; height: 700px; background: #1E1D1C; overflow: hidden; }
+.cin { padding: 50px 80px; display: flex; flex-direction: column; gap: 22px; }
+.cl { display: flex; align-items: center; gap: 34px; }
+.cl span { font-family: "Mono"; font-weight: 500; font-size: 20px; color: #5A5754; width: 30px; }
+.cl b { height: 16px; border-radius: 8px; background: #46443F; }
+.cl b.hot { background: #D97757; }
+
+/* cta guide pill */
+.guide { position: absolute; left: 0; right: 0; margin: 0 auto; top: 300px; width: 560px; height: 96px; border-radius: 48px; background: #EFEFE8; display: flex; align-items: center; justify-content: center; gap: 16px; font-size: 38px; font-weight: 600; box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
+.guide em { width: 58px; height: 58px; border-radius: 50%; background: #D97757; display: flex; align-items: center; justify-content: center; }
+
+/* comment */
+.igc { position: absolute; left: 110px; top: 70px; width: 860px; background: #fff; border-radius: 22px; border: 1px solid #E6E1D9; box-shadow: 0 10px 30px rgba(60,40,20,0.08); padding: 24px 30px 20px; }
+.igh { text-align: center; font-size: 26px; font-weight: 600; padding-bottom: 16px; border-bottom: 1px solid #EEE9E2; }
+.posted { display: flex; align-items: center; gap: 16px; padding: 20px 0 6px; font-size: 28px; min-height: 96px; }
+.posted > div { flex: 1; }
+.posted .c { font-weight: 700; }
+.ago { font-size: 19px; color: #6E6C68; margin-top: 4px; }
+.heart { font-style: normal; color: #B0604A; font-size: 30px; }
+.av2 { width: 56px; height: 56px; border-radius: 50%; background: #D8D2C8; flex: none; }
+.compose { display: flex; align-items: center; gap: 16px; padding-top: 16px; border-top: 1px solid #EEE9E2; }
+.field { flex: 1; position: relative; height: 60px; border: 2px solid #E3DDD4; border-radius: 30px; display: flex; align-items: center; padding: 0 22px; font-size: 28px; }
+.ph2 { position: absolute; left: 22px; color: #8F8B84; }
+.tc { font-weight: 700; }
+.post { font-size: 26px; font-weight: 700; color: #C9C4BC; }
+.dm { position: absolute; left: 160px; top: 440px; width: 760px; display: flex; align-items: center; gap: 18px; padding: 22px 26px; border-radius: 22px; background: #1C1B19; color: #fff; box-shadow: 0 16px 40px rgba(0,0,0,0.25); }
+.dm .av, .follow .av { width: 64px; height: 64px; border-radius: 50%; background: #D97757; display: flex; align-items: center; justify-content: center; flex: none; }
+.dm > div { flex: 1; display: flex; flex-direction: column; }
+.dm b { font-size: 28px; }
+.dm span { font-size: 24px; color: #D8D5CF; }
+.sent { position: absolute; left: 0; right: 0; margin: 0 auto; top: 585px; width: 330px; text-align: center; font-size: 22px; font-weight: 600; color: #B0604A; background: #FBE9E2; border-radius: 16px; padding: 6px 0; }
+
+/* follow card */
+.follow { position: absolute; left: 0; right: 0; margin: 0 auto; top: 1270px; width: 800px; height: 150px; border-radius: 75px; background: #fff;
+  display: flex; align-items: center; gap: 22px; padding: 0 26px; box-shadow: 0 16px 44px rgba(0,0,0,0.3); }
+.follow .av { width: 100px; height: 100px; }
+.who2 { flex: 1; display: flex; flex-direction: column; }
+.who2 b { font-size: 42px; font-weight: 700; }
+.who2 span { font-size: 28px; color: #6E6C68; }
+.fbtn { position: relative; width: 230px; height: 80px; border-radius: 40px; background: #D97757; }
+.fbtn span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; }
+.f1 { color: #fff; }
+.f2 { color: #1C1B19; opacity: 0; }
+
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="74.4" data-fps="30" data-width="1080" data-height="1920">
+  <video id="face" class="clip" src="media/head.mp4" muted playsinline data-start="0" data-duration="74.4" data-track-index="0"></video>
+  <div id="panel"></div>
+  <div id="sc-intro" class="scene" style="height:700px">
+      <div class="tag-claude" style="top:58px"><svg class="" width="26" height="26" viewBox="-50 -50 100 100"><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg><span>Claude</span></div>
+      <div class="serif title" style="top:96px">Mods</div>
+      <div class="big-cube" style="left:425px;top:275px"><div class="cube " style="width:240px;height:240px;"><svg width="240" height="240" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#E9A189" stroke="none" stroke-width="0"/><polygon points="78,22 100,0 100,78 78,100" fill="#B95E43" stroke="none" stroke-width="0"/><rect x="0" y="22" width="78" height="78" fill="#D97757" stroke="none" stroke-width="0"/></svg><div class="cube-in" style="left:0;top:53px;width:187px;height:187px"><svg class="" width="120" height="120" viewBox="-50 -50 100 100"><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg></div></div></div>
+      <div class="lab-cube s0" style="left:190px;top:300px"><div class="cube " style="width:74px;height:74px;"><svg width="74" height="74" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#F7F3EF" stroke="#D97757" stroke-width="1.4"/><polygon points="78,22 100,0 100,78 78,100" fill="#EDE5DE" stroke="#D97757" stroke-width="1.4"/><rect x="0" y="22" width="78" height="78" fill="#FFFFFF" stroke="#D97757" stroke-width="1.4"/></svg><div class="cube-in" style="left:0;top:16px;width:58px;height:58px"></div></div><div class="lab">session-chat</div></div><div class="lab-cube s1" style="left:130px;top:470px"><div class="cube " style="width:74px;height:74px;"><svg width="74" height="74" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#F7F3EF" stroke="#D97757" stroke-width="1.4"/><polygon points="78,22 100,0 100,78 78,100" fill="#EDE5DE" stroke="#D97757" stroke-width="1.4"/><rect x="0" y="22" width="78" height="78" fill="#FFFFFF" stroke="#D97757" stroke-width="1.4"/></svg><div class="cube-in" style="left:0;top:16px;width:58px;height:58px"></div></div><div class="lab">agent-dashboard</div></div><div class="lab-cube s2" style="left:760px;top:250px"><div class="cube " style="width:74px;height:74px;"><svg width="74" height="74" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#F7F3EF" stroke="#D97757" stroke-width="1.4"/><polygon points="78,22 100,0 100,78 78,100" fill="#EDE5DE" stroke="#D97757" stroke-width="1.4"/><rect x="0" y="22" width="78" height="78" fill="#FFFFFF" stroke="#D97757" stroke-width="1.4"/></svg><div class="cube-in" style="left:0;top:16px;width:58px;height:58px"></div></div><div class="lab">model-router</div></div><div class="lab-cube s3" style="left:820px;top:430px"><div class="cube " style="width:74px;height:74px;"><svg width="74" height="74" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#F7F3EF" stroke="#D97757" stroke-width="1.4"/><polygon points="78,22 100,0 100,78 78,100" fill="#EDE5DE" stroke="#D97757" stroke-width="1.4"/><rect x="0" y="22" width="78" height="78" fill="#FFFFFF" stroke="#D97757" stroke-width="1.4"/></svg><div class="cube-in" style="left:0;top:16px;width:58px;height:58px"></div></div><div class="lab">design-tweaks</div></div><div class="lab-cube s4" style="left:290px;top:520px"><div class="cube " style="width:74px;height:74px;"><svg width="74" height="74" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#F7F3EF" stroke="#D97757" stroke-width="1.4"/><polygon points="78,22 100,0 100,78 78,100" fill="#EDE5DE" stroke="#D97757" stroke-width="1.4"/><rect x="0" y="22" width="78" height="78" fill="#FFFFFF" stroke="#D97757" stroke-width="1.4"/></svg><div class="cube-in" style="left:0;top:16px;width:58px;height:58px"></div></div><div class="lab">second-brain</div></div></div><div id="sc-ways" class="scene" style="height:700px">
+      <div class="ways-title"><span class="serif" style="font-size:96px">3 ways</span><span class="sub">no one is talking about</span></div>
+      <svg class="orbit" width="1080" height="700"><ellipse cx="540" cy="420" rx="390" ry="150" fill="none" stroke="#D9D3C9" stroke-width="2"/></svg>
+      <div class="hub" style="left:470px;top:350px"><div class="glow"></div><svg class="" width="80" height="80" viewBox="-50 -50 100 100"><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg></div>
+      <div class="num-cube n1" style="left:100px;top:285px"><div class="cube " style="width:140px;height:140px;"><svg width="140" height="140" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#F7F3EF" stroke="#D97757" stroke-width="1.4"/><polygon points="78,22 100,0 100,78 78,100" fill="#EDE5DE" stroke="#D97757" stroke-width="1.4"/><rect x="0" y="22" width="78" height="78" fill="#FFFFFF" stroke="#D97757" stroke-width="1.4"/></svg><div class="cube-in" style="left:0;top:31px;width:109px;height:109px"><span class=num>1</span></div></div></div><div class="num-cube n2" style="left:770px;top:230px"><div class="cube " style="width:140px;height:140px;"><svg width="140" height="140" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#F7F3EF" stroke="#D97757" stroke-width="1.4"/><polygon points="78,22 100,0 100,78 78,100" fill="#EDE5DE" stroke="#D97757" stroke-width="1.4"/><rect x="0" y="22" width="78" height="78" fill="#FFFFFF" stroke="#D97757" stroke-width="1.4"/></svg><div class="cube-in" style="left:0;top:31px;width:109px;height:109px"><span class=num>2</span></div></div></div><div class="num-cube n3" style="left:470px;top:495px"><div class="cube " style="width:140px;height:140px;"><svg width="140" height="140" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#F7F3EF" stroke="#D97757" stroke-width="1.4"/><polygon points="78,22 100,0 100,78 78,100" fill="#EDE5DE" stroke="#D97757" stroke-width="1.4"/><rect x="0" y="22" width="78" height="78" fill="#FFFFFF" stroke="#D97757" stroke-width="1.4"/></svg><div class="cube-in" style="left:0;top:31px;width:109px;height:109px"><span class=num>3</span></div></div></div></div><div id="sc-sessions" class="scene" style="height:700px"><div id="sa" class="win dark" style="left:70px;top:88px;width:400px;height:500px"><div class="bar"><i></i><i></i><i></i><span><em class="dot"></em>Session A</span></div><div class="lines"><b style="width:230px"></b><b style="width:170px"></b><b style="width:260px"></b><b style="width:120px"></b><b style="width:210px"></b></div><div class="prompt">&gt; <u></u></div></div><div id="sb" class="win dark" style="left:610px;top:88px;width:400px;height:500px"><div class="bar"><i></i><i></i><i></i><span><em class="dot"></em>Session B</span></div><div class="lines"><b style="width:230px"></b><b style="width:170px"></b><b style="width:260px"></b><b style="width:120px"></b><b style="width:210px"></b></div><div class="prompt">&gt; <u></u></div></div>
+      <div class="link"><div class="dash"></div><div class="knot"></div></div>
+      <div class="msg" style="left:110px;top:400px"><b style="width:220px"></b><b style="width:150px"></b><div class="send">Send &#10003;</div></div>
+      <div class="inbox" style="left:650px;top:370px"><div class="from">From Session A</div><b style="width:240px"></b><b style="width:170px"></b></div>
+      </div><div id="sc-planbuild" class="scene" style="height:700px">
+      <div class="node a" style="left:120px;top:225px"><div class="pill-tag">PLANS</div><div class="cube " style="width:210px;height:210px;"><svg width="210" height="210" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#E9A189" stroke="none" stroke-width="0"/><polygon points="78,22 100,0 100,78 78,100" fill="#B95E43" stroke="none" stroke-width="0"/><rect x="0" y="22" width="78" height="78" fill="#D97757" stroke="none" stroke-width="0"/></svg><div class="cube-in" style="left:0;top:46px;width:164px;height:164px"><svg class="" width="100" height="100" viewBox="-50 -50 100 100"><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg></div></div><div class="node-lab">Session A</div></div>
+      <div class="node b" style="left:750px;top:225px"><div class="pill-tag">BUILDS</div><div class="cube " style="width:210px;height:210px;"><svg width="210" height="210" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#E9A189" stroke="none" stroke-width="0"/><polygon points="78,22 100,0 100,78 78,100" fill="#B95E43" stroke="none" stroke-width="0"/><rect x="0" y="22" width="78" height="78" fill="#D97757" stroke="none" stroke-width="0"/></svg><div class="cube-in" style="left:0;top:46px;width:164px;height:164px"><svg class="" width="100" height="100" viewBox="-50 -50 100 100"><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg></div></div><div class="node-lab">Session B</div><div class="stack"><div class="chk c0"><span>&#10003;</span></div><div class="chk c1"><span>&#10003;</span></div><div class="chk c2"><span>&#10003;</span></div></div></div>
+      <div class="track"></div><div class="pkt p0"></div><div class="pkt p1"></div><div class="pkt p2"></div><div class="pkt back b0"></div><div class="pkt back b1"></div></div><div id="sc-day" class="scene" style="height:1920px">
+      <div class="daypill"><em class="dot"></em><span class="mono">DAY</span>
+        <span class="roll"><span class="r1 mono">174</span><span class="r2 mono">175</span></span></div>
+      <div class="daysub">helping <b>10,000 Malaysians</b> make more money with AI</div></div><div id="sc-iface" class="scene" style="height:700px"><div id="w-iface" class="win light" style="left:110px;top:95px;width:860px;height:520px"><div class="bar"><i></i><i></i><i></i><span>Claude Code</span></div><div class="side"><div class="row"><em></em><b style="width:90px"></b></div><div class="row"><em></em><b style="width:120px"></b></div><div class="row"><em></em><b style="width:70px"></b></div><div class="row"><em></em><b style="width:110px"></b></div><div class="row"><em></em><b style="width:80px"></b></div></div><div class="main"><div class="bub r"><b style="width:220px"></b></div><div class="bub"><b style="width:380px"></b><b style="width:300px"></b><b style="width:340px"></b></div><div class="bub r"><b style="width:160px"></b></div><div class="input"><span class="ph"><span class="typed"><span class="ch">C</span><span class="ch">h</span><span class="ch">a</span><span class="ch">n</span><span class="ch">g</span><span class="ch">e</span><span class="ch"> </span><span class="ch">t</span><span class="ch">h</span><span class="ch">e</span><span class="ch"> </span><span class="ch">i</span><span class="ch">n</span><span class="ch">t</span><span class="ch">e</span><span class="ch">r</span><span class="ch">f</span><span class="ch">a</span><span class="ch">c</span><span class="ch">e</span></span></span><u></u></div></div></div>
+      <div class="hl hl1"><i class="pen"></i></div><div class="hl hl2"><i class="pen"></i></div><div class="hl hl3"><i class="pen"></i></div></div><div id="sc-dash" class="scene" style="height:700px"><div id="w-dash" class="win light" style="left:110px;top:95px;width:860px;height:520px"><div class="bar"><i></i><i></i><i></i><span>Claude Code</span></div><div class="side"><div class="row"><em></em><b style="width:90px"></b></div><div class="row"><em></em><b style="width:120px"></b></div><div class="row"><em></em><b style="width:70px"></b></div><div class="row"><em></em><b style="width:110px"></b></div><div class="row"><em></em><b style="width:80px"></b></div></div><div class="main"><div class="bub r"><b style="width:220px"></b></div><div class="bub"><b style="width:380px"></b><b style="width:300px"></b><b style="width:340px"></b></div><div class="bub r"><b style="width:160px"></b></div><div class="input"><span class="ph">Ask Claude…</span><u></u></div></div><div class="dashp"><div class="dh">Dashboard <span class="beta">Beta</span></div><div class="tiles"><div class="tile"><div class="big">8</div><div class="sm">agents</div></div><div class="tile"><svg width="90" height="90" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" fill="none" stroke="#EEE6DF" stroke-width="5"/><circle class="donut" cx="18" cy="18" r="14" fill="none" stroke="#D97757" stroke-width="5" stroke-dasharray="88" stroke-dashoffset="88" transform="rotate(-90 18 18)"/></svg></div></div><div class="bars"><i style="height:40px"></i><i style="height:70px"></i><i style="height:55px"></i><i style="height:95px"></i><i style="height:80px"></i><i style="height:120px"></i></div></div></div></div><div id="sc-dashfull" class="scene" style="height:1920px">
+      <div class="dtitle"><svg class="" width="70" height="70" viewBox="-50 -50 100 100"><g stroke="#D97757" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg><span class="serif">Dashboard</span></div>
+      <div class="dsub">right inside Claude Code</div>
+      <div class="card agents"><div class="ct">Your agents</div><div class="cs">what they are doing right now</div><div class="arow ar0"><em class="av"><svg class="" width="30" height="30" viewBox="-50 -50 100 100"><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg></em><div><b>Research</b><span>Reading the sources</span></div><i class="st">Running</i></div><div class="arow ar1"><em class="av"><svg class="" width="30" height="30" viewBox="-50 -50 100 100"><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg></em><div><b>Writer</b><span>Drafting the script</span></div><i class="st">Running</i></div><div class="arow ar2"><em class="av off"><svg class="" width="30" height="30" viewBox="-50 -50 100 100"><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg></em><div><b>Editor</b><span>Waiting on the draft</span></div><i class="st w">Waiting</i></div></div>
+      <div class="card brain"><div class="ct">Second brain</div><div class="cs">the full overview</div>
+        <svg class="net" width="360" height="340"><g stroke="#CFC8BE" stroke-width="1.5"><line x1="180" y1="170" x2="227" y2="196"/><line x1="180" y1="170" x2="187" y2="220"/><line x1="180" y1="170" x2="142" y2="206"/><line x1="180" y1="170" x2="125" y2="165"/><line x1="180" y1="170" x2="150" y2="127"/><line x1="180" y1="170" x2="198" y2="122"/><line x1="180" y1="170" x2="232" y2="153"/><line x1="227" y1="196" x2="187" y2="220"/><line x1="227" y1="196" x2="232" y2="153"/><line x1="227" y1="196" x2="232" y2="254"/><line x1="227" y1="196" x2="285" y2="178"/><line x1="227" y1="196" x2="269" y2="222"/><line x1="187" y1="220" x2="142" y2="206"/><line x1="187" y1="220" x2="232" y2="254"/><line x1="187" y1="220" x2="184" y2="267"/><line x1="142" y1="206" x2="125" y2="165"/><line x1="142" y1="206" x2="135" y2="257"/><line x1="142" y1="206" x2="96" y2="228"/><line x1="125" y1="165" x2="150" y2="127"/><line x1="125" y1="165" x2="76" y2="185"/><line x1="125" y1="165" x2="80" y2="139"/><line x1="150" y1="127" x2="198" y2="122"/><line x1="150" y1="127" x2="107" y2="100"/><line x1="150" y1="127" x2="151" y2="77"/><line x1="198" y1="122" x2="232" y2="153"/><line x1="198" y1="122" x2="201" y2="75"/><line x1="198" y1="122" x2="247" y2="95"/><line x1="232" y1="153" x2="247" y2="95"/><line x1="232" y1="153" x2="277" y2="132"/><line x1="232" y1="153" x2="285" y2="178"/><line x1="232" y1="254" x2="184" y2="267"/><line x1="232" y1="254" x2="269" y2="222"/><line x1="232" y1="254" x2="280" y2="273"/><line x1="232" y1="254" x2="239" y2="297"/><line x1="184" y1="267" x2="135" y2="257"/><line x1="184" y1="267" x2="191" y2="308"/><line x1="184" y1="267" x2="141" y2="303"/><line x1="135" y1="257" x2="96" y2="228"/><line x1="135" y1="257" x2="141" y2="303"/><line x1="135" y1="257" x2="96" y2="285"/><line x1="96" y1="228" x2="76" y2="185"/><line x1="96" y1="228" x2="96" y2="285"/><line x1="96" y1="228" x2="61" y2="253"/><line x1="96" y1="228" x2="38" y2="213"/><line x1="76" y1="185" x2="80" y2="139"/><line x1="76" y1="185" x2="38" y2="213"/><line x1="76" y1="185" x2="30" y2="168"/><line x1="80" y1="139" x2="107" y2="100"/><line x1="80" y1="139" x2="30" y2="168"/><line x1="80" y1="139" x2="39" y2="124"/><line x1="80" y1="139" x2="63" y2="84"/><line x1="107" y1="100" x2="151" y2="77"/><line x1="107" y1="100" x2="63" y2="84"/><line x1="107" y1="100" x2="99" y2="54"/><line x1="151" y1="77" x2="201" y2="75"/><line x1="151" y1="77" x2="99" y2="54"/><line x1="151" y1="77" x2="145" y2="36"/><line x1="151" y1="77" x2="194" y2="33"/><line x1="201" y1="75" x2="247" y2="95"/><line x1="201" y1="75" x2="194" y2="33"/><line x1="201" y1="75" x2="242" y2="44"/><line x1="247" y1="95" x2="277" y2="132"/><line x1="247" y1="95" x2="242" y2="44"/><line x1="247" y1="95" x2="283" y2="70"/><line x1="277" y1="132" x2="285" y2="178"/><line x1="277" y1="132" x2="313" y2="106"/><line x1="277" y1="132" x2="328" y2="149"/><line x1="285" y1="178" x2="269" y2="222"/><line x1="285" y1="178" x2="328" y2="149"/><line x1="285" y1="178" x2="328" y2="194"/><line x1="269" y1="222" x2="311" y2="237"/><line x1="269" y1="222" x2="280" y2="273"/><line x1="191" y1="308" x2="141" y2="303"/><line x1="191" y1="308" x2="239" y2="297"/><line x1="141" y1="303" x2="96" y2="285"/><line x1="96" y1="285" x2="61" y2="253"/><line x1="61" y1="253" x2="38" y2="213"/><line x1="38" y1="213" x2="30" y2="168"/><line x1="30" y1="168" x2="39" y2="124"/><line x1="39" y1="124" x2="63" y2="84"/><line x1="63" y1="84" x2="99" y2="54"/><line x1="99" y1="54" x2="145" y2="36"/><line x1="145" y1="36" x2="194" y2="33"/><line x1="194" y1="33" x2="242" y2="44"/><line x1="242" y1="44" x2="283" y2="70"/><line x1="283" y1="70" x2="313" y2="106"/><line x1="313" y1="106" x2="328" y2="149"/><line x1="328" y1="149" x2="328" y2="194"/><line x1="328" y1="194" x2="311" y2="237"/><line x1="311" y1="237" x2="280" y2="273"/><line x1="280" y1="273" x2="239" y2="297"/></g><circle cx="180" cy="170" r="7" fill="#D97757"/><circle cx="227" cy="196" r="5" fill="#1C1B19"/><circle cx="187" cy="220" r="5" fill="#1C1B19"/><circle cx="142" cy="206" r="5" fill="#1C1B19"/><circle cx="125" cy="165" r="5" fill="#1C1B19"/><circle cx="150" cy="127" r="7" fill="#D97757"/><circle cx="198" cy="122" r="5" fill="#1C1B19"/><circle cx="232" cy="153" r="5" fill="#1C1B19"/><circle cx="232" cy="254" r="5" fill="#1C1B19"/><circle cx="184" cy="267" r="5" fill="#1C1B19"/><circle cx="135" cy="257" r="7" fill="#D97757"/><circle cx="96" cy="228" r="5" fill="#1C1B19"/><circle cx="76" cy="185" r="5" fill="#1C1B19"/><circle cx="80" cy="139" r="5" fill="#1C1B19"/><circle cx="107" cy="100" r="5" fill="#1C1B19"/><circle cx="151" cy="77" r="7" fill="#D97757"/><circle cx="201" cy="75" r="5" fill="#1C1B19"/><circle cx="247" cy="95" r="5" fill="#1C1B19"/><circle cx="277" cy="132" r="5" fill="#1C1B19"/><circle cx="285" cy="178" r="5" fill="#1C1B19"/><circle cx="269" cy="222" r="7" fill="#D97757"/><circle cx="191" cy="308" r="5" fill="#1C1B19"/><circle cx="141" cy="303" r="5" fill="#1C1B19"/><circle cx="96" cy="285" r="5" fill="#1C1B19"/><circle cx="61" cy="253" r="5" fill="#1C1B19"/><circle cx="38" cy="213" r="7" fill="#D97757"/><circle cx="30" cy="168" r="5" fill="#1C1B19"/><circle cx="39" cy="124" r="5" fill="#1C1B19"/><circle cx="63" cy="84" r="5" fill="#1C1B19"/><circle cx="99" cy="54" r="5" fill="#1C1B19"/><circle cx="145" cy="36" r="7" fill="#D97757"/><circle cx="194" cy="33" r="5" fill="#1C1B19"/><circle cx="242" cy="44" r="5" fill="#1C1B19"/><circle cx="283" cy="70" r="5" fill="#1C1B19"/><circle cx="313" cy="106" r="5" fill="#1C1B19"/><circle cx="328" cy="149" r="7" fill="#D97757"/><circle cx="328" cy="194" r="5" fill="#1C1B19"/><circle cx="311" cy="237" r="5" fill="#1C1B19"/><circle cx="280" cy="273" r="5" fill="#1C1B19"/><circle cx="239" cy="297" r="5" fill="#1C1B19"/></svg>
+        <div class="stats"><div class="stat s0"><span>Projects</span><b>12</b></div><div class="stat s1"><span>Tasks</span><b>38</b></div><div class="stat s2"><span>Notes</span><b>214</b></div></div></div></div><div id="sc-easy" class="scene" style="height:700px">
+      <div class="kicker" style="left:90px;top:70px">THE EASY STUFF</div>
+      <div class="ecol"><div class="ecard e0"><em>&#10003;</em><div><b>Fix a typo</b><span>easy</span></div></div><div class="ecard e1"><em>&#10003;</em><div><b>Rename these files</b><span>easy</span></div></div><div class="ecard e2"><em>&#10003;</em><div><b>Tidy up my notes</b><span>easy</span></div></div></div>
+      <div class="model big"><div class="kicker">BIGGER MODEL</div><div class="serif mname">Opus</div><div class="cost">$$$</div></div>
+      <div class="model cheap"><div class="kicker o">CHEAPER MODEL</div><div class="serif mname">Haiku</div><div class="cost">$</div></div></div><div id="sc-router" class="scene" style="height:1920px">
+      <div class="kicker" style="left:90px;top:250px">REQUESTS</div><div class="req q0" style="left:90px"><b>Fix a typo</b><i class="easy">easy</i></div><div class="req q1" style="left:400px"><b>Rename files</b><i class="easy">easy</i></div><div class="req q2" style="left:710px"><b>Plan my launch</b><i class="hard">hard</i></div>
+      <svg class="wires" width="1080" height="1920"><line class="lin in0" x1="230" y1="400" x2="540" y2="650" stroke="#D97757" stroke-width="4" stroke-linecap="round" stroke-dasharray="398" stroke-dashoffset="398" data-len="398"/><line class="lin in1" x1="540" y1="400" x2="540" y2="650" stroke="#D97757" stroke-width="4" stroke-linecap="round" stroke-dasharray="250" stroke-dashoffset="250" data-len="250"/><line class="lin in2" x1="850" y1="400" x2="540" y2="650" stroke="#1C1B19" stroke-width="4" stroke-linecap="round" stroke-dasharray="398" stroke-dashoffset="398" data-len="398"/><line class="lout o0" x1="470" y1="845" x2="290" y2="1000" stroke="#D97757" stroke-width="4" stroke-linecap="round" stroke-dasharray="238" stroke-dashoffset="238" data-len="238"/><line class="lout o1" x1="610" y1="845" x2="790" y2="1000" stroke="#1C1B19" stroke-width="4" stroke-linecap="round" stroke-dasharray="238" stroke-dashoffset="238" data-len="238"/></svg>
+      <div class="mod" style="left:425px;top:645px"><div class="glow"></div><span class="serif">Mod</span></div>
+      <div class="mcard haiku" style="left:110px;top:1000px"><div class="kicker o">CHEAPER MODEL</div><div class="serif mname">Haiku</div>
+        <div class="mini"><i>Fix a typo</i><i>Rename files</i></div></div>
+      <div class="mcard opus" style="left:610px;top:1000px"><div class="kicker">BIGGER MODEL</div><div class="serif mname">Opus</div>
+        <div class="mini"><i class="dk">Plan my launch</i></div></div>
+      <div class="limits"><div class="lh"><b>Your limits</b><span>simple tasks stay off them</span></div>
+        <div class="lb"><div class="fill with"></div></div><div class="ll"><span>with the mod</span></div>
+        <div class="lb"><div class="fill without"></div></div><div class="ll"><span>without a mod</span></div></div></div><div id="sc-describe" class="scene" style="height:700px">
+      <div class="chat"><div class="who">YOU</div><div class="said"><span class="typed"><span class="ch">B</span><span class="ch">u</span><span class="ch">i</span><span class="ch">l</span><span class="ch">d</span><span class="ch"> </span><span class="ch">m</span><span class="ch">e</span><span class="ch"> </span><span class="ch">a</span><span class="ch"> </span><span class="ch">m</span><span class="ch">o</span><span class="ch">d</span><span class="ch"> </span><span class="ch">t</span><span class="ch">h</span><span class="ch">a</span><span class="ch">t</span><span class="ch"> </span><span class="ch">s</span><span class="ch">h</span><span class="ch">o</span><span class="ch">w</span><span class="ch">s</span><span class="ch"> </span><span class="ch">w</span><span class="ch">h</span><span class="ch">a</span><span class="ch">t</span><span class="ch"> </span><span class="ch">m</span><span class="ch">y</span><span class="ch"> </span><span class="ch">a</span><span class="ch">g</span><span class="ch">e</span><span class="ch">n</span><span class="ch">t</span><span class="ch">s</span><span class="ch"> </span><span class="ch">a</span><span class="ch">r</span><span class="ch">e</span><span class="ch"> </span><span class="ch">d</span><span class="ch">o</span><span class="ch">i</span><span class="ch">n</span><span class="ch">g</span><span class="ch">.</span></span></div></div>
+      <div class="dcube" style="left:150px;top:310px"><div class="cube " style="width:190px;height:190px;"><svg width="190" height="190" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#E9A189" stroke="none" stroke-width="0"/><polygon points="78,22 100,0 100,78 78,100" fill="#B95E43" stroke="none" stroke-width="0"/><rect x="0" y="22" width="78" height="78" fill="#D97757" stroke="none" stroke-width="0"/></svg><div class="cube-in" style="left:0;top:42px;width:148px;height:148px"><svg class="" width="90" height="90" viewBox="-50 -50 100 100"><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg></div></div></div>
+      <div class="target" style="left:700px;top:330px"><div class="dbox"></div>
+        <div class="made"><div class="cube " style="width:190px;height:190px;"><svg width="190" height="190" viewBox="0 0 100 100"><polygon points="0,22 22,0 100,0 78,22" fill="#F7F3EF" stroke="#D97757" stroke-width="1.4"/><polygon points="78,22 100,0 100,78 78,100" fill="#EDE5DE" stroke="#D97757" stroke-width="1.4"/><rect x="0" y="22" width="78" height="78" fill="#FFFFFF" stroke="#D97757" stroke-width="1.4"/></svg><div class="cube-in" style="left:0;top:42px;width:148px;height:148px"><div class="mbars"><i style="height:34px"></i><i style="height:58px"></i><i style="height:46px"></i><i style="height:80px"></i></div></div></div><div class="node-lab">your mod</div></div></div>
+      <div class="conn"></div><div class="fchip f0">read</div><div class="fchip f1">agents</div><div class="fchip f2">build</div></div><div id="sc-code" class="scene" style="height:700px"><div class="codep"><div class="cin"><div class="cl"><span>01</span><b class="" style="width:180px"></b></div><div class="cl"><span>02</span><b class="" style="width:320px"></b></div><div class="cl"><span>03</span><b class="hot" style="width:260px"></b></div><div class="cl"><span>04</span><b class="" style="width:420px"></b></div><div class="cl"><span>05</span><b class="" style="width:140px"></b></div><div class="cl"><span>06</span><b class="" style="width:360px"></b></div><div class="cl"><span>07</span><b class="hot" style="width:220px"></b></div><div class="cl"><span>08</span><b class="" style="width:300px"></b></div><div class="cl"><span>09</span><b class="" style="width:400px"></b></div><div class="cl"><span>10</span><b class="" style="width:170px"></b></div><div class="cl"><span>11</span><b class="" style="width:280px"></b></div><div class="cl"><span>12</span><b class="hot" style="width:350px"></b></div><div class="cl"><span>13</span><b class="" style="width:200px"></b></div><div class="cl"><span>14</span><b class="" style="width:330px"></b></div><div class="cl"><span>15</span><b class="" style="width:250px"></b></div><div class="cl"><span>16</span><b class="hot" style="width:380px"></b></div><div class="cl"><span>17</span><b class="" style="width:160px"></b></div><div class="cl"><span>18</span><b class="" style="width:300px"></b></div><div class="cl"><span>19</span><b class="" style="width:240px"></b></div><div class="cl"><span>20</span><b class="hot" style="width:340px"></b></div><div class="cl"><span>21</span><b class="" style="width:190px"></b></div><div class="cl"><span>22</span><b class="" style="width:280px"></b></div></div></div></div><div id="sc-cta" class="scene" style="height:1920px">
+      <div class="guide"><em><svg class="" width="34" height="34" viewBox="-50 -50 100 100"><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg></em><span>Step-by-step guide</span></div></div><div id="sc-comment" class="scene" style="height:700px">
+      <div class="igc"><div class="igh">Comments</div>
+        <div class="posted"><em class="av2"></em><div><b>you</b> <span class="c">CLAUDE</span><div class="ago">now &middot; Reply</div></div><i class="heart">&#9829;</i></div>
+        <div class="compose"><em class="av2"></em><div class="field"><span class="ph2">Add a comment&hellip;</span><span class="typed tc"><span class="ch">C</span><span class="ch">L</span><span class="ch">A</span><span class="ch">U</span><span class="ch">D</span><span class="ch">E</span></span></div><span class="post">Post</span></div></div>
+      <div class="dm"><em class="av"><svg class="" width="36" height="36" viewBox="-50 -50 100 100"><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg></em><div><b>kingsleylow.ai</b><span>Here's your step-by-step guide &rarr;</span></div>
+        <svg class="plane" width="40" height="40" viewBox="0 0 24 24"><path d="M2 21 23 12 2 3v7l15 2-15 2z" fill="#D97757"/></svg></div>
+      <div class="sent">&#10003; Sent to your DMs</div></div><div id="sc-follow" class="scene" style="height:1920px">
+      <div class="follow"><em class="av"><svg class="" width="52" height="52" viewBox="-50 -50 100 100"><g stroke="#fff" stroke-width="9" stroke-linecap="round"><line x1="8.7" y1="2.3" x2="42.5" y2="11.4"/><line x1="6.4" y1="6.4" x2="26.9" y2="26.9"/><line x1="2.3" y1="8.7" x2="11.4" y2="42.5"/><line x1="-2.3" y1="8.7" x2="-9.8" y2="36.7"/><line x1="-6.4" y1="6.4" x2="-31.1" y2="31.1"/><line x1="-8.7" y1="2.3" x2="-36.7" y2="9.8"/><line x1="-8.7" y1="-2.3" x2="-42.5" y2="-11.4"/><line x1="-6.4" y1="-6.4" x2="-26.9" y2="-26.9"/><line x1="-2.3" y1="-8.7" x2="-11.4" y2="-42.5"/><line x1="2.3" y1="-8.7" x2="9.8" y2="-36.7"/><line x1="6.4" y1="-6.4" x2="31.1" y2="-31.1"/><line x1="8.7" y1="-2.3" x2="36.7" y2="-9.8"/></g></svg></em><div class="who2"><b>kingsleylow.ai</b><span>Claude tips</span></div>
+        <div class="fbtn"><span class="f1">Follow</span><span class="f2">Following</span></div></div></div>
+  <div class="capwrap" id="cap0" style="top:664px"><span class="cap">CLAUDE JUST</span></div><div class="capwrap" id="cap1" style="top:664px"><span class="cap">DROPPED A NEW</span></div><div class="capwrap" id="cap2" style="top:664px"><span class="cap">FEATURE CALLED</span></div><div class="capwrap" id="cap3" style="top:664px"><span class="cap">MODS</span></div><div class="capwrap" id="cap4" style="top:664px"><span class="cap">BUT MOST PEOPLE</span></div><div class="capwrap" id="cap5" style="top:664px"><span class="cap">HAVE NO IDEA</span></div><div class="capwrap" id="cap6" style="top:664px"><span class="cap">HOW TO USE</span></div><div class="capwrap" id="cap7" style="top:664px"><span class="cap">IT</span></div><div class="capwrap" id="cap8" style="top:664px"><span class="cap">SO HERE ARE</span></div><div class="capwrap" id="cap9" style="top:664px"><span class="cap">THREE SIMPLE WAYS</span></div><div class="capwrap" id="cap10" style="top:664px"><span class="cap">YOU CAN USE</span></div><div class="capwrap" id="cap11" style="top:664px"><span class="cap">IT THAT NOBODY</span></div><div class="capwrap" id="cap12" style="top:664px"><span class="cap">IS TALKING ABOUT</span></div><div class="capwrap" id="cap13" style="top:664px"><span class="cap">NUMBER ONE</span></div><div class="capwrap" id="cap14" style="top:664px"><span class="cap">YOU CAN MAKE</span></div><div class="capwrap" id="cap15" style="top:664px"><span class="cap">YOUR SESSIONS TALK</span></div><div class="capwrap" id="cap16" style="top:664px"><span class="cap">TO EACH OTHER</span></div><div class="capwrap" id="cap17" style="top:664px"><span class="cap">ONE CLAUDE CODE</span></div><div class="capwrap" id="cap18" style="top:664px"><span class="cap">SESSION CAN NOW</span></div><div class="capwrap" id="cap19" style="top:664px"><span class="cap">SEND A MESSAGE</span></div><div class="capwrap" id="cap20" style="top:664px"><span class="cap">TO ANOTHER</span></div><div class="capwrap" id="cap21" style="top:664px"><span class="cap">SO ONE CAN</span></div><div class="capwrap" id="cap22" style="top:664px"><span class="cap">PLAN WHILE THE</span></div><div class="capwrap" id="cap23" style="top:664px"><span class="cap">OTHER BUILDS AND</span></div><div class="capwrap" id="cap24" style="top:664px"><span class="cap">THEY CAN EVEN</span></div><div class="capwrap" id="cap25" style="top:664px"><span class="cap">PASS WORK BETWEEN</span></div><div class="capwrap" id="cap26" style="top:664px"><span class="cap">THEM</span></div><div class="capwrap" id="cap27" style="top:600px"><span class="cap">MY NAME IS</span></div><div class="capwrap" id="cap28" style="top:600px"><span class="cap">KINGSLEY LOW AND</span></div><div class="capwrap" id="cap29" style="top:600px"><span class="cap">WELCOME TO DAY</span></div><div class="capwrap" id="cap30" style="top:600px"><span class="cap">175 OF HELPING</span></div><div class="capwrap" id="cap31" style="top:600px"><span class="cap">10000 MALAYSIANS</span></div><div class="capwrap" id="cap32" style="top:600px"><span class="cap">TO MAKE MORE</span></div><div class="capwrap" id="cap33" style="top:600px"><span class="cap">MONEY WITH AI</span></div><div class="capwrap" id="cap34" style="top:664px"><span class="cap">NUMBER TWO</span></div><div class="capwrap" id="cap35" style="top:664px"><span class="cap">YOU CAN ASK</span></div><div class="capwrap" id="cap36" style="top:664px"><span class="cap">CLAUDE TO CHANGE</span></div><div class="capwrap" id="cap37" style="top:664px"><span class="cap">ANY OF ITS</span></div><div class="capwrap" id="cap38" style="top:664px"><span class="cap">INTERFACE</span></div><div class="capwrap" id="cap39" style="top:664px"><span class="cap">SO YOU CAN</span></div><div class="capwrap" id="cap40" style="top:664px"><span class="cap">HAVE A DASHBOARD</span></div><div class="capwrap" id="cap41" style="top:664px"><span class="cap">RIGHT INSIDE</span></div><div class="capwrap" id="cap42" style="top:664px"><span class="cap">CLAUDE CODE</span></div><div class="capwrap" id="cap43" style="top:1440px"><span class="cap">IT CAN SHOW</span></div><div class="capwrap" id="cap44" style="top:1440px"><span class="cap">YOU ANYTHING FROM</span></div><div class="capwrap" id="cap45" style="top:1440px"><span class="cap">WHAT YOUR AGENTS</span></div><div class="capwrap" id="cap46" style="top:1440px"><span class="cap">ARE DOING</span></div><div class="capwrap" id="cap47" style="top:1440px"><span class="cap">TO A FULL OVERVIEW</span></div><div class="capwrap" id="cap48" style="top:1440px"><span class="cap">OF YOUR SECOND</span></div><div class="capwrap" id="cap49" style="top:1440px"><span class="cap">BRAIN</span></div><div class="capwrap" id="cap50" style="top:664px"><span class="cap">NUMBER THREE</span></div><div class="capwrap" id="cap51" style="top:664px"><span class="cap">YOU CAN SEND</span></div><div class="capwrap" id="cap52" style="top:664px"><span class="cap">THE EASY STUFF</span></div><div class="capwrap" id="cap53" style="top:664px"><span class="cap">TO A CHEAPER</span></div><div class="capwrap" id="cap54" style="top:664px"><span class="cap">MODEL AND A</span></div><div class="capwrap" id="cap55" style="top:1440px"><span class="cap">MOD CAN STEP</span></div><div class="capwrap" id="cap56" style="top:1440px"><span class="cap">IN AND ROUTE</span></div><div class="capwrap" id="cap57" style="top:1440px"><span class="cap">CERTAIN REQUESTS</span></div><div class="capwrap" id="cap58" style="top:1440px"><span class="cap">TO A DIFFERENT</span></div><div class="capwrap" id="cap59" style="top:1440px"><span class="cap">MODEL</span></div><div class="capwrap" id="cap60" style="top:1440px"><span class="cap">SO SIMPLE TASKS</span></div><div class="capwrap" id="cap61" style="top:1440px"><span class="cap">STOP EATING INTO</span></div><div class="capwrap" id="cap62" style="top:1440px"><span class="cap">YOUR LIMITS</span></div><div class="capwrap" id="cap63" style="top:600px"><span class="cap">AND WANT TO</span></div><div class="capwrap" id="cap64" style="top:600px"><span class="cap">KNOW THE CRAZIEST</span></div><div class="capwrap" id="cap65" style="top:600px"><span class="cap">PART?</span></div><div class="capwrap" id="cap66" style="top:664px"><span class="cap">YOU CAN JUST</span></div><div class="capwrap" id="cap67" style="top:664px"><span class="cap">DESCRIBE THE MOD</span></div><div class="capwrap" id="cap68" style="top:664px"><span class="cap">THAT YOU WANT</span></div><div class="capwrap" id="cap69" style="top:664px"><span class="cap">TO CLAUDE AND</span></div><div class="capwrap" id="cap70" style="top:664px"><span class="cap">IT CAN GO</span></div><div class="capwrap" id="cap71" style="top:664px"><span class="cap">AND BUILD IT</span></div><div class="capwrap" id="cap72" style="top:664px"><span class="cap">YOU DON&#x27;T EVEN</span></div><div class="capwrap" id="cap73" style="top:664px"><span class="cap">NEED TO KNOW</span></div><div class="capwrap" id="cap74" style="top:664px"><span class="cap">ANYTHING TECHNICAL</span></div><div class="capwrap" id="cap75" style="top:600px"><span class="cap">SO IF YOU</span></div><div class="capwrap" id="cap76" style="top:600px"><span class="cap">WANT MORE TIPS</span></div><div class="capwrap" id="cap77" style="top:600px"><span class="cap">JUST LIKE THIS</span></div><div class="capwrap" id="cap78" style="top:600px"><span class="cap">WANT THE STEP BY</span></div><div class="capwrap" id="cap79" style="top:600px"><span class="cap">STEP GUIDE</span></div><div class="capwrap" id="cap80" style="top:664px"><span class="cap">COMMENT CLAUDE AND</span></div><div class="capwrap" id="cap81" style="top:664px"><span class="cap">I&#x27;LL SEND IT</span></div><div class="capwrap" id="cap82" style="top:664px"><span class="cap">TO YOUR DMS</span></div><div class="capwrap" id="cap83" style="top:664px"><span class="cap">YOU&#x27;RE WELCOME</span></div><div class="capwrap" id="cap84" style="top:600px"><span class="cap">FOLLOW FOR DAY</span></div><div class="capwrap" id="cap85" style="top:600px"><span class="cap">176</span></div>
+  <audio id="vo" src="media/voice.m4a" data-start="0" data-duration="74.4" data-volume="1"></audio><audio id="sfx0" src="sfx/pop.wav" data-start="0.30" data-duration="0.4" data-volume="0.35"></audio><audio id="sfx1" src="sfx/tick.wav" data-start="2.85" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx2" src="sfx/whoosh.wav" data-start="6.05" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx3" src="sfx/tick.wav" data-start="6.62" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx4" src="sfx/tick.wav" data-start="6.84" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx5" src="sfx/tick.wav" data-start="7.06" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx6" src="sfx/whoosh.wav" data-start="10.30" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx7" src="sfx/pop.wav" data-start="14.70" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx8" src="sfx/whoosh.wav" data-start="15.60" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx9" src="sfx/pop.wav" data-start="16.20" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx10" src="sfx/whoosh.wav" data-start="17.25" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx11" src="sfx/tick.wav" data-start="18.00" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx12" src="sfx/tick.wav" data-start="19.70" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx13" src="sfx/whoosh.wav" data-start="20.30" data-duration="0.4" data-volume="0.2"></audio><audio id="sfx14" src="sfx/whoosh.wav" data-start="21.40" data-duration="0.4" data-volume="0.2"></audio><audio id="sfx15" src="sfx/pop.wav" data-start="24.80" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx16" src="sfx/tick.wav" data-start="25.20" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx17" src="sfx/whoosh.wav" data-start="30.45" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx18" src="sfx/pop.wav" data-start="33.65" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx19" src="sfx/whoosh.wav" data-start="35.35" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx20" src="sfx/whoosh.wav" data-start="37.55" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx21" src="sfx/tick.wav" data-start="39.15" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx22" src="sfx/tick.wav" data-start="39.40" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx23" src="sfx/tick.wav" data-start="39.65" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx24" src="sfx/pop.wav" data-start="40.85" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx25" src="sfx/whoosh.wav" data-start="43.25" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx26" src="sfx/tick.wav" data-start="45.00" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx27" src="sfx/tick.wav" data-start="45.18" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx28" src="sfx/tick.wav" data-start="45.36" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx29" src="sfx/pop.wav" data-start="46.00" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx30" src="sfx/whoosh.wav" data-start="47.00" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx31" src="sfx/pop.wav" data-start="47.25" data-duration="0.4" data-volume="0.35"></audio><audio id="sfx32" src="sfx/tick.wav" data-start="48.85" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx33" src="sfx/tick.wav" data-start="49.60" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx34" src="sfx/pop.wav" data-start="51.40" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx35" src="sfx/whoosh.wav" data-start="56.95" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx36" src="sfx/whoosh.wav" data-start="60.40" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx37" src="sfx/pop.wav" data-start="61.60" data-duration="0.4" data-volume="0.35"></audio><audio id="sfx38" src="sfx/whoosh.wav" data-start="62.40" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx39" src="sfx/pop.wav" data-start="67.00" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx40" src="sfx/whoosh.wav" data-start="68.45" data-duration="0.4" data-volume="0.25"></audio><audio id="sfx41" src="sfx/tick.wav" data-start="69.45" data-duration="0.4" data-volume="0.3"></audio><audio id="sfx42" src="sfx/pop.wav" data-start="70.05" data-duration="0.4" data-volume="0.35"></audio><audio id="sfx43" src="sfx/pop.wav" data-start="72.20" data-duration="0.4" data-volume="0.35"></audio><audio id="sfx44" src="sfx/tick.wav" data-start="73.25" data-duration="0.4" data-volume="0.35"></audio>
+</div>
+<script>
+  window.__timelines = window.__timelines || {};
+  const tl = gsap.timeline({ paused: true });
+  gsap.set(".scene, .capwrap", {autoAlpha:0});
+    tl.set("#panel", {height:700}, 0.00); tl.set("#face", {y:120}, 0.00);
+  tl.set("#sc-intro", {autoAlpha:1}, 0.00); tl.set("#sc-intro", {autoAlpha:0}, 6.05);
+  tl.set("#panel", {height:700}, 6.05); tl.set("#face", {y:120}, 6.05);
+  tl.set("#sc-ways", {autoAlpha:1}, 6.05); tl.set("#sc-ways", {autoAlpha:0}, 10.30);
+  tl.set("#panel", {height:700}, 10.30); tl.set("#face", {y:120}, 10.30);
+  tl.set("#sc-sessions", {autoAlpha:1}, 10.30); tl.set("#sc-sessions", {autoAlpha:0}, 17.25);
+  tl.set("#panel", {height:700}, 17.25); tl.set("#face", {y:120}, 17.25);
+  tl.set("#sc-planbuild", {autoAlpha:1}, 17.25); tl.set("#sc-planbuild", {autoAlpha:0}, 22.85);
+  tl.set("#panel", {height:0}, 22.85); tl.set("#face", {y:0}, 22.85);
+  tl.set("#sc-day", {autoAlpha:1}, 22.85); tl.set("#sc-day", {autoAlpha:0}, 30.45);
+  tl.set("#panel", {height:700}, 30.45); tl.set("#face", {y:120}, 30.45);
+  tl.set("#sc-iface", {autoAlpha:1}, 30.45); tl.set("#sc-iface", {autoAlpha:0}, 34.60);
+  tl.set("#panel", {height:700}, 34.60); tl.set("#face", {y:120}, 34.60);
+  tl.set("#sc-dash", {autoAlpha:1}, 34.60); tl.set("#sc-dash", {autoAlpha:0}, 37.55);
+  tl.set("#panel", {height:1920}, 37.55); tl.set("#face", {y:0}, 37.55);
+  tl.set("#sc-dashfull", {autoAlpha:1}, 37.55); tl.set("#sc-dashfull", {autoAlpha:0}, 43.25);
+  tl.set("#panel", {height:700}, 43.25); tl.set("#face", {y:120}, 43.25);
+  tl.set("#sc-easy", {autoAlpha:1}, 43.25); tl.set("#sc-easy", {autoAlpha:0}, 47.00);
+  tl.set("#panel", {height:1920}, 47.00); tl.set("#face", {y:0}, 47.00);
+  tl.set("#sc-router", {autoAlpha:1}, 47.00); tl.set("#sc-router", {autoAlpha:0}, 55.00);
+  tl.set("#panel", {height:0}, 55.00); tl.set("#face", {y:0}, 55.00);
+  tl.set("#sc-crazy", {autoAlpha:1}, 55.00); tl.set("#sc-crazy", {autoAlpha:0}, 56.95);
+  tl.set("#panel", {height:700}, 56.95); tl.set("#face", {y:120}, 56.95);
+  tl.set("#sc-describe", {autoAlpha:1}, 56.95); tl.set("#sc-describe", {autoAlpha:0}, 62.40);
+  tl.set("#panel", {height:700}, 62.40); tl.set("#face", {y:120}, 62.40);
+  tl.set("#sc-code", {autoAlpha:1}, 62.40); tl.set("#sc-code", {autoAlpha:0}, 64.55);
+  tl.set("#panel", {height:0}, 64.55); tl.set("#face", {y:0}, 64.55);
+  tl.set("#sc-cta", {autoAlpha:1}, 64.55); tl.set("#sc-cta", {autoAlpha:0}, 68.45);
+  tl.set("#panel", {height:700}, 68.45); tl.set("#face", {y:120}, 68.45);
+  tl.set("#sc-comment", {autoAlpha:1}, 68.45); tl.set("#sc-comment", {autoAlpha:0}, 71.95);
+  tl.set("#panel", {height:0}, 71.95); tl.set("#face", {y:0}, 71.95);
+  tl.set("#sc-follow", {autoAlpha:1}, 71.95); tl.set("#sc-follow", {autoAlpha:0}, 74.40);
+  tl.fromTo("#face", {scale:1}, {scale:1.08, duration:0.25, ease:"power2.out", transformOrigin:"50% 40%"}, 55.0);
+  tl.set("#face", {scale:1}, 56.95);
+  tl.set("#cap0", {autoAlpha:1}, 0.09); tl.set("#cap0", {autoAlpha:0}, 0.62);
+  tl.set("#cap1", {autoAlpha:1}, 0.62); tl.set("#cap1", {autoAlpha:0}, 1.36);
+  tl.set("#cap2", {autoAlpha:1}, 1.36); tl.set("#cap2", {autoAlpha:0}, 2.38);
+  tl.set("#cap3", {autoAlpha:1}, 2.38); tl.set("#cap3", {autoAlpha:0}, 2.87);
+  tl.set("#cap4", {autoAlpha:1}, 2.87); tl.set("#cap4", {autoAlpha:0}, 3.90);
+  tl.set("#cap5", {autoAlpha:1}, 3.90); tl.set("#cap5", {autoAlpha:0}, 5.07);
+  tl.set("#cap6", {autoAlpha:1}, 5.07); tl.set("#cap6", {autoAlpha:0}, 5.76);
+  tl.set("#cap7", {autoAlpha:1}, 5.76); tl.set("#cap7", {autoAlpha:0}, 6.09);
+  tl.set("#cap8", {autoAlpha:1}, 6.09); tl.set("#cap8", {autoAlpha:0}, 6.63);
+  tl.set("#cap9", {autoAlpha:1}, 6.63); tl.set("#cap9", {autoAlpha:0}, 7.69);
+  tl.set("#cap10", {autoAlpha:1}, 7.69); tl.set("#cap10", {autoAlpha:0}, 8.32);
+  tl.set("#cap11", {autoAlpha:1}, 8.32); tl.set("#cap11", {autoAlpha:0}, 9.17);
+  tl.set("#cap12", {autoAlpha:1}, 9.17); tl.set("#cap12", {autoAlpha:0}, 10.33);
+  tl.set("#cap13", {autoAlpha:1}, 10.33); tl.set("#cap13", {autoAlpha:0}, 10.93);
+  tl.set("#cap14", {autoAlpha:1}, 10.93); tl.set("#cap14", {autoAlpha:0}, 11.60);
+  tl.set("#cap15", {autoAlpha:1}, 11.60); tl.set("#cap15", {autoAlpha:0}, 12.58);
+  tl.set("#cap16", {autoAlpha:1}, 12.58); tl.set("#cap16", {autoAlpha:0}, 13.45);
+  tl.set("#cap17", {autoAlpha:1}, 13.45); tl.set("#cap17", {autoAlpha:0}, 14.01);
+  tl.set("#cap18", {autoAlpha:1}, 14.01); tl.set("#cap18", {autoAlpha:0}, 15.22);
+  tl.set("#cap19", {autoAlpha:1}, 15.22); tl.set("#cap19", {autoAlpha:0}, 16.43);
+  tl.set("#cap20", {autoAlpha:1}, 16.43); tl.set("#cap20", {autoAlpha:0}, 17.29);
+  tl.set("#cap21", {autoAlpha:1}, 17.29); tl.set("#cap21", {autoAlpha:0}, 18.02);
+  tl.set("#cap22", {autoAlpha:1}, 18.02); tl.set("#cap22", {autoAlpha:0}, 19.22);
+  tl.set("#cap23", {autoAlpha:1}, 19.22); tl.set("#cap23", {autoAlpha:0}, 20.60);
+  tl.set("#cap24", {autoAlpha:1}, 20.60); tl.set("#cap24", {autoAlpha:0}, 21.41);
+  tl.set("#cap25", {autoAlpha:1}, 21.41); tl.set("#cap25", {autoAlpha:0}, 22.34);
+  tl.set("#cap26", {autoAlpha:1}, 22.34); tl.set("#cap26", {autoAlpha:0}, 22.85);
+  tl.set("#cap27", {autoAlpha:1}, 22.89); tl.set("#cap27", {autoAlpha:0}, 23.40);
+  tl.set("#cap28", {autoAlpha:1}, 23.40); tl.set("#cap28", {autoAlpha:0}, 24.35);
+  tl.set("#cap29", {autoAlpha:1}, 24.35); tl.set("#cap29", {autoAlpha:0}, 25.19);
+  tl.set("#cap30", {autoAlpha:1}, 25.19); tl.set("#cap30", {autoAlpha:0}, 26.53);
+  tl.set("#cap31", {autoAlpha:1}, 26.53); tl.set("#cap31", {autoAlpha:0}, 28.54);
+  tl.set("#cap32", {autoAlpha:1}, 28.54); tl.set("#cap32", {autoAlpha:0}, 29.29);
+  tl.set("#cap33", {autoAlpha:1}, 29.29); tl.set("#cap33", {autoAlpha:0}, 30.45);
+  tl.set("#cap34", {autoAlpha:1}, 30.49); tl.set("#cap34", {autoAlpha:0}, 31.26);
+  tl.set("#cap35", {autoAlpha:1}, 31.26); tl.set("#cap35", {autoAlpha:0}, 31.98);
+  tl.set("#cap36", {autoAlpha:1}, 31.98); tl.set("#cap36", {autoAlpha:0}, 33.25);
+  tl.set("#cap37", {autoAlpha:1}, 33.25); tl.set("#cap37", {autoAlpha:0}, 33.71);
+  tl.set("#cap38", {autoAlpha:1}, 33.71); tl.set("#cap38", {autoAlpha:0}, 34.65);
+  tl.set("#cap39", {autoAlpha:1}, 34.65); tl.set("#cap39", {autoAlpha:0}, 35.07);
+  tl.set("#cap40", {autoAlpha:1}, 35.07); tl.set("#cap40", {autoAlpha:0}, 35.98);
+  tl.set("#cap41", {autoAlpha:1}, 35.98); tl.set("#cap41", {autoAlpha:0}, 36.68);
+  tl.set("#cap42", {autoAlpha:1}, 36.68); tl.set("#cap42", {autoAlpha:0}, 37.55);
+  tl.set("#cap43", {autoAlpha:1}, 37.61); tl.set("#cap43", {autoAlpha:0}, 38.15);
+  tl.set("#cap44", {autoAlpha:1}, 38.15); tl.set("#cap44", {autoAlpha:0}, 39.20);
+  tl.set("#cap45", {autoAlpha:1}, 39.20); tl.set("#cap45", {autoAlpha:0}, 40.18);
+  tl.set("#cap46", {autoAlpha:1}, 40.18); tl.set("#cap46", {autoAlpha:0}, 40.80);
+  tl.set("#cap47", {autoAlpha:1}, 40.80); tl.set("#cap47", {autoAlpha:0}, 41.78);
+  tl.set("#cap48", {autoAlpha:1}, 41.78); tl.set("#cap48", {autoAlpha:0}, 42.66);
+  tl.set("#cap49", {autoAlpha:1}, 42.66); tl.set("#cap49", {autoAlpha:0}, 43.25);
+  tl.set("#cap50", {autoAlpha:1}, 43.29); tl.set("#cap50", {autoAlpha:0}, 44.20);
+  tl.set("#cap51", {autoAlpha:1}, 44.20); tl.set("#cap51", {autoAlpha:0}, 44.91);
+  tl.set("#cap52", {autoAlpha:1}, 44.91); tl.set("#cap52", {autoAlpha:0}, 45.79);
+  tl.set("#cap53", {autoAlpha:1}, 45.79); tl.set("#cap53", {autoAlpha:0}, 46.56);
+  tl.set("#cap54", {autoAlpha:1}, 46.56); tl.set("#cap54", {autoAlpha:0}, 47.00);
+  tl.set("#cap55", {autoAlpha:1}, 47.25); tl.set("#cap55", {autoAlpha:0}, 47.98);
+  tl.set("#cap56", {autoAlpha:1}, 47.98); tl.set("#cap56", {autoAlpha:0}, 48.79);
+  tl.set("#cap57", {autoAlpha:1}, 48.79); tl.set("#cap57", {autoAlpha:0}, 49.81);
+  tl.set("#cap58", {autoAlpha:1}, 49.81); tl.set("#cap58", {autoAlpha:0}, 50.69);
+  tl.set("#cap59", {autoAlpha:1}, 50.69); tl.set("#cap59", {autoAlpha:0}, 51.45);
+  tl.set("#cap60", {autoAlpha:1}, 51.45); tl.set("#cap60", {autoAlpha:0}, 52.72);
+  tl.set("#cap61", {autoAlpha:1}, 52.72); tl.set("#cap61", {autoAlpha:0}, 53.95);
+  tl.set("#cap62", {autoAlpha:1}, 53.95); tl.set("#cap62", {autoAlpha:0}, 55.00);
+  tl.set("#cap63", {autoAlpha:1}, 55.05); tl.set("#cap63", {autoAlpha:0}, 55.57);
+  tl.set("#cap64", {autoAlpha:1}, 55.57); tl.set("#cap64", {autoAlpha:0}, 56.40);
+  tl.set("#cap65", {autoAlpha:1}, 56.40); tl.set("#cap65", {autoAlpha:0}, 56.95);
+  tl.set("#cap66", {autoAlpha:1}, 56.97); tl.set("#cap66", {autoAlpha:0}, 57.70);
+  tl.set("#cap67", {autoAlpha:1}, 57.70); tl.set("#cap67", {autoAlpha:0}, 58.73);
+  tl.set("#cap68", {autoAlpha:1}, 58.73); tl.set("#cap68", {autoAlpha:0}, 59.73);
+  tl.set("#cap69", {autoAlpha:1}, 59.73); tl.set("#cap69", {autoAlpha:0}, 60.77);
+  tl.set("#cap70", {autoAlpha:1}, 60.77); tl.set("#cap70", {autoAlpha:0}, 61.60);
+  tl.set("#cap71", {autoAlpha:1}, 61.60); tl.set("#cap71", {autoAlpha:0}, 62.41);
+  tl.set("#cap72", {autoAlpha:1}, 62.41); tl.set("#cap72", {autoAlpha:0}, 62.92);
+  tl.set("#cap73", {autoAlpha:1}, 62.92); tl.set("#cap73", {autoAlpha:0}, 63.42);
+  tl.set("#cap74", {autoAlpha:1}, 63.42); tl.set("#cap74", {autoAlpha:0}, 64.55);
+  tl.set("#cap75", {autoAlpha:1}, 64.57); tl.set("#cap75", {autoAlpha:0}, 65.01);
+  tl.set("#cap76", {autoAlpha:1}, 65.01); tl.set("#cap76", {autoAlpha:0}, 65.91);
+  tl.set("#cap77", {autoAlpha:1}, 65.91); tl.set("#cap77", {autoAlpha:0}, 66.97);
+  tl.set("#cap78", {autoAlpha:1}, 66.97); tl.set("#cap78", {autoAlpha:0}, 67.70);
+  tl.set("#cap79", {autoAlpha:1}, 67.70); tl.set("#cap79", {autoAlpha:0}, 68.45);
+  tl.set("#cap80", {autoAlpha:1}, 68.47); tl.set("#cap80", {autoAlpha:0}, 69.77);
+  tl.set("#cap81", {autoAlpha:1}, 69.77); tl.set("#cap81", {autoAlpha:0}, 70.59);
+  tl.set("#cap82", {autoAlpha:1}, 70.59); tl.set("#cap82", {autoAlpha:0}, 71.45);
+  tl.set("#cap83", {autoAlpha:1}, 71.45); tl.set("#cap83", {autoAlpha:0}, 71.95);
+  tl.set("#cap84", {autoAlpha:1}, 72.25); tl.set("#cap84", {autoAlpha:0}, 73.29);
+  tl.set("#cap85", {autoAlpha:1}, 73.29); tl.set("#cap85", {autoAlpha:0}, 74.40);
+    tl.fromTo("#sc-intro .tag-claude", {autoAlpha:0, y:20}, {autoAlpha:1, y:0, duration:0.4, ease:"power3.out"}, 0.05);
+  tl.fromTo("#sc-intro .title", {autoAlpha:0, y:30}, {autoAlpha:1, y:0, duration:0.4, ease:"power3.out"}, 0.12);
+  tl.fromTo("#sc-intro .big-cube", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.5, ease:"back.out(1.7)"}, 0.30);
+  tl.fromTo("#sc-intro .lab-cube", {autoAlpha:0, scale:0.2, x:(i)=>[250,320,-200,-260,150][i], y:(i)=>[120,-40,160,0,-120][i]}, {autoAlpha:1, scale:1, x:0, y:0, duration:0.5, ease:"back.out(1.4)", stagger:0.16}, 2.85);
+  tl.to("#sc-intro .big-cube", {y:-10, duration:1.2, ease:"sine.inOut", yoyo:true, repeat:3}, 1.0);
+  tl.fromTo("#sc-ways .ways-title", {autoAlpha:0, y:30}, {autoAlpha:1, y:0, duration:0.4, ease:"power3.out"}, 6.08);
+  tl.fromTo("#sc-ways .orbit", {autoAlpha:0, scale:0.85}, {autoAlpha:1, scale:1, duration:0.6, ease:"power2.out"}, 6.1);
+  tl.fromTo("#sc-ways .hub", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.45, ease:"back.out(1.7)"}, 6.20);
+  tl.fromTo("#sc-ways .n1", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.4, ease:"back.out(1.7)"}, 6.62);
+  tl.to("#sc-ways .n1", {y:14, duration:1.1, ease:"sine.inOut", yoyo:true, repeat:2}, 7.30);
+  tl.fromTo("#sc-ways .n2", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.4, ease:"back.out(1.7)"}, 6.84);
+  tl.to("#sc-ways .n2", {y:-14, duration:1.1, ease:"sine.inOut", yoyo:true, repeat:2}, 7.40);
+  tl.fromTo("#sc-ways .n3", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.4, ease:"back.out(1.7)"}, 7.06);
+  tl.to("#sc-ways .n3", {y:14, duration:1.1, ease:"sine.inOut", yoyo:true, repeat:2}, 7.50);
+  tl.fromTo("#sc-sessions #sa", {autoAlpha:0, x:-80}, {autoAlpha:1, x:0, duration:0.45, ease:"power3.out"}, 10.32);
+  tl.fromTo("#sc-sessions #sb", {autoAlpha:0, x:80}, {autoAlpha:1, x:0, duration:0.45, ease:"power3.out"}, 10.40);
+  tl.fromTo("#sc-sessions .lines b", {autoAlpha:0, y:10}, {autoAlpha:1, y:0, duration:0.25, ease:"power3.out", stagger:0.05}, 10.60);
+  tl.fromTo("#sc-sessions .link .dash", {scaleX:0}, {scaleX:1, duration:0.5, ease:"power2.inOut"}, 12.3);
+  tl.fromTo("#sc-sessions .link .knot", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.3, ease:"back.out(1.7)"}, 12.70);
+  tl.fromTo("#sc-sessions .link", {autoAlpha:0}, {autoAlpha:1, duration:0.01}, 12.3);
+  tl.fromTo("#sc-sessions .msg", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.35, ease:"back.out(1.7)"}, 14.70);
+  tl.to("#sc-sessions .msg", {x:540, y:-40, scale:0.85, autoAlpha:0, duration:0.6, ease:"power2.inOut"}, 15.6);
+  tl.fromTo("#sc-sessions .inbox", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.4, ease:"back.out(1.7)"}, 16.20);
+  tl.fromTo("#sc-planbuild .node.a", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.45, ease:"back.out(1.7)"}, 17.30);
+  tl.fromTo("#sc-planbuild .node.b", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.45, ease:"back.out(1.7)"}, 17.45);
+  tl.fromTo("#sc-planbuild .track", {scaleX:0}, {scaleX:1, duration:0.5, ease:"power2.inOut"}, 17.7);
+  tl.fromTo("#sc-planbuild .node.a .pill-tag", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.3, ease:"back.out(1.7)"}, 18.00);
+  tl.fromTo("#sc-planbuild .node.b .pill-tag", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.3, ease:"back.out(1.7)"}, 19.70);
+  tl.fromTo("#sc-planbuild .pkt:not(.back)", {autoAlpha:0, x:0}, {autoAlpha:1, x:430, duration:0.9, ease:"power1.inOut", stagger:0.3}, 20.3);
+  tl.to("#sc-planbuild .pkt:not(.back)", {autoAlpha:0, duration:0.15, stagger:0.3}, 21.15);
+  tl.fromTo("#sc-planbuild .pkt.back", {autoAlpha:0, x:0}, {autoAlpha:1, x:-430, duration:0.9, ease:"power1.inOut", stagger:0.3}, 21.4);
+  tl.fromTo("#sc-planbuild .chk", {autoAlpha:0, y:20}, {autoAlpha:1, y:0, duration:0.3, ease:"power3.out", stagger:0.15}, 21.60);
+  tl.fromTo("#sc-day .daypill", {autoAlpha:0, scale:0.7, y:-20}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.4, ease:"back.out(1.7)"}, 24.80);
+  tl.fromTo("#sc-day .roll span", {y:0}, {y:-64, duration:0.35, ease:"power3.inOut"}, 25.2);
+  tl.fromTo("#sc-day .daysub", {autoAlpha:0, y:16}, {autoAlpha:1, y:0, duration:0.4, ease:"power3.out"}, 26.30);
+  tl.fromTo("#sc-iface #w-iface", {autoAlpha:0, scale:0.92, y:30}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.45, ease:"power3.out"}, 30.48);
+  (function(){const c=document.querySelectorAll("#sc-iface .input .ch"); tl.fromTo(c, {opacity:0}, {opacity:1, duration:0.01, stagger:1.0/Math.max(1,c.length)}, 32.50);})();
+  tl.fromTo("#sc-iface .hl", {autoAlpha:0, scale:1.05}, {autoAlpha:1, scale:1, duration:0.3, ease:"power2.out", stagger:0.12}, 33.65);
+  tl.fromTo("#sc-dash #w-dash", {autoAlpha:0}, {autoAlpha:1, duration:0.01}, 34.6);
+  tl.fromTo("#sc-dash .dashp", {autoAlpha:0, x:120}, {autoAlpha:1, x:0, duration:0.5, ease:"power3.out"}, 35.35);
+  tl.fromTo("#sc-dash .main", {width:690}, {width:390, duration:0.5, ease:"power3.out"}, 35.35);
+  tl.fromTo("#sc-dash .bars i", {scaleY:0}, {scaleY:1, duration:0.4, ease:"back.out(1.6)", stagger:0.06}, 35.8);
+  tl.fromTo("#sc-dash .donut", {attr:{"stroke-dashoffset":88}}, {attr:{"stroke-dashoffset":26}, duration:0.8, ease:"power2.out"}, 35.9);
+  tl.fromTo("#sc-dashfull .dtitle, #sc-dashfull .dsub", {autoAlpha:0, y:24}, {autoAlpha:1, y:0, duration:0.45, ease:"power3.out", stagger:0.08}, 37.58);
+  tl.fromTo("#sc-dashfull .agents", {autoAlpha:0, y:40}, {autoAlpha:1, y:0, duration:0.45, ease:"power3.out"}, 37.90);
+  tl.fromTo("#sc-dashfull .arow", {autoAlpha:0, y:16}, {autoAlpha:1, y:0, duration:0.35, ease:"power3.out", stagger:0.25}, 39.15);
+  tl.fromTo("#sc-dashfull .brain", {autoAlpha:0, y:40}, {autoAlpha:1, y:0, duration:0.45, ease:"power3.out"}, 40.85);
+  tl.fromTo("#sc-dashfull .net circle", {scale:0, transformOrigin:"50% 50%"}, {scale:1, duration:0.3, ease:"back.out(2)", stagger:0.012}, 41.2);
+  tl.fromTo("#sc-dashfull .net g", {autoAlpha:0}, {autoAlpha:1, duration:0.6}, 41.5);
+  tl.fromTo("#sc-dashfull .stat", {autoAlpha:0, y:16}, {autoAlpha:1, y:0, duration:0.35, ease:"power3.out", stagger:0.18}, 41.90);
+  tl.fromTo("#sc-easy .model.big", {autoAlpha:0, scale:0.9, y:20}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.4, ease:"power3.out"}, 43.30);
+  tl.fromTo("#sc-easy .kicker", {autoAlpha:0, y:10}, {autoAlpha:1, y:0, duration:0.3, ease:"power3.out"}, 44.90);
+  tl.fromTo("#sc-easy .ecard", {autoAlpha:0, y:24}, {autoAlpha:1, y:0, duration:0.35, ease:"power3.out", stagger:0.18}, 45.00);
+  tl.fromTo("#sc-easy .model.cheap", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.4, ease:"back.out(1.7)"}, 46.00);
+  tl.to("#sc-easy .model.big", {opacity:0.45, duration:0.3}, 46.0);
+  tl.fromTo("#sc-router .kicker:first-child, #sc-router .req", {autoAlpha:0, y:20}, {autoAlpha:1, y:0, duration:0.35, ease:"power3.out", stagger:0.12}, 47.02);
+  tl.fromTo("#sc-router .mod", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.5, ease:"back.out(1.7)"}, 47.25);
+  tl.to("#sc-router .lin", {attr:{"stroke-dashoffset":0}, duration:0.45, ease:"power2.out", stagger:0.12}, 47.8);
+  tl.to("#sc-router .lout", {attr:{"stroke-dashoffset":0}, duration:0.45, ease:"power2.out", stagger:0.2}, 48.4);
+  tl.fromTo("#sc-router .haiku", {autoAlpha:0, scale:0.9, y:30}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.4, ease:"power3.out"}, 48.85);
+  tl.fromTo("#sc-router .opus", {autoAlpha:0, scale:0.9, y:30}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.4, ease:"power3.out"}, 49.60);
+  tl.fromTo("#sc-router .limits", {autoAlpha:0, y:40}, {autoAlpha:1, y:0, duration:0.45, ease:"power3.out"}, 51.40);
+  tl.fromTo("#sc-router .fill.with", {width:"0%"}, {width:"28%", duration:1.0, ease:"power2.out"}, 52.2);
+  tl.fromTo("#sc-router .fill.without", {width:"0%"}, {width:"92%", duration:1.4, ease:"power2.out"}, 52.3);
+  tl.fromTo("#sc-describe .chat", {autoAlpha:0, y:20}, {autoAlpha:1, y:0, duration:0.35, ease:"power3.out"}, 56.98);
+  (function(){const c=document.querySelectorAll("#sc-describe .said .ch"); tl.fromTo(c, {opacity:0}, {opacity:1, duration:0.01, stagger:2.4/Math.max(1,c.length)}, 57.10);})();
+  tl.fromTo("#sc-describe .dcube", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.4, ease:"back.out(1.7)"}, 59.60);
+  tl.fromTo("#sc-describe .target", {autoAlpha:0}, {autoAlpha:1, duration:0.3}, 59.75);
+  tl.fromTo("#sc-describe .conn", {scaleX:0}, {scaleX:1, duration:0.4}, 60.3);
+  tl.fromTo("#sc-describe .fchip", {autoAlpha:0, x:0, y:0}, {autoAlpha:1, x:(i)=>[380,400,370][i], y:(i)=>[-50,10,70][i], duration:0.7, ease:"power2.inOut", stagger:0.18}, 60.4);
+  tl.to("#sc-describe .fchip", {autoAlpha:0, duration:0.2, stagger:0.18}, 61.05);
+  tl.fromTo("#sc-describe .made", {autoAlpha:0, scale:0.5}, {autoAlpha:1, scale:1, duration:0.45, ease:"back.out(1.8)"}, 61.6);
+  tl.to("#sc-describe .dbox", {autoAlpha:0, duration:0.2}, 61.6);
+  tl.fromTo("#sc-code .codep", {autoAlpha:0}, {autoAlpha:1, duration:0.01}, 62.4);
+  tl.fromTo("#sc-code .cl", {autoAlpha:0, x:-20}, {autoAlpha:1, x:0, duration:0.15, stagger:0.06}, 62.42);
+  tl.fromTo("#sc-code .cin", {y:0}, {y:-260, duration:2.1, ease:"none"}, 62.45);
+  tl.fromTo("#sc-cta .guide", {autoAlpha:0, scale:0.7, y:-20}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.4, ease:"back.out(1.7)"}, 67.00);
+  tl.fromTo("#sc-comment .igc", {autoAlpha:0, y:30}, {autoAlpha:1, y:0, duration:0.35, ease:"power3.out"}, 68.47);
+  tl.to("#sc-comment .ph2", {autoAlpha:0, duration:0.05}, 68.75);
+  (function(){const c=document.querySelectorAll("#sc-comment .compose .ch"); tl.fromTo(c, {opacity:0}, {opacity:1, duration:0.01, stagger:0.45/Math.max(1,c.length)}, 68.75);})();
+  tl.to("#sc-comment .post", {color:"#D97757", duration:0.1}, 69.2);
+  tl.fromTo("#sc-comment .posted", {autoAlpha:0, y:-20}, {autoAlpha:1, y:0, duration:0.3, ease:"power3.out"}, 69.45);
+  tl.to("#sc-comment .compose .tc", {autoAlpha:0, duration:0.1}, 69.45);
+  tl.to("#sc-comment .ph2", {autoAlpha:1, duration:0.1}, 69.5);
+  tl.fromTo("#sc-comment .dm", {autoAlpha:0, y:-80}, {autoAlpha:1, y:0, duration:0.45, ease:"back.out(1.4)"}, 70.05);
+  tl.fromTo("#sc-comment .sent", {autoAlpha:0, scale:0.6}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.3, ease:"back.out(1.7)"}, 71.40);
+  tl.fromTo("#sc-follow .follow", {autoAlpha:0, scale:0.75, y:40}, {autoAlpha:1, scale:1, y:0, x:0, duration:0.45, ease:"back.out(1.7)"}, 72.20);
+  tl.to("#sc-follow .fbtn", {scale:0.9, duration:0.1, yoyo:true, repeat:1}, 73.2);
+  tl.to("#sc-follow .fbtn", {backgroundColor:"#E9E7E1", duration:0.15}, 73.3);
+  tl.to("#sc-follow .f1", {autoAlpha:0, duration:0.1}, 73.3);
+  tl.fromTo("#sc-follow .f2", {autoAlpha:0}, {autoAlpha:1, duration:0.15}, 73.32);
+  tl.set({}, {}, 74.4);
+  window.__timelines["main"] = tl;
+  tl.seek(0);
+</script>
+</body>
+</html>

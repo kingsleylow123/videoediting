@@ -34,6 +34,25 @@ project CLAUDE.md or pack instruction that says to run `hyperframes render`.
    look at them before the final render. Fix clipped text or text in the unsafe zones.
 6. Final render into `exports/<name>.mp4`, commit, push. Then send the MP4 to the user with SendUserFile.
 
+## Talking-head edits (footage from the owner)
+
+- Footage usually comes as a Google Drive link: download with
+  `curl -L "https://drive.usercontent.google.com/download?id=<FILE_ID>&export=download&confirm=t" -o talking.mov`.
+- iPhone selfie footage is mirrored: flip it with `ffmpeg -vf hflip` so the "Claude Malaysia" shirt logo reads correctly.
+- Tighten: `silencedetect=noise=-32dB:d=0.22`, keep speech +/-0.09 s, concat with 12 ms audio fades, `loudnorm=I=-14`.
+- Transcribe the TIGHTENED audio (whisper drifts across long pauses):
+  `npx hyperframes transcribe voice16.wav -m small.en --json`. If the model is missing, download it with curl
+  (HyperFrames' own downloader ignores the proxy):
+  `curl -L -o ~/.cache/hyperframes/whisper/models/ggml-small.en.bin https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.en.bin`
+- Put the face video in the composition as `<video id="face" muted data-start="0" data-duration="..">` plus a separate
+  `<audio>` for the voice. `tools/render.js` seeks videos frame by frame.
+- Keep raw footage in `projects/<name>/media/` (git-ignored: the repo is public). Commit only the build files and the export.
+- Check frames fast: `node tools/render.js projects/<name> /tmp/x.mp4 --stills 1.5,10,42` (PNGs, no video);
+  partial render: `--from 30 --to 40`.
+- Reference style used so far: `projects/mods-reel/` (split screen: graphic panel on top 700 px, face below,
+  2-3 word mono caption pill on the split line, cream #EFEFE8 + Claude orange #D97757, Newsreader serif titles,
+  follow pill end card for @kingsleylow.ai). Reuse `build.py` + `style.css` as the template for the next one.
+
 ## Format defaults (Reels / TikTok / Shorts)
 
 - 1080x1920, 30 fps, 6-15 s unless told otherwise. Keep exports under ~20 MB for mobile data.
