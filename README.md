@@ -16,8 +16,9 @@ spoken word (see `src/storyboard.ts`), so retiming the cut never breaks sync.
 | 6. Render | `node scripts/render.mjs out/reel.mp4` |
 | 7. Storyboard page | `python3 scripts/make_storyboard.py out/reel.mp4 docs/storyboard.html` |
 
-Layout: hybrid. The speaker is full-frame on hook / emotional beats and springs into a bottom-left
-bubble (`BUB` in `src/Reel.tsx`) while a media card above carries b-roll and graphics.
-Dato Joey's real answers are cut in as full-screen soundbites (J1–J4 in the EDL).
+Layout: **Light style Joshua** (vault: `01. Inbox/agent-drops/grokbot/oyen/video-styles/Light style Joshua - ANALYZED`).
+Cream graphics panel y=0–1080, speaker full-width below, ALL CAPS white captions in black boxes on the seam,
+Playfair serif headings + Inter UI, hard-cut 100%↔118% punch-ins (`CUTS` in `src/Reel.tsx`).
+Dato Joey's real answers are cut in as soundbites (J1–J4 in the EDL) with pull-quote cards above.
 
 Large media (`public/th.mp4`, `public/broll/`, `public/audio/`, `out/`) is git-ignored.

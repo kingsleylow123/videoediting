@@ -1,24 +1,200 @@
 [
- {"t":"0:00","at":2.0,"seg":"K1","layout":"Full face","name":"Hook — the RM2M question","visual":"Punch-in on 'Boom', Dato Joey polaroid flies in, then RM2,000,000/yr counter rolls up.","sfx":"impact, swish, whoosh + coin"},
- {"t":"0:04","at":6.0,"seg":"K2","layout":"Split · face bottom-left","name":"Context — Thrive, year 2","visual":"Face morphs into the bottom-left bubble. B-roll card: Thrive arena crowd, then Carina's group selfie, then walking into the Qi Men Club Lounge, with location chips.","sfx":"whoosh-down, swishes per cut"},
- {"t":"0:11","at":11.8,"seg":"K2","layout":"Split","name":"'One serious question'","visual":"Giant orange '1' slams over the Club Lounge photo.","sfx":"impact"},
- {"t":"0:12","at":13.4,"seg":"K3","layout":"Split","name":"Got the mic","visual":"Real Q&A footage of Dato Joey at the table, chip 'LIVE Q&A'.","sfx":"swish"},
- {"t":"0:14","at":19.5,"seg":"K4","layout":"Split","name":"5,000 members / 193 days","visual":"Community card counts 0 → 5,000; 193-day bar fills; copycat cards slide in behind + red COPY / PASTE stamp.","sfx":"whoosh, pop, ding, glitch"},
- {"t":"0:22","at":31.5,"seg":"K5","layout":"Split","name":"The 4 options","visual":"Checklist builds one row per 'number one/two/three/four'.","sfx":"UI click per option"},
- {"t":"0:33","at":36.6,"seg":"K6","layout":"Split","name":"Qi Men chart — Live Door","visual":"His actual chart on screen; green 生门 LIVE DOOR badge pops on 'Live'.","sfx":"whoosh-down, chime"},
- {"t":"0:37","at":40.5,"seg":"J1","layout":"Full · Joey","name":"JOEY SOUNDBITE 1","visual":"Joey's real voice: 'a very powerful position'. Lower-third + Live Door badge.","sfx":"music ducks, pop"},
- {"t":"0:41","at":43.4,"seg":"K7","layout":"Split","name":"You vs competitors","visual":"Live Door (green) vs 死门 Death Door (red).","sfx":"swish, buzz"},
- {"t":"0:44","at":45.9,"seg":"J2","layout":"Full · Joey","name":"JOEY SOUNDBITE 2","visual":"'They won't last very long' + red WON'T LAST LONG stamp.","sfx":"stamp"},
- {"t":"0:47","at":53.0,"seg":"K8","layout":"Split","name":"A separate product","visual":"Grid of identical white boxes; one turns orange, lifts out and the rest blur.","sfx":"whoosh, riser, pop"},
- {"t":"0:54","at":57.5,"seg":"K9","layout":"Split","name":"He points at online courses","visual":"Back to the 4-option list; cursor glides to #1, options 2–4 get struck through, JOEY'S PICK tag.","sfx":"click, ding"},
- {"t":"0:58","at":61.8,"seg":"J3","layout":"Full · Joey","name":"JOEY SOUNDBITE 3","visual":"'Do the course first' + orange stamp.","sfx":"stamp"},
- {"t":"1:03","at":63.4,"seg":"K10a","layout":"Full face","name":"'Makes so much sense kan?'","visual":"Punch-in on the face to reset attention.","sfx":"whoosh-down"},
- {"t":"1:04","at":67.3,"seg":"K10b","layout":"Split","name":"13 workshops in KL","visual":"Counter 0 → 13 while 13 workshop tiles tick on.","sfx":"13 ticks"},
- {"t":"1:08","at":71.3,"seg":"K10c","layout":"Split","name":"Online course ecosystem","visual":"Physical workshops → arrow → orange hub with 4 orbit nodes.","sfx":"whoosh, chime"},
- {"t":"1:12","at":75.6,"seg":"K11","layout":"Split","name":"Validated → build the moat","visual":"VALIDATED stamp, then a blue moat ring draws around the Claude Malaysia castle with copycat dots circling outside.","sfx":"stamp, riser, pop"},
- {"t":"1:16","at":79.6,"seg":"K12","layout":"Full → Split","name":"Twist: edited by Claude","visual":"Face full, then glitch to a Claude Code terminal typing the edit brief + checkmarks.","sfx":"glitch, key taps, ticks, ding"},
- {"t":"1:20","at":81.2,"seg":"J4","layout":"Full · Joey","name":"JOEY BUTTON","visual":"'Claude, of course I have heard of Claude.' The laugh beat.","sfx":"pop"},
- {"t":"1:22","at":83.4,"seg":"K13","layout":"Split","name":"Goal: RM2M by 2027?","visual":"RM2,000,000 goal bar from Day 193 + 'by 2027?' stamp.","sfx":"whoosh, impact"},
- {"t":"1:25","at":86.0,"seg":"K13","layout":"Split","name":"CTA: comment CLAUDE","visual":"Comment box types C-L-A-U-D-E, Post → Sent ✓.","sfx":"key taps, pop"},
- {"t":"1:27","at":88.4,"seg":"K13","layout":"Split","name":"Follow for Day 194","visual":"DAY 193 flips to DAY 194 + Follow button.","sfx":"whoosh, chime"}
+ {
+  "t": "0:00",
+  "at": 2.0,
+  "seg": "K1",
+  "layout": "Split",
+  "name": "Hook — the RM2M question",
+  "visual": "Result-first top panel: 'I asked Dato' Joey Yap' serif headline, his polaroid, then RM2M a year? with a fill bar. Name tag on the speaker panel.",
+  "sfx": "impact, swish, whoosh + coin"
+ },
+ {
+  "t": "0:04",
+  "at": 6.0,
+  "seg": "K2",
+  "layout": "Split",
+  "name": "Context — Thrive, year 2",
+  "visual": "Face morphs into the bottom-left bubble. B-roll card: Thrive arena crowd, then Carina's group selfie, then walking into the Qi Men Club Lounge, with location chips.",
+  "sfx": "whoosh-down, swishes per cut"
+ },
+ {
+  "t": "0:11",
+  "at": 11.8,
+  "seg": "K2",
+  "layout": "Split",
+  "name": "'One serious question'",
+  "visual": "Giant orange '1' slams over the Club Lounge photo.",
+  "sfx": "impact"
+ },
+ {
+  "t": "0:12",
+  "at": 13.4,
+  "seg": "K3",
+  "layout": "Split",
+  "name": "Got the mic",
+  "visual": "Real Q&A footage of Dato Joey at the table, chip 'LIVE Q&A'.",
+  "sfx": "swish"
+ },
+ {
+  "t": "0:14",
+  "at": 19.5,
+  "seg": "K4",
+  "layout": "Split",
+  "name": "5,000 members / 193 days",
+  "visual": "Community card counts 0 → 5,000; 193-day bar fills; copycat cards slide in behind + red COPY / PASTE stamp.",
+  "sfx": "whoosh, pop, ding, glitch"
+ },
+ {
+  "t": "0:22",
+  "at": 31.5,
+  "seg": "K5",
+  "layout": "Split",
+  "name": "The 4 options",
+  "visual": "Checklist builds one row per 'number one/two/three/four'.",
+  "sfx": "UI click per option"
+ },
+ {
+  "t": "0:33",
+  "at": 36.6,
+  "seg": "K6",
+  "layout": "Split",
+  "name": "Qi Men chart — Live Door",
+  "visual": "His actual chart on screen; green 生门 LIVE DOOR badge pops on 'Live'.",
+  "sfx": "whoosh-down, chime"
+ },
+ {
+  "t": "0:37",
+  "at": 40.5,
+  "seg": "J1",
+  "layout": "Split · Joey below",
+  "name": "JOEY SOUNDBITE 1",
+  "visual": "Joey speaks in the bottom panel. Top: serif pull-quote 'A very powerful position.' + Live Door badge.",
+  "sfx": "music ducks, pop"
+ },
+ {
+  "t": "0:41",
+  "at": 43.4,
+  "seg": "K7",
+  "layout": "Split",
+  "name": "You vs competitors",
+  "visual": "Live Door (green) vs 死门 Death Door (red).",
+  "sfx": "swish, buzz"
+ },
+ {
+  "t": "0:44",
+  "at": 45.9,
+  "seg": "J2",
+  "layout": "Split · Joey below",
+  "name": "JOEY SOUNDBITE 2",
+  "visual": "Pull-quote 'They won't last very long.' + Death Door badge + red WON'T LAST stamp.",
+  "sfx": "stamp"
+ },
+ {
+  "t": "0:47",
+  "at": 53.0,
+  "seg": "K8",
+  "layout": "Split",
+  "name": "A separate product",
+  "visual": "Grid of identical white boxes; one turns orange, lifts out and the rest blur.",
+  "sfx": "whoosh, riser, pop"
+ },
+ {
+  "t": "0:54",
+  "at": 57.5,
+  "seg": "K9",
+  "layout": "Split",
+  "name": "He points at online courses",
+  "visual": "Back to the 4-option list; cursor glides to #1, options 2–4 get struck through, JOEY'S PICK tag.",
+  "sfx": "click, ding"
+ },
+ {
+  "t": "0:58",
+  "at": 61.8,
+  "seg": "J3",
+  "layout": "Split · Joey below",
+  "name": "JOEY SOUNDBITE 3",
+  "visual": "Pull-quote 'Do the course first.' + ONLINE COURSES ✓ stamp.",
+  "sfx": "stamp"
+ },
+ {
+  "t": "1:03",
+  "at": 63.4,
+  "seg": "K10a",
+  "layout": "Split",
+  "name": "'Makes so much sense kan?'",
+  "visual": "Serif 'Makes sense, kan?' recap: Live Door, separate product, online courses first, checked off.",
+  "sfx": "whoosh-down"
+ },
+ {
+  "t": "1:04",
+  "at": 67.3,
+  "seg": "K10b",
+  "layout": "Split",
+  "name": "13 workshops in KL",
+  "visual": "Counter 0 → 13 while 13 workshop tiles tick on.",
+  "sfx": "13 ticks"
+ },
+ {
+  "t": "1:08",
+  "at": 71.3,
+  "seg": "K10c",
+  "layout": "Split",
+  "name": "Online course ecosystem",
+  "visual": "Physical workshops → arrow → orange hub with 4 orbit nodes.",
+  "sfx": "whoosh, chime"
+ },
+ {
+  "t": "1:12",
+  "at": 75.6,
+  "seg": "K11",
+  "layout": "Split",
+  "name": "Validated → build the moat",
+  "visual": "VALIDATED stamp, then a blue moat ring draws around the Claude Malaysia castle with copycat dots circling outside.",
+  "sfx": "stamp, riser, pop"
+ },
+ {
+  "t": "1:16",
+  "at": 79.6,
+  "seg": "K12",
+  "layout": "Split",
+  "name": "Twist: edited by Claude",
+  "visual": "'Fun fact…' in serif italic, then a Claude Code terminal types the edit brief and checkmarks.",
+  "sfx": "glitch, key taps, ticks, ding"
+ },
+ {
+  "t": "1:20",
+  "at": 81.2,
+  "seg": "J4",
+  "layout": "Split · Joey below",
+  "name": "JOEY BUTTON",
+  "visual": "Pull-quote 'Of course I have heard of Claude.'",
+  "sfx": "pop"
+ },
+ {
+  "t": "1:22",
+  "at": 83.4,
+  "seg": "K13",
+  "layout": "Split",
+  "name": "Goal: RM2M by 2027?",
+  "visual": "RM2,000,000 goal bar from Day 193 + 'by 2027?' stamp.",
+  "sfx": "whoosh, impact"
+ },
+ {
+  "t": "1:25",
+  "at": 86.0,
+  "seg": "K13",
+  "layout": "Split",
+  "name": "CTA: comment CLAUDE",
+  "visual": "Comment box types C-L-A-U-D-E, Post → Sent ✓.",
+  "sfx": "key taps, pop"
+ },
+ {
+  "t": "1:27",
+  "at": 88.4,
+  "seg": "K13",
+  "layout": "Split",
+  "name": "Follow for Day 194",
+  "visual": "DAY 193 flips to DAY 194 + Follow button.",
+  "sfx": "whoosh, chime"
+ }
 ]

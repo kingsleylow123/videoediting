@@ -6,14 +6,19 @@ import tl from '../data/timeline.json';
 for (const wt of ['500', '700', '800', '900']) loadFont({family: 'InterTight', url: staticFile(`fonts/InterTight-${wt}.woff2`), weight: wt});
 loadFont({family: 'JBMono', url: staticFile('fonts/JetBrainsMono-500.woff2'), weight: '500'});
 loadFont({family: 'NotoSC', url: staticFile('fonts/NotoSC-900.woff2'), weight: '900'});
-export const inter = 'InterTight, Inter, sans-serif';
+for (const wt of ['700', '800', '900']) loadFont({family: 'Playfair', url: staticFile(`fonts/Playfair-${wt}.woff2`), weight: wt});
+loadFont({family: 'Playfair', url: staticFile('fonts/Playfair-700i.woff2'), weight: '700', style: 'italic'});
+for (const wt of ['600', '800', '900']) loadFont({family: 'InterUI', url: staticFile(`fonts/Inter-${wt}.woff2`), weight: wt});
+// Light style Joshua: serif headings, Inter for UI + captions
+export const serif = 'Playfair, Georgia, serif';
+export const inter = 'InterUI, InterTight, sans-serif';
 export const mono = 'JBMono, monospace';
 export const sc = 'NotoSC, sans-serif';
 
-// "Light" system — warm paper, ink, one hot accent (Claude orange) + semantic green/red
+// Light style Joshua (vault note 2026-11-07): cream #F5F4F0, ink #1A1A1A, coral #D95D39 + semantic green/red
 export const C = {
-  paper: '#F6F4EF', paper2: '#ECE8DF', ink: '#121212', mute: '#8A8578', line: '#DDD8CC',
-  accent: '#D97757', accentSoft: '#F6DCD0', green: '#1F9D63', greenSoft: '#D5F0E2',
+  paper: '#F5F4F0', paper2: '#E9E6DE', ink: '#1A1A1A', mute: '#7D786E', line: '#DEDAD0',
+  accent: '#D95D39', accentSoft: '#F7D9CE', green: '#1F9D63', greenSoft: '#D5F0E2',
   red: '#E5484D', redSoft: '#FBDADB', white: '#FFFFFF', blue: '#3B82F6',
 };
 export const FPS = 30;

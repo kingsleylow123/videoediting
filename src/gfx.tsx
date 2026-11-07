@@ -1,12 +1,12 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, OffthreadVideo, staticFile, Sequence} from 'remotion';
-import {C, inter, mono, sc, w, seg, f} from './theme';
+import {C, inter, mono, sc, serif, w, seg, f} from './theme';
 import {usePop, useT, ease, Chip, Card, Stamp, Counter, Dot} from './ui';
 
 const Title: React.FC<{at: number; children: React.ReactNode; top?: number}> = ({at, children, top = 70}) => {
   const p = usePop(at);
-  return <div style={{position: 'absolute', top, left: 0, right: 0, textAlign: 'center', fontFamily: inter, fontWeight: 900,
-    fontSize: 62, color: C.ink, letterSpacing: -1.5, lineHeight: 1.05, opacity: p, transform: `translateY(${(1 - p) * 30}px)`}}>{children}</div>;
+  return <div style={{position: 'absolute', top, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontWeight: 800,
+    fontSize: 68, color: C.ink, letterSpacing: -.5, lineHeight: 1.08, opacity: p, transform: `translateY(${(1 - p) * 30}px)`}}>{children}</div>;
 };
 
 /* ---------- S2: "one serious question" ---------- */
@@ -15,8 +15,8 @@ export const Question: React.FC = () => {
   return (
     <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', background: 'rgba(246,244,239,.55)', backdropFilter: 'blur(6px)'}}>
       <div style={{transform: `scale(${interpolate(p, [0, 1], [1.8, 1])})`, opacity: p, textAlign: 'center'}}>
-        <div style={{fontFamily: inter, fontWeight: 900, fontSize: 250, color: C.accent, lineHeight: .9, letterSpacing: -8}}>1</div>
-        <div style={{fontFamily: inter, fontWeight: 900, fontSize: 84, color: C.ink, letterSpacing: -2}}>serious question.</div>
+        <div style={{fontFamily: serif, fontWeight: 900, fontSize: 260, color: C.accent, lineHeight: .9, letterSpacing: -8}}>1</div>
+        <div style={{fontFamily: serif, fontWeight: 800, fontSize: 92, color: C.ink, letterSpacing: -1}}>serious question.</div>
       </div>
     </AbsoluteFill>
   );
@@ -33,7 +33,7 @@ export const Community: React.FC = () => {
       opacity: ghost ? .55 : 1, filter: ghost ? 'grayscale(1) blur(1px)' : 'none', transform: ghost ? `rotate(${dx / 20}deg)` : `scale(${.9 + cardP * .1})`}}>
       <div style={{display: 'flex', alignItems: 'center', gap: 16, fontFamily: inter, fontWeight: 800, fontSize: 34, color: C.mute}}>
         <Dot color={ghost ? C.mute : C.accent} /> {ghost ? 'Copycat Community' : 'Claude Malaysia Community'}</div>
-      <div style={{fontFamily: inter, fontWeight: 900, fontSize: 190, color: C.ink, letterSpacing: -7, marginTop: 10}}>
+      <div style={{fontFamily: serif, fontWeight: 900, fontSize: 180, color: C.ink, letterSpacing: -3, marginTop: 10}}>
         <Counter from={0} to={5000} a={n - .7} b={n + .4} /></div>
       <div style={{fontFamily: inter, fontWeight: 700, fontSize: 40, color: C.mute, marginTop: -10}}>members</div>
       <div style={{marginTop: 34, height: 26, borderRadius: 99, background: C.paper2, overflow: 'hidden'}}>
@@ -129,7 +129,7 @@ export const Product: React.FC = () => {
       {Array.from({length: 12}).map((_, i) => {
         const x = 130 + (i % 4) * 190; const y = 330 + Math.floor(i / 4) * 175; const hero = i === 5;
         const p = usePop(s + .05 * i); const away = ease(t, ap, ap + .5);
-        const hx = hero ? interpolate(lift, [0, 1], [0, 484 - x - 0]) : 0; const hy = hero ? interpolate(lift, [0, 1], [0, 760 - y]) : 0;
+        const hx = hero ? interpolate(lift, [0, 1], [0, 484 - x - 0]) : 0; const hy = hero ? interpolate(lift, [0, 1], [0, 610 - y]) : 0;
         return <div key={i} style={{position: 'absolute', left: x, top: y, width: 150, height: 140, borderRadius: 30,
           background: hero && t >= sep ? C.accent : C.white, border: `3px solid ${hero && t >= sep ? C.accent : C.line}`,
           transform: `translate(${hx}px,${hy}px) scale(${p * (hero ? 1 + lift * .7 : 1 - away * .15)})`, zIndex: hero ? 3 : 1,
@@ -138,8 +138,8 @@ export const Product: React.FC = () => {
           display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: inter, fontWeight: 900, fontSize: 30,
           color: C.white}}>{hero && t >= sep ? 'NEW' : ''}</div>;
       })}
-      {t >= sep && <div style={{position: 'absolute', bottom: 40, left: 0, right: 0, textAlign: 'center', fontFamily: inter,
-        fontWeight: 900, fontSize: 58, color: C.accent, opacity: ease(t, sep + .2, sep + .6)}}>…you need a separate product.</div>}
+      {t >= sep && <div style={{position: 'absolute', bottom: 40, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontStyle: 'italic',
+        fontWeight: 700, fontSize: 60, color: C.accent, opacity: ease(t, sep + .2, sep + .6)}}>…you need a separate product.</div>}
     </AbsoluteFill>);
 };
 
@@ -149,7 +149,7 @@ export const Workshops: React.FC = () => {
   return (
     <AbsoluteFill style={{background: C.paper}}>
       <div style={{position: 'absolute', top: 60, left: 0, right: 0, textAlign: 'center', fontFamily: inter, fontWeight: 900}}>
-        <div style={{fontSize: 210, color: C.ink, letterSpacing: -8, lineHeight: .95}}><Counter from={0} to={13} a={s} b={thirteen + .3} /></div>
+        <div style={{fontFamily: serif, fontSize: 220, color: C.ink, letterSpacing: -4, lineHeight: .95}}><Counter from={0} to={13} a={s} b={thirteen + .3} /></div>
         <div style={{fontSize: 48, color: C.mute}}>physical workshops · KL</div>
       </div>
       {Array.from({length: 13}).map((_, i) => {
@@ -181,7 +181,7 @@ export const Ecosystem: React.FC = () => {
       </svg>
       <div style={{position: 'absolute', left: 484 - 175, top: 500 - 110, width: 350, height: 220, borderRadius: 40, background: C.accent,
         transform: `scale(${hubP})`, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: C.white,
-        fontFamily: inter, fontWeight: 900, fontSize: 48, lineHeight: 1.05, boxShadow: '0 30px 60px rgba(217,119,87,.4)'}}>Online course<br />ecosystem</div>
+        fontFamily: serif, fontWeight: 800, fontSize: 50, lineHeight: 1.05, boxShadow: '0 30px 60px rgba(217,119,87,.4)'}}>Online course<br />ecosystem</div>
       {nodes.map((n, i) => { const a = -Math.PI / 2 + i * Math.PI / 2 + Math.PI / 4; const p = usePop(on + .25 + .12 * i);
         return <div key={n} style={{position: 'absolute', left: 484 + Math.cos(a) * 300, top: 500 + Math.sin(a) * 260, transform: `translate(-50%,-50%) scale(${p})`}}>
           <Chip size={32}>{n}</Chip></div>; })}
@@ -207,8 +207,8 @@ export const Moat: React.FC = () => {
         fontFamily: inter, fontWeight: 900, fontSize: 44, textAlign: 'center', lineHeight: 1.1}}>
         <svg width="90" height="70" viewBox="0 0 90 70"><path d="M5 70V20h12v10h12V20h12v10h8V20h12v10h12V20h12v50z" fill={C.accent} /></svg>
         Claude<br />Malaysia</div>
-      {t >= m && <div style={{position: 'absolute', bottom: 34, left: 0, right: 0, textAlign: 'center', fontFamily: inter, fontWeight: 900,
-        fontSize: 64, color: C.blue, opacity: ease(t, m, m + .4)}}>Now: build the moat.</div>}
+      {t >= m && <div style={{position: 'absolute', bottom: 34, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontWeight: 800, fontStyle: 'italic',
+        fontSize: 68, color: C.blue, opacity: ease(t, m, m + .4)}}>Now: build the moat.</div>}
       <Stamp at={v} text="VALIDATED ✓" color={C.green} size={80} rot={-7} style={{top: '30%', opacity: t > m ? 1 - ease(t, m, m + .3) : undefined}} />
     </AbsoluteFill>);
 };
@@ -217,14 +217,18 @@ export const Moat: React.FC = () => {
 export const TERMINAL_LINES = [
   {t: 0.0, txt: '$ claude', col: C.white},
   {t: 0.35, txt: '> edit talking_head.mov — light style,', col: '#F0C3B2'},
-  {t: 0.35, txt: '  motion graphics + SFX, face bottom-left', col: '#F0C3B2'},
+  {t: 0.35, txt: '  Light style Joshua, SFX, split screen', col: '#F0C3B2'},
   {t: 1.6, txt: '✓ transcribed 284 words', col: '#7EE2A8'},
   {t: 1.9, txt: '✓ 19 cuts · 4 Joey soundbites', col: '#7EE2A8'},
   {t: 2.2, txt: '✓ 18 motion scenes · 50+ SFX', col: '#7EE2A8'},
   {t: 2.5, txt: '✓ rendered reel_final.mp4', col: '#7EE2A8'},
 ];
 export const Terminal: React.FC = () => {
-  const t = useT(); const s = w('K12', 'this'); const p = usePop(s);
+  const t = useT(); const s = w('K12', 'this'); const p = usePop(s); const pre = usePop(seg('K12').out);
+  if (t < s) return (
+    <AbsoluteFill style={{background: C.paper, alignItems: 'center', justifyContent: 'center'}}>
+      <div style={{fontFamily: serif, fontStyle: 'italic', fontWeight: 700, fontSize: 120, color: C.ink, transform: `scale(${pre})`}}>Fun fact…</div>
+    </AbsoluteFill>);
   return (
     <AbsoluteFill style={{background: C.paper, alignItems: 'center', justifyContent: 'center'}}>
       <div style={{width: 880, height: 700, borderRadius: 30, background: '#1A1915', transform: `scale(${.85 + p * .15})`, opacity: p,
@@ -238,7 +242,7 @@ export const Terminal: React.FC = () => {
             return <div key={i} style={{color: l.col, whiteSpace: 'pre'}}>{l.txt.slice(0, typed)}{i < 3 && typed < l.txt.length ? '▌' : ''}</div>; })}
         </div>
       </div>
-      <div style={{position: 'absolute', top: 40, fontFamily: inter, fontWeight: 900, fontSize: 52, color: C.ink, opacity: ease(t, w('K12', 'claude'), w('K12', 'claude') + .3)}}>
+      <div style={{position: 'absolute', top: 40, fontFamily: serif, fontWeight: 800, fontSize: 60, color: C.ink, opacity: ease(t, w('K12', 'claude'), w('K12', 'claude') + .3)}}>
         Edited by <span style={{color: C.accent}}>Claude</span></div>
     </AbsoluteFill>);
 };
@@ -248,8 +252,8 @@ export const Goal: React.FC = () => {
   const t = useT(); const s = seg('K13').out; const y = w('K13', '2027'); const fill = ease(t, s + .2, y, 0, .025);
   return (
     <AbsoluteFill style={{background: C.paper, alignItems: 'center', justifyContent: 'center'}}>
-      <div style={{fontFamily: inter, fontWeight: 900, fontSize: 64, color: C.ink, textAlign: 'center', letterSpacing: -1.5}}>Can we hit</div>
-      <div style={{fontFamily: inter, fontWeight: 900, fontSize: 150, color: C.accent, letterSpacing: -6}}>RM2,000,000</div>
+      <div style={{fontFamily: serif, fontWeight: 800, fontSize: 72, color: C.ink, textAlign: 'center'}}>Can we hit</div>
+      <div style={{fontFamily: serif, fontWeight: 900, fontSize: 150, color: C.accent, letterSpacing: -3}}>RM2,000,000</div>
       <div style={{width: 820, height: 44, borderRadius: 99, background: C.paper2, border: `3px solid ${C.line}`, overflow: 'hidden', marginTop: 30}}>
         <div style={{width: `${Math.max(fill, .03) * 100}%`, height: '100%', background: C.accent}} /></div>
       <div style={{width: 820, display: 'flex', justifyContent: 'space-between', fontFamily: inter, fontWeight: 800, fontSize: 32, color: C.mute, marginTop: 14}}>
@@ -262,7 +266,7 @@ export const Comment: React.FC = () => {
   const sent = w('K13', 'journey'); const sp = usePop(sent); const p = usePop(s);
   return (
     <AbsoluteFill style={{background: C.paper, alignItems: 'center', justifyContent: 'center'}}>
-      <div style={{fontFamily: inter, fontWeight: 900, fontSize: 70, color: C.ink, marginBottom: 40, transform: `scale(${p})`}}>Comment below</div>
+      <div style={{fontFamily: serif, fontWeight: 800, fontSize: 80, color: C.ink, marginBottom: 40, transform: `scale(${p})`}}>Comment below</div>
       <Card style={{width: 840, padding: '30px 34px', display: 'flex', alignItems: 'center', gap: 24, transform: `scale(${p})`}}>
         <div style={{width: 80, height: 80, borderRadius: 99, background: C.accent}} />
         <div style={{flex: 1, fontFamily: inter, fontWeight: 900, fontSize: 92, color: C.ink, letterSpacing: 4}}>
@@ -280,15 +284,83 @@ export const Day: React.FC = () => {
     <AbsoluteFill style={{background: C.paper, alignItems: 'center', justifyContent: 'center'}}>
       <div style={{fontFamily: inter, fontWeight: 800, fontSize: 52, color: C.mute, letterSpacing: 6}}>FOLLOW FOR</div>
       <div style={{position: 'relative', height: 300, width: 900, overflow: 'hidden', transform: `scale(${p})`}}>
-        {[193, 194].map((d, i) => <div key={d} style={{position: 'absolute', inset: 0, textAlign: 'center', fontFamily: inter, fontWeight: 900,
-          fontSize: 230, letterSpacing: -8, color: i ? C.accent : C.ink, transform: `translateY(${(i - flip) * 100}%)`}}>DAY {d}</div>)}
+        {[193, 194].map((d, i) => <div key={d} style={{position: 'absolute', inset: 0, textAlign: 'center', fontFamily: serif, fontWeight: 900,
+          fontSize: 230, letterSpacing: -4, color: i ? C.accent : C.ink, transform: `translateY(${(i - flip) * 100}%)`}}>DAY {d}</div>)}
       </div>
       <div style={{marginTop: 20, fontFamily: inter, fontWeight: 900, fontSize: 46, color: C.white, background: C.ink, padding: '22px 60px',
         borderRadius: 99, transform: `scale(${usePop(n + .3)})`}}>+ Follow</div>
     </AbsoluteFill>);
 };
 
+/* ---------- S1 hook: result-first ---------- */
+export const Hook: React.FC = () => {
+  const t = useT(); const d = w('K1', 'dato'); const rm = w('K1', 'rm2');
+  const pp = usePop(0.05); const move = usePop(rm, {damping: 16, stiffness: 160}); const np = usePop(rm, {damping: 11, stiffness: 200, mass: .6});
+  return (
+    <AbsoluteFill style={{background: C.paper}}>
+      <div style={{position: 'absolute', top: 40, left: 0, right: 0, textAlign: 'center', fontFamily: inter, fontWeight: 800, fontSize: 28,
+        letterSpacing: 4, color: C.mute}}>THRIVE 2026 · CLAUDE MALAYSIA DAY 193</div>
+      <div style={{position: 'absolute', top: 110, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontWeight: 800, fontSize: 72,
+        color: C.ink, opacity: Math.min(1, pp * 2), transform: `translateY(${(1 - pp) * 30}px)`}}>I asked <i style={{color: C.accent}}>Dato' Joey Yap</i></div>
+      <div style={{position: 'absolute', left: interpolate(move, [0, 1], [484 - 170, 60]), top: interpolate(move, [0, 1], [250, 250]),
+        width: 340, background: C.white, padding: 14, paddingBottom: 64, borderRadius: 14, boxShadow: '0 30px 60px rgba(0,0,0,.18)',
+        transform: `rotate(${interpolate(move, [0, 1], [-3, -6])}deg) scale(${pp * interpolate(move, [0, 1], [1, .82])})`, transformOrigin: 'top left'}}>
+        <div style={{width: 312, height: 400, overflow: 'hidden', borderRadius: 8}}>
+          <OffthreadVideo src={staticFile('broll/v2345.mp4')} startFrom={30} muted style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '20% 50%'}} /></div>
+        <div style={{position: 'absolute', bottom: 14, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontStyle: 'italic', fontWeight: 700, fontSize: 32}}>Dato' Joey Yap</div>
+      </div>
+      {t >= rm && <div style={{position: 'absolute', right: 50, top: 300, width: 560, textAlign: 'right', opacity: np, transform: `translateX(${(1 - np) * 60}px)`}}>
+        <div style={{fontFamily: inter, fontWeight: 800, fontSize: 30, letterSpacing: 3, color: C.mute}}>HOW TO HIT</div>
+        <div style={{fontFamily: serif, fontWeight: 900, fontSize: 112, color: C.ink, letterSpacing: -2, lineHeight: 1}}>
+          <Counter from={0} to={2} a={rm} b={rm + .5} prefix="RM" />M</div>
+        <div style={{fontFamily: serif, fontStyle: 'italic', fontWeight: 700, fontSize: 64, color: C.accent}}>a year?</div>
+        <div style={{marginTop: 26, height: 14, background: C.paper2, borderRadius: 2}}><div style={{height: '100%', width: `${ease(t, rm, rm + .9) * 100}%`, background: C.accent}} /></div>
+      </div>}
+    </AbsoluteFill>);
+};
+
+/* ---------- Joey soundbites: pull-quote cards ---------- */
+const QUOTES: Record<string, {q: string; extra?: string}> = {
+  J1: {q: 'A very powerful position.', extra: 'live'},
+  J2: {q: "They won't last very long.", extra: 'death'},
+  J3: {q: 'Do the course first.', extra: 'course'},
+  J4: {q: 'Of course I have heard of Claude.'},
+};
+export const Quote: React.FC<{id: string}> = ({id}) => {
+  const t = useT(); const s = seg(id); const p = usePop(s.out); const Q = QUOTES[id];
+  return (
+    <AbsoluteFill style={{background: C.paper}}>
+      <div style={{position: 'absolute', top: 30, left: 70, fontFamily: serif, fontWeight: 900, fontSize: 260, color: C.accent, lineHeight: 1, opacity: .9}}>“</div>
+      <div style={{position: 'absolute', top: 200, left: 80, right: 80, fontFamily: serif, fontStyle: 'italic', fontWeight: 700, fontSize: 84,
+        lineHeight: 1.1, color: C.ink, opacity: p, transform: `translateY(${(1 - p) * 40}px)`}}>{Q.q}</div>
+      <div style={{position: 'absolute', top: 480, left: 80, fontFamily: inter, fontWeight: 800, fontSize: 30, letterSpacing: 3, color: C.mute, opacity: p}}>
+        — DATO' JOEY YAP, LIVE AT THRIVE</div>
+      <div style={{position: 'absolute', left: 0, right: 0, top: 600, display: 'flex', justifyContent: 'center'}}>
+        {Q.extra === 'live' && <DoorBadge at={s.out + .3} good big />}
+        {Q.extra === 'death' && <DoorBadge at={s.out + .2} good={false} big />}
+      </div>
+      {Q.extra === 'death' && <Stamp at={w('J2', 'won')} text="WON'T LAST" color={C.red} size={70} rot={-8} style={{top: '86%'}} />}
+      {Q.extra === 'course' && <Stamp at={w('J3', 'do')} text="ONLINE COURSES ✓" color={C.accent} size={70} rot={-5} style={{top: '78%'}} />}
+    </AbsoluteFill>);
+};
+
+/* ---------- K10a: recap ---------- */
+export const Recap: React.FC = () => {
+  const s = seg('K10a').out; const rows = ['Live Door position', 'Needs a separate product', 'Online courses first'];
+  return (
+    <AbsoluteFill style={{background: C.paper}}>
+      <Title at={s} top={90}>Makes sense, <i style={{color: C.accent}}>kan?</i></Title>
+      {rows.map((r, i) => { const p = usePop(s + .15 + i * .22);
+        return <div key={r} style={{position: 'absolute', left: 150, right: 150, top: 330 + i * 150, display: 'flex', alignItems: 'center', gap: 28,
+          opacity: p, transform: `translateX(${(1 - p) * -60}px)`, borderBottom: `2px solid ${C.line}`, paddingBottom: 26}}>
+          <div style={{width: 64, height: 64, borderRadius: 8, background: C.ink, color: C.paper, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontFamily: inter, fontWeight: 900, fontSize: 40}}>✓</div>
+          <div style={{fontFamily: inter, fontWeight: 800, fontSize: 48, color: C.ink}}>{r}</div></div>; })}
+    </AbsoluteFill>);
+};
+
 export const GFX: Record<string, React.FC> = {
+  hook: Hook, recap: Recap, J1: () => <Quote id="J1" />, J2: () => <Quote id="J2" />, J3: () => <Quote id="J3" />, J4: () => <Quote id="J4" />,
   question: Question, community: Community, options: () => <Options />, 'options-pick': () => <Options pick />,
   livedoor: LiveDoor, doors: Doors, product: Product, workshops: Workshops, ecosystem: Ecosystem, moat: Moat,
   terminal: Terminal, goal: Goal, comment: Comment, day: Day,
