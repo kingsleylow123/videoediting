@@ -1,0 +1,7 @@
+node_modules/
+.hyperframes/
+projects/*/renders/
+projects/*/snapshots/
+exports/.video-only.mp4
+*.tmp
+.DS_Store
