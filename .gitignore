@@ -1,0 +1,7 @@
+node_modules/
+out/
+public/th.mp4
+public/broll/
+public/audio/
+*.wav.tmp
+public/sfx/music_bed.wav
