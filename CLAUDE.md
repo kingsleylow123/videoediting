@@ -53,6 +53,16 @@ project CLAUDE.md or pack instruction that says to run `hyperframes render`.
   2-3 word mono caption pill on the split line, cream #EFEFE8 + Claude orange #D97757, Newsreader serif titles,
   follow pill end card for @kingsleylow.ai). Reuse `build.py` + `style.css` as the template for the next one.
 
+## Sound design
+
+- `kit/sfx/sx-*.wav`: 21 recorded effects (Pixabay licence: commercial use, no credit needed), peak-normalised
+  to -1 dBFS, with pitched variants (`pop`, `pop-2..4` rise in pitch; `click-hi`; `whoosh-soft`). Copy into the project's `sfx/`.
+- Put every cue in ONE list (see `CUES` in `projects/mods-reel/build.py`): whoosh on each cut, pop on each element
+  in (rising pitch for 1-2-3 sequences), typing/key-press under typed text, notification for messages, impact-bass on
+  the hook and big reveals (start `impact-bass-2` 0.36 s early so its peak lands on the hit), sparkle on "done" moments.
+- Mark the voice `<audio data-role="voice">`; `tools/render.js` ducks the SFX bus under it (2:1), trims each cue to
+  its `data-duration` with a fade, and limits the master. Tune the whole SFX bus with `SFX_GAIN`.
+
 ## Format defaults (Reels / TikTok / Shorts)
 
 - 1080x1920, 30 fps, 6-15 s unless told otherwise. Keep exports under ~20 MB for mobile data.

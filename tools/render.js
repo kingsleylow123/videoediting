@@ -38,6 +38,7 @@ fs.mkdirSync(path.dirname(out), { recursive: true });
       dur: +(root.dataset.duration || 0), fps: +(root.dataset.fps || 30),
       audio: [...document.querySelectorAll('audio[src]')].map(a => ({
         src: a.getAttribute('src'), start: +(a.dataset.start || 0), volume: +(a.dataset.volume || a.volume || 1),
+        dur: a.dataset.duration ? +a.dataset.duration : null, role: a.dataset.role || (a.id === 'vo' ? 'voice' : 'sfx'),
       })),
     };
   });
@@ -110,15 +111,29 @@ fs.mkdirSync(path.dirname(out), { recursive: true });
   await browser.close();
   process.stdout.write(`\rframe ${f1}/${frames}\n`);
 
-  // mix audio
+  // mix audio: voice bus + sfx bus (sidechain-ducked under the voice) -> limiter
   if (meta.audio.length) {
     const inputs = ['-i', silent], filters = [];
+    const tEnd = toArg ? Math.min(+toArg, meta.dur) : meta.dur;
+    const voice = [], fx = [];
     meta.audio.forEach((a, k) => {
       inputs.push('-i', path.resolve(dir, a.src));
       const ms = Math.round(a.start * 1000);
-      filters.push(`[${k + 1}:a]adelay=${ms}|${ms},volume=${a.volume}[a${k}]`);
+      // data-duration trims the clip, with a short fade so it never clicks off
+      const trim = a.dur ? `atrim=0:${a.dur},afade=t=out:st=${Math.max(0, a.dur - 0.06).toFixed(3)}:d=0.06,` : '';
+      filters.push(`[${k + 1}:a]aresample=48000,aformat=channel_layouts=stereo,${trim}adelay=${ms}|${ms},volume=${a.volume}[a${k}]`);
+      (a.role === 'voice' ? voice : fx).push(`[a${k}]`);
     });
-    const mix = meta.audio.map((_, k) => `[a${k}]`).join('') + `amix=inputs=${meta.audio.length}:normalize=0:duration=longest,apad,atrim=${fromT}:${toArg ? Math.min(+toArg, meta.dur) : meta.dur},asetpts=PTS-STARTPTS[aout]`;
+    const busOut = [];
+    if (voice.length) filters.push(`${voice.join('')}amix=inputs=${voice.length}:normalize=0:duration=longest,apad,atrim=0:${meta.dur}[vbus]`);
+    if (fx.length) filters.push(`${fx.join('')}amix=inputs=${fx.length}:normalize=0:duration=longest,apad,atrim=0:${meta.dur}[fxraw]`);
+    if (voice.length && fx.length) {
+      filters.push('[vbus]asplit=2[vmix][vkey]');
+      filters.push('[fxraw][vkey]sidechaincompress=threshold=0.18:ratio=2:attack=5:release=160:makeup=1[fxbus]');
+      busOut.push('[vmix]', '[fxbus]');
+    } else busOut.push(voice.length ? '[vbus]' : '[fxraw]');
+    const mix = `${busOut.join('')}amix=inputs=${busOut.length}:normalize=0:duration=longest,` +
+      `alimiter=limit=0.93:attack=3:release=60:level=disabled,atrim=${fromT}:${tEnd},asetpts=PTS-STARTPTS[aout]`;
     await new Promise((res, rej) => spawn('ffmpeg', ['-y', '-loglevel', 'error', ...inputs,
       '-filter_complex', [...filters, mix].join(';'), '-map', '0:v', '-map', '[aout]',
       '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', out], { stdio: 'inherit' })

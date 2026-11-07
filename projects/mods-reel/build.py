@@ -121,8 +121,6 @@ def sc_intro():
     js.append(f'tl.fromTo("{S(sid)} .lab-cube", {{autoAlpha:0, scale:0.2, x:(i)=>[250,320,-200,-260,150][i], y:(i)=>[120,-40,160,0,-120][i]}}, '
               f'{{autoAlpha:1, scale:1, x:0, y:0, duration:0.5, ease:"back.out(1.4)", stagger:0.16}}, 2.85);')
     js.append(f'tl.to("{S(sid)} .big-cube", {{y:-10, duration:1.2, ease:"sine.inOut", yoyo:true, repeat:3}}, 1.0);')
-    sfx("pop", 0.30, 0.35)
-    sfx("tick", 2.85, 0.3)
 
 
 def sc_ways():
@@ -141,9 +139,6 @@ def sc_ways():
     for i, n in enumerate((1, 2, 3)):
         pop(f"{S(sid)} .n{n}", 6.62 + i * 0.22, 0.4)
         js.append(f'tl.to("{S(sid)} .n{n}", {{y:{-14 if i % 2 else 14}, duration:1.1, ease:"sine.inOut", yoyo:true, repeat:2}}, {7.3 + i*0.1:.2f});')
-    sfx("whoosh", 6.05, 0.25)
-    for i in range(3):
-        sfx("tick", 6.62 + i * 0.22, 0.3)
 
 
 def term(sid, label, x):
@@ -169,10 +164,6 @@ def sc_sessions():
     pop(f"{S(sid)} .msg", 14.7, 0.35)
     js.append(f'tl.to("{S(sid)} .msg", {{x:540, y:-40, scale:0.85, autoAlpha:0, duration:0.6, ease:"power2.inOut"}}, 15.6);')
     pop(f"{S(sid)} .inbox", 16.2, 0.4)
-    sfx("whoosh", 10.30, 0.25)
-    sfx("pop", 14.7, 0.3)
-    sfx("whoosh", 15.6, 0.3)
-    sfx("pop", 16.2, 0.3)
 
 
 def sc_planbuild():
@@ -193,11 +184,6 @@ def sc_planbuild():
     js.append(f'tl.to("{S(sid)} .pkt:not(.back)", {{autoAlpha:0, duration:0.15, stagger:0.3}}, 21.15);')
     js.append(f'tl.fromTo("{S(sid)} .pkt.back", {{autoAlpha:0, x:0}}, {{autoAlpha:1, x:-430, duration:0.9, ease:"power1.inOut", stagger:0.3}}, 21.4);')
     fade_up(f"{S(sid)} .chk", 21.6, 0.3, 20, 0.15)
-    sfx("whoosh", 17.25, 0.25)
-    sfx("tick", 18.0, 0.3)
-    sfx("tick", 19.7, 0.3)
-    sfx("whoosh", 20.3, 0.2)
-    sfx("whoosh", 21.4, 0.2)
 
 
 def sc_day():
@@ -209,8 +195,6 @@ def sc_day():
     pop(f"{S(sid)} .daypill", 24.8, 0.4, "{autoAlpha:0, scale:0.7, y:-20}")
     js.append(f'tl.fromTo("{S(sid)} .roll span", {{y:0}}, {{y:-64, duration:0.35, ease:"power3.inOut"}}, 25.2);')
     fade_up(f"{S(sid)} .daysub", 26.3, 0.4, 16)
-    sfx("pop", 24.8, 0.3)
-    sfx("tick", 25.2, 0.3)
 
 
 def ui_body(dashboard=False):
@@ -236,8 +220,6 @@ def sc_iface():
     pop(f"{S(sid)} #w-iface", 30.48, 0.45, "{autoAlpha:0, scale:0.92, y:30}", "power3.out")
     type_on(f"{S(sid)} .input", 32.5, 1.0)
     js.append(f'tl.fromTo("{S(sid)} .hl", {{autoAlpha:0, scale:1.05}}, {{autoAlpha:1, scale:1, duration:0.3, ease:"power2.out", stagger:0.12}}, 33.65);')
-    sfx("whoosh", 30.45, 0.25)
-    sfx("pop", 33.65, 0.3)
 
 
 def sc_dash():
@@ -248,7 +230,6 @@ def sc_dash():
     js.append(f'tl.fromTo("{S(sid)} .main", {{width:690}}, {{width:390, duration:0.5, ease:"power3.out"}}, 35.35);')
     js.append(f'tl.fromTo("{S(sid)} .bars i", {{scaleY:0}}, {{scaleY:1, duration:0.4, ease:"back.out(1.6)", stagger:0.06}}, 35.8);')
     js.append(f'tl.fromTo("{S(sid)} .donut", {{attr:{{"stroke-dashoffset":88}}}}, {{attr:{{"stroke-dashoffset":26}}, duration:0.8, ease:"power2.out"}}, 35.9);')
-    sfx("whoosh", 35.35, 0.3)
 
 
 def sc_dashfull():
@@ -284,9 +265,6 @@ def sc_dashfull():
     js.append(f'tl.fromTo("{S(sid)} .net circle", {{scale:0, transformOrigin:"50% 50%"}}, {{scale:1, duration:0.3, ease:"back.out(2)", stagger:0.012}}, 41.2);')
     js.append(f'tl.fromTo("{S(sid)} .net g", {{autoAlpha:0}}, {{autoAlpha:1, duration:0.6}}, 41.5);')
     fade_up(f"{S(sid)} .stat", 41.9, 0.35, 16, 0.18)
-    sfx("whoosh", 37.55, 0.3)
-    sfx("tick", 39.15, 0.25); sfx("tick", 39.4, 0.25); sfx("tick", 39.65, 0.25)
-    sfx("pop", 40.85, 0.3)
 
 
 def sc_easy():
@@ -303,9 +281,6 @@ def sc_easy():
     fade_up(f"{S(sid)} .ecard", 45.0, 0.35, 24, 0.18)
     pop(f"{S(sid)} .model.cheap", 46.0, 0.4)
     js.append(f'tl.to("{S(sid)} .model.big", {{opacity:0.45, duration:0.3}}, 46.0);')
-    sfx("whoosh", 43.25, 0.25)
-    sfx("tick", 45.0, 0.25); sfx("tick", 45.18, 0.25); sfx("tick", 45.36, 0.25)
-    sfx("pop", 46.0, 0.3)
 
 
 def line_svg(cls, x1, y1, x2, y2, color):
@@ -341,10 +316,6 @@ def sc_router():
     fade_up(f"{S(sid)} .limits", 51.4, 0.45, 40)
     js.append(f'tl.fromTo("{S(sid)} .fill.with", {{width:"0%"}}, {{width:"28%", duration:1.0, ease:"power2.out"}}, 52.2);')
     js.append(f'tl.fromTo("{S(sid)} .fill.without", {{width:"0%"}}, {{width:"92%", duration:1.4, ease:"power2.out"}}, 52.3);')
-    sfx("whoosh", 47.0, 0.3)
-    sfx("pop", 47.25, 0.35)
-    sfx("tick", 48.85, 0.25); sfx("tick", 49.6, 0.25)
-    sfx("pop", 51.4, 0.25)
 
 
 def sc_describe():
@@ -366,9 +337,6 @@ def sc_describe():
     js.append(f'tl.to("{S(sid)} .fchip", {{autoAlpha:0, duration:0.2, stagger:0.18}}, 61.05);')
     js.append(f'tl.fromTo("{S(sid)} .made", {{autoAlpha:0, scale:0.5}}, {{autoAlpha:1, scale:1, duration:0.45, ease:"back.out(1.8)"}}, 61.6);')
     js.append(f'tl.to("{S(sid)} .dbox", {{autoAlpha:0, duration:0.2}}, 61.6);')
-    sfx("whoosh", 56.95, 0.25)
-    sfx("whoosh", 60.4, 0.25)
-    sfx("pop", 61.6, 0.35)
 
 
 def sc_code():
@@ -382,7 +350,6 @@ def sc_code():
     js.append(f'tl.fromTo("{S(sid)} .codep", {{autoAlpha:0}}, {{autoAlpha:1, duration:0.01}}, 62.4);')
     js.append(f'tl.fromTo("{S(sid)} .cl", {{autoAlpha:0, x:-20}}, {{autoAlpha:1, x:0, duration:0.15, stagger:0.06}}, 62.42);')
     js.append(f'tl.fromTo("{S(sid)} .cin", {{y:0}}, {{y:-260, duration:2.1, ease:"none"}}, 62.45);')
-    sfx("whoosh", 62.4, 0.25)
 
 
 def sc_cta():
@@ -390,7 +357,6 @@ def sc_cta():
     html_parts.append(f'''<div id="sc-{sid}" class="scene" style="height:{H}px">
       <div class="guide"><em>{spark(34)}</em><span>Step-by-step guide</span></div></div>''')
     pop(f"{S(sid)} .guide", 67.0, 0.4, "{autoAlpha:0, scale:0.7, y:-20}")
-    sfx("pop", 67.0, 0.3)
 
 
 def sc_comment():
@@ -411,9 +377,6 @@ def sc_comment():
     js.append(f'tl.to("{S(sid)} .ph2", {{autoAlpha:1, duration:0.1}}, 69.5);')
     js.append(f'tl.fromTo("{S(sid)} .dm", {{autoAlpha:0, y:-80}}, {{autoAlpha:1, y:0, duration:0.45, ease:"back.out(1.4)"}}, 70.05);')
     pop(f"{S(sid)} .sent", 71.4, 0.3)
-    sfx("whoosh", 68.45, 0.25)
-    sfx("tick", 69.45, 0.3)
-    sfx("pop", 70.05, 0.35)
 
 
 def sc_follow():
@@ -426,8 +389,6 @@ def sc_follow():
     js.append(f'tl.to("{S(sid)} .fbtn", {{backgroundColor:"#E9E7E1", duration:0.15}}, 73.3);')
     js.append(f'tl.to("{S(sid)} .f1", {{autoAlpha:0, duration:0.1}}, 73.3);')
     js.append(f'tl.fromTo("{S(sid)} .f2", {{autoAlpha:0}}, {{autoAlpha:1, duration:0.15}}, 73.32);')
-    sfx("pop", 72.2, 0.35)
-    sfx("tick", 73.25, 0.35)
 
 
 for f in (sc_intro, sc_ways, sc_sessions, sc_planbuild, sc_day, sc_iface, sc_dash, sc_dashfull, sc_easy,
@@ -475,10 +436,78 @@ for i, c in enumerate(chunks):
     cap_html.append(f'<div class="capwrap" id="cap{i}" style="top:{cap_y[m]}px"><span class="cap">{esc(text)}</span></div>')
     pre.append(f'tl.set("#cap{i}", {{autoAlpha:1}}, {start:.2f}); tl.set("#cap{i}", {{autoAlpha:0}}, {end:.2f});')
 
-# ---------------------------------------------------------------- audio
-aud = ['<audio id="vo" src="media/voice.m4a" data-start="0" data-duration="74.4" data-volume="1"></audio>']
-for i, (n, t, v) in enumerate(audio):
-    aud.append(f'<audio id="sfx{i}" src="sfx/{n}.wav" data-start="{t:.2f}" data-duration="0.4" data-volume="{v}"></audio>')
+# ---------------------------------------------------------------- sound design
+# (time, sfx file in sfx/ without "sx-" and ".wav", volume, optional max length)
+# Files are Pixabay-licensed, peak-normalised to -1 dBFS (kit/sfx). The renderer ducks this bus under the voice.
+CUES = [
+    # intro: tag slides in, hero cube lands on the hook, labelled mods pop in rising
+    (0.00, "whoosh-soft", 0.40), (0.27, "impact-bass-1", 0.50, 1.6),
+    (2.85, "pop", 0.38), (3.01, "pop-2", 0.38), (3.17, "pop-3", 0.38), (3.33, "pop-4", 0.38), (3.49, "pop-4", 0.30),
+    # 3 ways: hub, then 1-2-3 climbing in pitch
+    (6.05, "whoosh", 0.42), (6.20, "pop", 0.40), (6.62, "pop-2", 0.42), (6.84, "pop-3", 0.42), (7.06, "pop-4", 0.42),
+    # sessions talk: windows slide, lines type, link snaps, message flies and lands
+    (10.30, "whoosh-soft", 0.40), (10.40, "whoosh-soft", 0.28), (10.60, "typing", 0.22, 0.55),
+    (12.30, "whoosh-soft", 0.22), (12.70, "click", 0.42),
+    (14.70, "pop", 0.40), (15.60, "whoosh", 0.40), (16.20, "notification", 0.38, 1.3),
+    # plans / builds: work passing both ways, checks ticking
+    (17.25, "whoosh", 0.40), (17.30, "pop", 0.32), (17.45, "pop-2", 0.32),
+    (18.00, "click", 0.38), (19.70, "click-hi", 0.38),
+    (20.30, "whoosh-soft", 0.32), (21.40, "whoosh-soft", 0.32),
+    (21.60, "click-soft", 0.36), (21.75, "click-soft", 0.36), (21.90, "click-hi", 0.36),
+    # day 175 (face)
+    (22.85, "whoosh-soft", 0.22), (24.80, "pop", 0.42), (25.20, "ping", 0.34, 0.9), (26.30, "sparkle", 0.20, 1.2),
+    # change the interface: typed prompt, outlines snap on
+    (30.45, "whoosh", 0.40), (32.50, "typing", 0.34, 1.05),
+    (33.65, "click-soft", 0.36), (33.77, "click-soft", 0.36), (33.89, "click-hi", 0.36),
+    # dashboard slides in, bars + donut fill
+    (35.35, "whoosh-soft", 0.40), (35.80, "pop-2", 0.26), (35.90, "sparkle", 0.22, 1.2),
+    # full dashboard: agents tick in, second brain sparkles, stats count
+    (37.55, "whoosh", 0.45), (39.15, "click-soft", 0.36), (39.40, "click-soft", 0.36), (39.65, "click-soft", 0.36),
+    (40.85, "whoosh-soft", 0.32), (41.20, "sparkle", 0.24, 1.4),
+    (41.90, "pop", 0.28), (42.08, "pop-2", 0.28), (42.26, "pop-3", 0.28),
+    # easy stuff -> cheaper model
+    (43.25, "whoosh", 0.40), (43.30, "pop", 0.28),
+    (45.00, "click", 0.34), (45.18, "click", 0.34), (45.36, "click-hi", 0.34), (46.00, "ping", 0.36, 0.9),
+    # router: the Mod lands, wires draw, models appear, limits fill
+    (47.00, "whoosh", 0.45), (47.25, "impact-bass-1", 0.40, 1.4),
+    (47.80, "whoosh-soft", 0.26), (48.40, "whoosh-soft", 0.26), (48.85, "pop", 0.34), (49.60, "pop-2", 0.34),
+    (51.40, "pop-3", 0.28), (52.25, "whoosh-soft", 0.24),
+    # build-up into "the craziest part", hit on the punch-in
+    (52.46, "whoosh-cinematic", 0.16, 2.9), (54.64, "impact-bass-2", 0.48, 1.8),
+    # describe the mod: typed request, tags fly, mod gets built
+    (56.95, "whoosh", 0.40), (57.10, "typing", 0.34, 1.5), (58.60, "typing", 0.34, 0.9),
+    (59.60, "pop", 0.40), (60.40, "whoosh-soft", 0.32), (61.60, "sparkle", 0.36, 1.4), (61.62, "pop-3", 0.32),
+    # code scrolls
+    (62.40, "glitch-3", 0.34, 1.2), (62.45, "typing", 0.20, 1.6),
+    # cta (face) + guide pill
+    (64.55, "whoosh-soft", 0.22), (67.00, "pop", 0.42),
+    # comment CLAUDE: six keystrokes, post, DM arrives, sent
+    (68.45, "whoosh", 0.40),
+    (68.75, "key-press", 0.42, 0.25), (68.83, "key-press", 0.42, 0.25), (68.90, "key-press", 0.42, 0.25),
+    (68.98, "key-press", 0.42, 0.25), (69.05, "key-press", 0.42, 0.25), (69.13, "key-press", 0.42, 0.25),
+    (69.20, "click", 0.42), (69.45, "pop-2", 0.34), (70.05, "notification", 0.44, 1.5), (71.40, "chime", 0.22, 1.3),
+    # follow card: pops in, button tapped, sparkles to "Following"
+    (71.95, "whoosh-soft", 0.26), (72.20, "pop", 0.45), (73.20, "click", 0.48), (73.32, "sparkle", 0.32, 1.1),
+]
+
+SFX_GAIN = 1.8  # master level for the whole SFX bus (relative to the cue volumes above)
+
+import subprocess
+def _len(name):
+    out = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", f"sfx/sx-{name}.wav"],
+                         capture_output=True, text=True).stdout.strip()
+    return float(out)
+
+aud = [f'<audio id="vo" data-role="voice" src="media/voice.m4a" data-start="0" data-duration="{DUR}" data-volume="1"></audio>']
+_lens = {}
+for i, cue in enumerate(CUES):
+    t, name, vol = cue[:3]
+    if name not in _lens:
+        _lens[name] = _len(name)
+    d = min(cue[3] if len(cue) > 3 else _lens[name], _lens[name], DUR - t)
+    v = min(0.95, vol * SFX_GAIN)
+    aud.append(f'<audio id="sx{i}" src="sfx/sx-{name}.wav" data-start="{t:.2f}" data-duration="{d:.2f}" data-volume="{v:.2f}"></audio>')
+audio = CUES
 
 css = open("style.css").read()
 page = f'''<!doctype html>
