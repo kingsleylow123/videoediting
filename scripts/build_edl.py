@@ -19,7 +19,7 @@ EDL = [  # v3 "10/10" cut — ~74s incl. jackpot hook pre-roll
  ("K12","th",73.70,77.98,"K"), ("J4","joey",5.92,7.19,"J"),
  ("K13","th",78.36,84.02,"K"),                                      # ends on "…follow my journey." — one CTA
 ]
-HOOK = 1.9   # seconds of jackpot pre-roll before "Boom"
+HOOK = 2.5   # seconds of receipt-print pre-roll before "Boom"
 GAP = 0.06  # breathing room between joins
 FIX = {"Datto":"Dato","Datto,":"Dato,","up":"Yap","Karina's":"Carina's","Chairman":"Qi Men","live":"Live",
        "door,":"Door,","deaf":"Death","door":"Door","club":"Claude","cost":"course","mode.":"moat.",

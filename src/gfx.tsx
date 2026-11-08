@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, OffthreadVideo, staticFile, Sequence} from 'remotion';
+import {AbsoluteFill, Img, interpolate, OffthreadVideo, staticFile, Sequence} from 'remotion';
 import {C, inter, mono, sc, serif, w, seg, f} from './theme';
 import {usePop, useT, ease, Chip, Card, Stamp, Counter, Dot} from './ui';
 
@@ -215,11 +215,11 @@ export const Moat: React.FC = () => {
 /* ---------- S17: terminal — "this video was edited by Claude" ---------- */
 export const TERMINAL_LINES = [
   {t: 0.0, txt: '$ claude', col: C.white},
-  {t: 0.35, txt: '> edit talking_head.mov — jackpot hook,', col: '#F0C3B2'},
-  {t: 0.35, txt: '  cutout bottom-left, SFX, EN + 中文', col: '#F0C3B2'},
+  {t: 0.35, txt: '> edit talking_head.mov — light style,', col: '#F0C3B2'},
+  {t: 0.35, txt: '  receipt hook, logos, pro SFX', col: '#F0C3B2'},
   {t: 1.6, txt: '✓ transcribed 230 words', col: '#7EE2A8'},
   {t: 1.9, txt: '✓ 27 cuts · 5 Joey soundbites', col: '#7EE2A8'},
-  {t: 2.2, txt: '✓ 15 motion scenes · 120+ SFX', col: '#7EE2A8'},
+  {t: 2.2, txt: '✓ 17 motion scenes · 150+ SFX', col: '#7EE2A8'},
   {t: 2.5, txt: '✓ rendered reel_final.mp4', col: '#7EE2A8'},
 ];
 export const Terminal: React.FC = () => {
@@ -298,14 +298,14 @@ export const Hook: React.FC = () => {
   return (
     <AbsoluteFill style={{background: C.paper}}>
       <div style={{position: 'absolute', top: 40, left: 0, right: 0, textAlign: 'center', fontFamily: inter, fontWeight: 800, fontSize: 28,
-        letterSpacing: 4, color: C.mute}}>THRIVE 2026 · CLAUDE MALAYSIA DAY 193</div>
+        letterSpacing: 4, color: C.mute}}>THRIVE 2027 · CLAUDE MALAYSIA DAY 193</div>
       <div style={{position: 'absolute', top: 110, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontWeight: 800, fontSize: 72,
         color: C.ink, opacity: Math.min(1, pp * 2), transform: `translateY(${(1 - pp) * 30}px)`}}>I asked <i style={{color: C.accent}}>Dato' Joey Yap</i></div>
       <div style={{position: 'absolute', left: interpolate(move, [0, 1], [484 - 170, 60]), top: interpolate(move, [0, 1], [250, 250]),
         width: 340, background: C.white, padding: 14, paddingBottom: 64, borderRadius: 14, boxShadow: '0 30px 60px rgba(0,0,0,.18)',
         transform: `rotate(${interpolate(move, [0, 1], [-3, -6])}deg) scale(${pp * interpolate(move, [0, 1], [1, .82])})`, transformOrigin: 'top left'}}>
         <div style={{width: 312, height: 400, overflow: 'hidden', borderRadius: 8}}>
-          <OffthreadVideo src={staticFile('broll/v2345.mp4')} startFrom={30} muted style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '20% 50%'}} /></div>
+          <Img src={staticFile('brand/joey_photo.jpg')} style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 20%'}} /></div>
         <div style={{position: 'absolute', bottom: 14, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontStyle: 'italic', fontWeight: 700, fontSize: 32}}>Dato' Joey Yap</div>
       </div>
       {t >= rm && <div style={{position: 'absolute', right: 50, top: 300, width: 560, textAlign: 'right', opacity: np, transform: `translateX(${(1 - np) * 60}px)`}}>
@@ -324,6 +324,7 @@ const QUOTES: Record<string, {q: string; extra?: string}> = {
   J2: {q: "They won't last very long.", extra: 'death'},
   J3: {q: 'Do the course first.', extra: 'course'},
   J4: {q: 'Of course I have heard of Claude.'},
+  J5: {q: 'What you really need is a separate product.', extra: 'product'},
 };
 export const Quote: React.FC<{id: string}> = ({id}) => {
   const t = useT(); const s = seg(id); const p = usePop(s.out); const Q = QUOTES[id];
@@ -333,12 +334,13 @@ export const Quote: React.FC<{id: string}> = ({id}) => {
       <div style={{position: 'absolute', top: 200, left: 80, right: 80, fontFamily: serif, fontStyle: 'italic', fontWeight: 700, fontSize: 84,
         lineHeight: 1.1, color: C.ink, opacity: p, transform: `translateY(${(1 - p) * 40}px)`}}>{Q.q}</div>
       <div style={{position: 'absolute', top: 480, left: 80, fontFamily: inter, fontWeight: 800, fontSize: 30, letterSpacing: 3, color: C.mute, opacity: p}}>
-        — DATO' JOEY YAP, LIVE AT THRIVE</div>
+        — DATO' JOEY YAP, LIVE AT THRIVE 2027</div>
       <div style={{position: 'absolute', left: 0, right: 0, top: 600, display: 'flex', justifyContent: 'center'}}>
         {Q.extra === 'live' && <DoorBadge at={s.out + .3} good big />}
         {Q.extra === 'death' && <DoorBadge at={s.out + .2} good={false} big />}
       </div>
       {Q.extra === 'death' && <Stamp at={w('J2', 'won')} text="WON'T LAST" color={C.red} size={70} rot={-8} style={{top: '86%'}} />}
+      {Q.extra === 'product' && <Stamp at={w('J5', 'separate')} text="SEPARATE PRODUCT" color={C.accent} size={70} rot={-5} style={{top: '78%'}} />}
       {Q.extra === 'course' && <Stamp at={w('J3', 'do')} text="ONLINE COURSES ✓" color={C.accent} size={70} rot={-5} style={{top: '78%'}} />}
     </AbsoluteFill>);
 };
@@ -377,7 +379,7 @@ export const Jackpot: React.FC = () => {
 
 export const GFX: Record<string, React.FC> = {
   jackpot: Jackpot,
-  hook: Hook, recap: Recap, J1: () => <Quote id="J1" />, J2: () => <Quote id="J2" />, J3: () => <Quote id="J3" />, J4: () => <Quote id="J4" />,
+  hook: Hook, recap: Recap, J5: () => <Quote id="J5" />, J1: () => <Quote id="J1" />, J2: () => <Quote id="J2" />, J3: () => <Quote id="J3" />, J4: () => <Quote id="J4" />,
   question: Question, community: Community, options: () => <Options />, 'options-pick': () => <Options pick />,
   livedoor: LiveDoor, doors: Doors, product: Product, workshops: Workshops, ecosystem: Ecosystem, moat: Moat,
   terminal: Terminal, goal: Goal, comment: Comment, day: Day,

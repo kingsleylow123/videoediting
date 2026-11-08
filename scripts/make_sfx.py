@@ -103,6 +103,37 @@ save("kaching", kach, .95)
 # sub hit for the jackpot slam
 x = t(.9); save("subhit", np.tanh(np.sin(2*np.pi*np.cumsum(38+60*np.exp(-x*16))/SR)*np.exp(-x*4)*2.2), .95)
 
+# ---- v4 (Version A receipt hook) kit: richer, with a simple room reverb ----
+def reverb(x, rt=1.1, mix=.25):
+    ir_t = t(rt); ir = rng.standard_normal(len(ir_t)) * np.exp(-ir_t * 6.9 / rt); ir = lp(ir, .35); ir /= np.sum(np.abs(ir)) / 6
+    wet = np.convolve(x, ir)[:len(x) + len(ir_t)]; dry = np.concatenate([x, np.zeros(len(wet) - len(x))])
+    return dry * (1 - mix) + wet * mix
+# dot-matrix printer line: needle chatter at ~180 Hz with paper-feed hum, 0.32s
+x = t(.32); chat = np.zeros(len(x)); step = int(SR / 180)
+for i in range(0, len(x), step):
+    seg = rng.standard_normal(min(90, len(x) - i)) * np.exp(-np.arange(min(90, len(x) - i)) / 18); chat[i:i+len(seg)] += seg * rng.uniform(.6, 1)
+feed = np.sin(2*np.pi*95*x) * .25 + bandsweep(.32, 900, 1300, .5) * .3
+save("printer", (chat * .7 + feed) * env(len(x), .005, .04), .6)
+# paper tear: filtered noise with ragged envelope
+x = t(.35); rag = (rng.random(len(x)) > .45).astype(float); rag = lp(rag, .02)
+save("tear", bandsweep(.35, 2500, 5000, .4) * rag * np.linspace(1, .3, len(x)), .7)
+# logo slam: deep impact + noise burst + bright shimmer tail, reverberated
+x = t(1.6); boom = np.sin(2*np.pi*np.cumsum(48 + 110*np.exp(-x*22))/SR) * np.exp(-x*3.5)
+burst = lp(rng.standard_normal(len(x)), .25) * np.exp(-x*18) * 1.6
+shim = sum(np.sin(2*np.pi*f*x + rng.uniform(0, 6)) * np.exp(-x*2.2) for f in [2093, 2637, 3136, 4186, 5274]) * .06
+save("slam", reverb(np.tanh((boom + burst) * 1.5) + shim, 1.4, .3), .95)
+# reverse cymbal riser into the slam, 0.6s
+x = t(.6); cym = bandsweep(.6, 3000, 9000, .25) * np.linspace(0, 1, len(x)) ** 3
+save("revcym", cym, .6)
+# shimmer sparkle
+x = t(1.2); save("shimmer", reverb(sum(np.sin(2*np.pi*f*x) * np.exp(-x*(3 + k)) * np.clip((x - k*.05)*40, 0, 1) for k, f in enumerate([2349, 2793, 3520, 4186, 4699, 5588])), 1.0, .35), .5)
+# punchier layered whoosh (air + low body), reverberated
+x = t(.5); air = bandsweep(.5, 400, 6000, .12) * np.sin(np.linspace(0, np.pi, len(x))) ** 2
+body = np.sin(2*np.pi*np.cumsum(np.geomspace(90, 45, len(x)))/SR) * np.sin(np.linspace(0, np.pi, len(x))) * .5
+save("whoosh2", reverb(air + body, .6, .2), .8)
+# warmer, more "real" ka-ching: add reverb to the existing layered one
+save("kaching2", reverb(kach, 1.2, .22), .95)
+
 # ---- music bed: 100 BPM light, warm pluck + soft kick + hat, 96s ----
 bpm = 100; beat = 60/bpm; dur = float(sys.argv[2]) if len(sys.argv) > 2 else 96
 N = int(SR*dur); mus = np.zeros(N)
