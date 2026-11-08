@@ -8,7 +8,7 @@ import {GFX, TERMINAL_LINES, DoorBadge} from './gfx';
 import {usePop, useT, ease, Stamp} from './ui';
 import zh from '../data/zh.json';
 
-const CUT_SRC = 'th_cut.webm';
+const CUT_SRC = 'th_cut_v3.webm';
 const JOEY_SRC = (t: number) => t < 20 ? {file: 'broll/joey_a.mp4', at: t} : t < 120 ? {file: 'broll/joey_b.mp4', at: t - 88}
   : t < 200 ? {file: 'broll/joey_d.mp4', at: t - 138} : {file: 'broll/joey_c.mp4', at: t - 224};
 const JOEY = ['J1', 'J2', 'J5', 'J3', 'J4'].map(seg);
@@ -269,7 +269,7 @@ export const ReelV3: React.FC = () => {
 /* ================= cover frame ================= */
 export const Cover: React.FC = () => (
   <AbsoluteFill style={{background: '#000'}}>
-    <Img src={staticFile('broll/photo2.jpg')} style={{width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(.55) blur(2px)'}} />
+    <Img src={staticFile('broll/photo2.jpg')} style={{width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(.42) blur(10px)'}} />
     <div style={{position: 'absolute', top: 150, left: 0, right: 0, display: 'flex', justifyContent: 'center'}}>
       <div style={{background: '#F2D64B', borderRadius: 30, padding: '26px 40px', textAlign: 'center', fontFamily: inter, fontWeight: 900, fontSize: 84, lineHeight: 1.05, color: '#111', maxWidth: 980}}>
         I Asked Dato' Joey Yap How to Hit <span style={{color: C.accent}}>RM2M</span></div></div>
