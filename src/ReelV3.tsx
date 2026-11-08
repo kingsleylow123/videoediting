@@ -91,7 +91,7 @@ const Background: React.FC = () => (
 const JoeyBg: React.FC<{file: string; at: number}> = ({file, at}) => {
   const frame = useCurrentFrame(); const {fps} = useVideoConfig(); const p = spring({frame, fps, config: {damping: 22, stiffness: 260}});
   return (
-    <AbsoluteFill style={{background: '#000', transform: `translateX(${(1 - p) * 1080}px)`, filter: `blur(${(1 - p) * 14}px)`}}>
+    <AbsoluteFill style={{background: '#111', transform: `translateX(${(1 - p) * 1080}px)`, filter: `blur(${(1 - p) * 14}px)`}}>
       <div style={{position: 'absolute', left: 0, right: 0, top: 270, bottom: 0, overflow: 'hidden'}}>
         <OffthreadVideo src={staticFile(file)} startFrom={f(at)} muted style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '38% 0%', transform: `scale(${1.04 + frame / fps * .015})`, transformOrigin: '38% 10%'}} /></div>
       <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%)'}} />
@@ -249,8 +249,8 @@ export const ReelV3: React.FC = () => {
     const fade = interpolate(t, [TOTAL - 1.5, TOTAL], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
     return (inJoey(t) ? 0.022 : 0.05) * fade * Math.min(1, (t - HOOK) / .3); };
   return (
-    <AbsoluteFill style={{background: '#000'}}>
-      <AbsoluteFill style={{transform: shake}}>
+    <AbsoluteFill style={{background: C.paper}}>
+      <AbsoluteFill style={{transform: shake, background: C.paper}}>
         <Background />
         <JoeyOverlay />
         <Sticker />

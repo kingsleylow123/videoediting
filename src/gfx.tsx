@@ -215,11 +215,11 @@ export const Moat: React.FC = () => {
 /* ---------- S17: terminal — "this video was edited by Claude" ---------- */
 export const TERMINAL_LINES = [
   {t: 0.0, txt: '$ claude', col: C.white},
-  {t: 0.35, txt: '> edit talking_head.mov — light style,', col: '#F0C3B2'},
-  {t: 0.35, txt: '  Light style Joshua, SFX, split screen', col: '#F0C3B2'},
-  {t: 1.6, txt: '✓ transcribed 284 words', col: '#7EE2A8'},
-  {t: 1.9, txt: '✓ 19 cuts · 4 Joey soundbites', col: '#7EE2A8'},
-  {t: 2.2, txt: '✓ 18 motion scenes · 50+ SFX', col: '#7EE2A8'},
+  {t: 0.35, txt: '> edit talking_head.mov — jackpot hook,', col: '#F0C3B2'},
+  {t: 0.35, txt: '  cutout bottom-left, SFX, EN + 中文', col: '#F0C3B2'},
+  {t: 1.6, txt: '✓ transcribed 230 words', col: '#7EE2A8'},
+  {t: 1.9, txt: '✓ 27 cuts · 5 Joey soundbites', col: '#7EE2A8'},
+  {t: 2.2, txt: '✓ 15 motion scenes · 120+ SFX', col: '#7EE2A8'},
   {t: 2.5, txt: '✓ rendered reel_final.mp4', col: '#7EE2A8'},
 ];
 export const Terminal: React.FC = () => {
