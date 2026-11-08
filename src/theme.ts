@@ -6,6 +6,7 @@ import tl from '../data/timeline.json';
 for (const wt of ['500', '700', '800', '900']) loadFont({family: 'InterTight', url: staticFile(`fonts/InterTight-${wt}.woff2`), weight: wt});
 loadFont({family: 'JBMono', url: staticFile('fonts/JetBrainsMono-500.woff2'), weight: '500'});
 loadFont({family: 'NotoSC', url: staticFile('fonts/NotoSC-900.woff2'), weight: '900'});
+loadFont({family: 'NotoZH', url: staticFile('fonts/NotoSC-zh-800.woff2'), weight: '800'});
 for (const wt of ['700', '800', '900']) loadFont({family: 'Playfair', url: staticFile(`fonts/Playfair-${wt}.woff2`), weight: wt});
 loadFont({family: 'Playfair', url: staticFile('fonts/Playfair-700i.woff2'), weight: '700', style: 'italic'});
 for (const wt of ['600', '800', '900']) loadFont({family: 'InterUI', url: staticFile(`fonts/Inter-${wt}.woff2`), weight: wt});
@@ -28,6 +29,8 @@ type W = {text: string; start: number; end: number; seg: string; spk: string; em
 export const WORDS = tl.words as W[];
 export const SEGS = tl.segments as {id: string; src: string; start: number; end: number; out: number; dur: number; spk: string}[];
 export const TOTAL = tl.total as number;
+export const HOOK = (tl as {hook?: number}).hook ?? 0;
+export const PARTS = ((tl as {parts?: unknown[]}).parts ?? tl.segments) as {id: string; src: string; start: number; end: number; out: number; dur: number; spk: string}[];
 export const seg = (id: string) => SEGS.find((s) => s.id === id)!;
 /** output time (s) of the nth word in segment `id` whose text starts with `txt` */
 export const w = (id: string, txt: string, nth = 0) => {

@@ -11,7 +11,7 @@ const Title: React.FC<{at: number; children: React.ReactNode; top?: number}> = (
 
 /* ---------- S2: "one serious question" ---------- */
 export const Question: React.FC = () => {
-  const a = w('K2', 'one'); const p = usePop(a, {damping: 10, stiffness: 220, mass: .6});
+  const a = w('K2b', 'one'); const p = usePop(a, {damping: 10, stiffness: 220, mass: .6});
   return (
     <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', background: 'rgba(246,244,239,.55)', backdropFilter: 'blur(6px)'}}>
       <div style={{transform: `scale(${interpolate(p, [0, 1], [1.8, 1])})`, opacity: p, textAlign: 'center'}}>
@@ -190,11 +190,11 @@ export const Ecosystem: React.FC = () => {
 
 /* ---------- S16: validated → build the moat ---------- */
 export const Moat: React.FC = () => {
-  const t = useT(); const v = w('K11', 'validated'); const m = w('K11', 'moat'); const s = seg('K11').out;
+  const t = useT(); const m = w('K11', 'moat'); const s = seg('K11').out;
   const ring = ease(t, m - .1, m + .8); const castle = usePop(s);
   return (
     <AbsoluteFill style={{background: C.paper}}>
-      <Title at={s}>Mass market demand</Title>
+      <Title at={s}>Demand: validated ✓</Title>
       <svg width="968" height="900" style={{position: 'absolute', inset: 0}}>
         <circle cx="484" cy="520" r="300" fill="none" stroke={C.blue} strokeOpacity=".18" strokeWidth={70 * ring} />
         <circle cx="484" cy="520" r="300" fill="none" stroke={C.blue} strokeWidth="10" strokeLinecap="round"
@@ -209,7 +209,6 @@ export const Moat: React.FC = () => {
         Claude<br />Malaysia</div>
       {t >= m && <div style={{position: 'absolute', bottom: 34, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontWeight: 800, fontStyle: 'italic',
         fontSize: 68, color: C.blue, opacity: ease(t, m, m + .4)}}>Now: build the moat.</div>}
-      <Stamp at={v} text="VALIDATED ✓" color={C.green} size={80} rot={-7} style={{top: '30%', opacity: t > m ? 1 - ease(t, m, m + .3) : undefined}} />
     </AbsoluteFill>);
 };
 
@@ -359,7 +358,25 @@ export const Recap: React.FC = () => {
     </AbsoluteFill>);
 };
 
+/* ---------- v3: K1 background after the jackpot ---------- */
+export const Jackpot: React.FC = () => {
+  const t = useT(); const d = w('K1', 'dato'); const pp = usePop(d);
+  return (
+    <AbsoluteFill style={{background: C.paper}}>
+      <div style={{position: 'absolute', top: 40, left: 0, right: 0, textAlign: 'center', fontFamily: inter, fontWeight: 800, fontSize: 30, letterSpacing: 5, color: C.mute}}>THE GOAL</div>
+      <div style={{position: 'absolute', top: 90, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontWeight: 900, fontSize: 150, color: C.ink, letterSpacing: -3}}>RM2,000,000</div>
+      <div style={{position: 'absolute', top: 270, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontStyle: 'italic', fontWeight: 700, fontSize: 64, color: C.accent}}>a year.</div>
+      <div style={{position: 'absolute', left: 484 - 160, top: 400, width: 320, background: C.white, padding: 12, paddingBottom: 60, borderRadius: 12,
+        boxShadow: '0 30px 60px rgba(0,0,0,.2)', transform: `rotate(-4deg) scale(${pp}) translateY(${(1 - pp) * 200}px)`, opacity: t >= d ? 1 : 0}}>
+        <div style={{width: 296, height: 360, overflow: 'hidden', borderRadius: 6}}>
+          <OffthreadVideo src={staticFile('broll/joey_b.mp4')} startFrom={60} muted style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '35% 40%'}} /></div>
+        <div style={{position: 'absolute', bottom: 12, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontStyle: 'italic', fontWeight: 700, fontSize: 32}}>Dato' Joey Yap</div>
+      </div>
+    </AbsoluteFill>);
+};
+
 export const GFX: Record<string, React.FC> = {
+  jackpot: Jackpot,
   hook: Hook, recap: Recap, J1: () => <Quote id="J1" />, J2: () => <Quote id="J2" />, J3: () => <Quote id="J3" />, J4: () => <Quote id="J4" />,
   question: Question, community: Community, options: () => <Options />, 'options-pick': () => <Options pick />,
   livedoor: LiveDoor, doors: Doors, product: Product, workshops: Workshops, ecosystem: Ecosystem, moat: Moat,

@@ -72,6 +72,37 @@ x = t(.05); save("tick", np.sin(2*np.pi*3200*x)*np.exp(-x*120), .35)
 # negative buzz (wrong)
 x = t(.35); save("buzz", np.sign(np.sin(2*np.pi*110*x))*.5*np.exp(-x*6) + np.sin(2*np.pi*116*x)*.3, .5)
 
+# ---- v3 hook kit ----
+# mechanical key: plastic tick + spring ping + low thock, three variants
+for k, (f1, f2) in enumerate([(2600, 140), (3100, 160), (2300, 120)]):
+    x = t(.07); n = rng.standard_normal(len(x))
+    click = n * np.exp(-x * 520) * .9 + np.sin(2*np.pi*f1*x) * np.exp(-x * 260) * .35
+    thock = np.sin(2*np.pi*f2*x) * np.exp(-x * 60) * .6
+    save(f"mkey{k}", click + thock, .55)
+# enter: heavier, longer thock
+x = t(.16); save("enter", np.sin(2*np.pi*95*x)*np.exp(-x*30) + rng.standard_normal(len(x))*np.exp(-x*300)*1.2 + np.sin(2*np.pi*1800*x)*np.exp(-x*120)*.3, .8)
+# slot ratchet: one reel tick
+x = t(.035); save("ratchet", (np.sin(2*np.pi*1400*x) + .6*rng.standard_normal(len(x))) * np.exp(-x*200), .4)
+# reel stop clack
+x = t(.18); save("clack", np.tanh((np.sin(2*np.pi*180*x)*np.exp(-x*35) + rng.standard_normal(len(x))*np.exp(-x*90)*.8 + np.sin(2*np.pi*2400*x)*np.exp(-x*80)*.3)*1.8), .8)
+# coins cascade: 40 random metallic tinks over 1.4s
+dur = 1.6; N = int(SR*dur); c = np.zeros(N)
+for i in range(46):
+    at = int(SR * (rng.random()**1.6) * 1.3); f0 = rng.uniform(2800, 6200); xx = t(.25)
+    tink = sum(np.sin(2*np.pi*f0*m*xx)*np.exp(-xx*(28+m*6))*a for m, a in [(1, 1), (2.76, .4), (5.4, .15)])
+    j = min(N, at+len(xx)); c[at:j] += tink[:j-at] * rng.uniform(.3, 1)
+save("coins", c, .55)
+# ka-ching: drawer slide + register bell double strike + coins tail
+xs = t(.12); slide = bandsweep(.12, 600, 3000) * np.linspace(1, .2, len(xs))
+xb = t(1.4); bell = lambda: sum(a*np.sin(2*np.pi*f*xb)*np.exp(-xb*k) for f, a, k in [(1567, 1, 3.2), (3135, .55, 5), (4700, .3, 7), (2349, .35, 4)])
+kach = np.zeros(int(SR*1.9)); kach[:len(xs)] += slide * 1.4
+b1 = bell(); i1 = int(.10*SR); kach[i1:i1+len(b1)] += b1 * .8
+i2 = int(.20*SR); kach[i2:i2+len(b1)] += b1 * 1.0
+co = np.concatenate([np.zeros(int(.25*SR)), c])[:len(kach)] * .6; kach[:len(co)] += co
+save("kaching", kach, .95)
+# sub hit for the jackpot slam
+x = t(.9); save("subhit", np.tanh(np.sin(2*np.pi*np.cumsum(38+60*np.exp(-x*16))/SR)*np.exp(-x*4)*2.2), .95)
+
 # ---- music bed: 100 BPM light, warm pluck + soft kick + hat, 96s ----
 bpm = 100; beat = 60/bpm; dur = float(sys.argv[2]) if len(sys.argv) > 2 else 96
 N = int(SR*dur); mus = np.zeros(N)

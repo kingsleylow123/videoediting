@@ -1,14 +1,11 @@
 import React from 'react';
-import {Composition} from 'remotion';
-import {Reel} from './Reel';
-import {ReelCutout} from './ReelCutout';
+import {Composition, Still} from 'remotion';
+import {ReelV3, Cover} from './ReelV3';
 import tl from '../data/timeline.json';
 
 export const RemotionRoot: React.FC = () => (
   <>
-    <Composition id="Reel" component={Reel} durationInFrames={Math.ceil(tl.total * 30)}
-      fps={30} width={1080} height={1920} />
-    <Composition id="ReelCutout" component={ReelCutout} durationInFrames={Math.ceil(tl.total * 30)}
-      fps={30} width={1080} height={1920} />
+    <Composition id="ReelV3" component={ReelV3} durationInFrames={Math.ceil(tl.total * 30)} fps={30} width={1080} height={1920} />
+    <Still id="Cover" component={Cover} width={1080} height={1920} />
   </>
 );
