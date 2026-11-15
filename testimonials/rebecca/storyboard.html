@@ -1,0 +1,239 @@
+<title>Rebecca Testimonial Edit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: editorial edit-decision sheet. Thesis up top, then a timeline ruler, then one row per beat (picture / graphics / sound). */
+:root{
+  --paper:#FAF7F2; --paper2:#F2EBDF; --card:#FFFDF9; --ink:#211C16; --ink-soft:#5F564B; --ink-faint:#978C7B;
+  --clay:#D97757; --clay-deep:#BE5C3B; --line:rgba(33,28,22,.10); --line-strong:rgba(33,28,22,.18); --tint:rgba(217,119,87,.12);
+  --sage:#4B7A5A;
+  --display:"Fraunces",Georgia,serif; --body:"Hanken Grotesk",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#1B1713; --paper2:#25201A; --card:#221D18; --ink:#F2EBDF; --ink-soft:#C9BFB1; --ink-faint:#8F8473;
+  --clay:#E08A6C; --clay-deep:#E9A085; --line:rgba(242,235,223,.10); --line-strong:rgba(242,235,223,.20); --tint:rgba(224,138,108,.14); --sage:#7FAE8C; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#1B1713; --paper2:#25201A; --card:#221D18; --ink:#F2EBDF; --ink-soft:#C9BFB1; --ink-faint:#8F8473;
+  --clay:#E08A6C; --clay-deep:#E9A085; --line:rgba(242,235,223,.10); --line-strong:rgba(242,235,223,.20); --tint:rgba(224,138,108,.14); --sage:#7FAE8C; color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:48px 80px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,5.4vw,58px);line-height:1.05;margin:10px 0 16px;text-wrap:balance}
+h1 em{color:var(--clay-deep);font-style:italic}
+h2{font-family:var(--display);font-weight:600;font-size:26px;margin:56px 0 12px;text-wrap:balance}
+h3{font-family:var(--display);font-weight:600;font-size:19px;margin:0 0 6px}
+p{max-width:68ch;margin:0 0 12px}
+.lede{font-size:18px;color:var(--ink-soft);max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:20px;font-family:var(--mono);font-size:13px;color:var(--ink-soft)}
+.meta b{color:var(--ink);font-weight:500}
+hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+.verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:13px;overflow:hidden;margin-top:28px}
+.verdict>div{background:var(--card);padding:18px 20px;min-width:0}
+.verdict .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px}
+.verdict .v{font-family:var(--display);font-size:22px;line-height:1.2}
+.verdict .v em{color:var(--clay-deep)}
+.warn{border-left:3px solid var(--clay);background:var(--tint);padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+.warn b{font-weight:600}
+ul{padding-left:20px;margin:0 0 12px}li{margin:4px 0;max-width:70ch}
+/* timeline ruler */
+.ruler-box{overflow-x:auto;margin-top:16px}
+.ruler{position:relative;min-width:760px;height:92px;border-top:1px solid var(--line-strong)}
+.seg{position:absolute;top:10px;height:44px;border-radius:8px;background:var(--paper2);border:1px solid var(--line);font-family:var(--mono);font-size:11px;padding:4px 6px;overflow:hidden;white-space:nowrap;color:var(--ink-soft)}
+.seg.hot{background:var(--clay);color:#FFFDF9;border-color:var(--clay)}
+.seg.end{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tick{position:absolute;top:62px;font-family:var(--mono);font-size:11px;color:var(--ink-faint);transform:translateX(-50%)}
+.tick::before{content:"";position:absolute;left:50%;top:-8px;height:6px;border-left:1px solid var(--line-strong)}
+/* beats */
+.beat{display:grid;grid-template-columns:120px 1fr;gap:0 24px;padding:26px 0;border-top:1px solid var(--line)}
+.beat .tc{font-family:var(--mono);font-size:13px;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+.beat .tc b{display:block;font-size:20px;color:var(--ink);font-weight:500}
+.beat .tc span{display:block;margin-top:6px;font-size:11px;color:var(--ink-faint)}
+.beat.hook .tc b{color:var(--clay-deep)}
+.quote{font-family:var(--display);font-style:italic;font-size:19px;line-height:1.4;color:var(--ink);margin:4px 0 14px;max-width:62ch}
+.quote small{display:block;font-family:var(--mono);font-style:normal;font-size:11px;color:var(--ink-faint);margin-top:4px}
+.lanes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 20px}
+.lane{min-width:0}
+.lane .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--clay-deep);margin-bottom:4px}
+.lane p,.lane li{font-size:14.5px;color:var(--ink-soft)}
+.lane ul{padding-left:16px}
+.cut{font-family:var(--mono);font-size:12px;background:var(--paper2);border-radius:999px;padding:3px 10px;display:inline-block;margin:0 6px 6px 0;color:var(--ink-soft)}
+@media (max-width:640px){.beat{grid-template-columns:1fr}.beat .tc{margin-bottom:8px}.beat .tc b{display:inline;margin-right:8px}.beat .tc span{display:inline}}
+/* tables */
+.tbl{overflow-x:auto;margin-top:12px}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);font-weight:500}
+td code,.mono{font-family:var(--mono);font-size:12.5px}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:6px;border:1px solid var(--line-strong)}
+.endcard{margin-top:16px;border-radius:20px;background:#FAF7F2;color:#211C16;aspect-ratio:16/9;max-width:100%;display:flex;flex-direction:column;justify-content:center;padding:6% 8%;border:1px solid var(--line-strong)}
+.endcard .l1{font-family:var(--display);font-size:clamp(20px,3.6vw,40px);line-height:1.1}
+.endcard .l1 em{color:#BE5C3B}
+.endcard .l2{font-family:var(--body);font-size:clamp(13px,1.7vw,19px);margin-top:14px;color:#5F564B}
+.endcard .kw{display:inline-block;margin-top:18px;font-family:var(--mono);font-size:clamp(14px,2vw,22px);background:#D97757;color:#FFFDF9;border-radius:999px;padding:8px 20px;align-self:flex-start;letter-spacing:.06em}
+.endcard .fine{margin-top:auto;font-family:var(--mono);font-size:clamp(9px,1vw,11px);color:#978C7B}
+ol.steps{padding-left:20px}ol.steps li{margin:8px 0}
+@media (prefers-reduced-motion:no-preference){.seg.hot{animation:none}}
+</style>
+
+<div class="wrap">
+  <div class="eyebrow">Claude Malaysia · Testimonial edit plan · v1 · 15 Nov 2026</div>
+  <h1>“The deal was <em>RM5,000.</em>”<br>Rebecca, 2½ months after her first class.</h1>
+  <p class="lede">A 16:9 testimonial ad for Meta and YouTube, about 74 seconds long. It opens on the number, then tells the story in order: one class, a niche she didn't know, a closed client, and half the money already in.</p>
+  <div class="meta">
+    <span><b>Source</b> “Rebecca Raw Video” · 1920×1080 · 30fps · 1:42</span>
+    <span><b>Usable talk</b> 0:00–1:18.7</span>
+    <span><b>Output</b> 1920×1080 H.264 · −14 LUFS</span>
+    <span><b>Captions</b> EN + 中文</span>
+    <span><b>CTA</b> Comment “CLAUDE”</span>
+  </div>
+
+  <div class="verdict">
+    <div><div class="k">Hook (0–3s)</div><div class="v">Her voice says <em>“The deal was 5,000.”</em> Number slams in.</div></div>
+    <div><div class="k">Story spine</div><div class="v">1 class → niche she didn't know → closed → <em>50% collected</em></div></div>
+    <div><div class="k">Proof device</div><div class="v">Ledger card + Aug→Oct timeline. <em>“Almost”</em> stays in.</div></div>
+  </div>
+
+  <h2>What I found in the raw file</h2>
+  <ul>
+    <li><b>Captions are burned in, in English and Chinese, and they drift.</b> They sync at the start but run about 15s behind the audio by the end. That's why I need the clean original; a re-caption can't cover them.</li>
+    <li><b>The picture goes black at 1:19 and the audio goes silent at 1:18.8.</b> The last 23s are only leftover captions on black. All of it gets cut.</li>
+    <li><b>The audio is café-loud:</b> mean −18 dB with peaks at −0.5 dB, plus kitchen clatter and a server walking through frame at about 0:45. Plan for light denoise and a dialogue EQ.</li>
+    <li><b>The background is green neon tile,</b> which fights the brand's “no neon” rule. Pull green saturation down about 30% in the grade so the clay graphics carry the colour.</li>
+    <li><b>The niche is “US stocks / trading”.</b> Whisper misheard “US stocks” as “I was stopped”, but the old captions confirm it. Captions will read “Trading. US stocks.”</li>
+  </ul>
+  <div class="warn"><b>Compliance call.</b> At 1:10 you say “you make back ROI already”, but at 0:52 she says “almost”. I cut your ROI line and keep her “Almost, yeah.” It's the more believable beat, and it keeps Meta's earnings-claim review off our back. The end card also carries “Individual result. Results vary.”</div>
+  <div class="warn"><b>CTA risk.</b> “Comment CLAUDE” only fires a DM if ManyChat is linked to the <i>ad post</i> on Meta. On YouTube, comments can't trigger anything. For the YouTube version I'll put “Link in description” on the end card instead.</div>
+
+  <h2>Cut map</h2>
+  <p class="mono" style="color:var(--ink-faint);font-size:12px">Output timeline in seconds. Clay = hook, dark = end card.</p>
+  <div class="ruler-box"><div class="ruler" id="ruler"></div></div>
+
+  <h2>Beat-by-beat</h2>
+  <p style="color:var(--ink-soft)">The source in/out times come from this export's audio. Once the clean file arrives I'll re-sync them by waveform.</p>
+
+  <div id="beats"></div>
+
+  <h2>End card (5s)</h2>
+  <div class="endcard" role="img" aria-label="End card mockup">
+    <div class="l1">She didn't know trading.<br>She knew how to <em>work with Claude.</em></div>
+    <div class="l2">Your first 1-day class is where it starts. We'll DM you the next date.</div>
+    <div class="kw">COMMENT “CLAUDE”</div>
+    <div class="fine">Individual result; results vary. Claude Malaysia is an independent community, not affiliated with Anthropic.</div>
+  </div>
+  <ul style="margin-top:14px">
+    <li><b>Motion:</b> paper wipes in from the final frame (left→right, 12 frames). The two headline lines fade up 6 frames apart, the pill pops in at 100→104→100%, and the Claude Malaysia mark sits top-right with ½-diameter clear space. The mark appears <i>only here</i> because brand rules ban it over photos.</li>
+    <li><b>Copy (EN / 中文):</b> “She didn't know trading. She knew how to work with Claude.” / “她不懂交易。她懂得用 Claude。” · Pill: COMMENT “CLAUDE” / 留言 “CLAUDE”.</li>
+    <li><b>YouTube cut:</b> the pill reads “LINK IN DESCRIPTION ↓”.</li>
+  </ul>
+
+  <h2>Sound design</h2>
+  <div class="tbl"><table>
+    <tr><th>Layer</th><th>Spec</th><th>Why</th></tr>
+    <tr><td>Dialogue</td><td>Light RNNoise denoise, high-pass at 90 Hz, +2 dB at 3 kHz for presence, then a leveller. Integrated −14 LUFS, true peak −1 dBTP.</td><td>Café clatter tires viewers out. −14 LUFS is the Meta and YouTube playback target.</td></tr>
+    <tr><td>Music bed</td><td>Warm acoustic/lo-fi at 88–96 BPM with no vocals. Sits about −26 LUFS under speech with sidechain ducking (−8 dB). Starts at the hook's 3.0s, swells into the 1:05 congrats, and resolves on the end card.</td><td>Founders read slow and warm as credible. A trap or EDM bed reads like a get-rich ad.</td></tr>
+    <tr><td>SFX style</td><td>Paper, pencil and soft-UI sounds. No airhorns, bass drops or cash-register clichés. Every SFX sits 6–10 dB under dialogue.</td><td>It matches the brand's paper-and-ink world and keeps the ad believable.</td></tr>
+    <tr><td>Room tone</td><td>Loop 2s of clean café tone under every jump cut.</td><td>Hides the cuts so they don't “pop”.</td></tr>
+  </table></div>
+
+  <h2>Brand spec for every graphic</h2>
+  <div class="tbl"><table>
+    <tr><th>Element</th><th>Spec</th></tr>
+    <tr><td>Captions EN</td><td>Hanken Grotesk SemiBold 46px, Ink <span class="sw" style="background:#211C16"></span>#211C16 on a Paper pill <span class="sw" style="background:#FAF7F2"></span>#FAF7F2 at 92% with 13px radius. Bottom-centre, 90px safe margin, ≤ 32 characters per line, 2–5 words per card, keywords in Clay Deep <span class="sw" style="background:#BE5C3B"></span>#BE5C3B.</td></tr>
+    <tr><td>Captions 中文</td><td>Noto Sans SC Medium 34px in Ink Soft #5F564B, set as a second line inside the same pill.</td></tr>
+    <tr><td>Numbers / titles</td><td>Fraunces 400, with clay-italic emphasis. Example: “RM<i>5,000</i>”.</td></tr>
+    <tr><td>Labels</td><td>IBM Plex Mono 500, uppercase, +8% tracking. Example: “DEAL VALUE”, “AUG → OCT”.</td></tr>
+    <tr><td>Lower-thirds</td><td>Paper card with 13px radius and a hairline border. Name in Fraunces 40px, role in Plex Mono 18px. Fades in over 8 frames, holds 3s, fades out over 8 frames.</td></tr>
+    <tr><td>Motion rules</td><td>Calm fades, reveals and draws with ease-out cubic, 8–14 frame durations. No glow, gradients, neon, shake or 3D flips. Colour balance follows 60/25/12/3: graphics are mostly paper and ink, with clay as the accent.</td></tr>
+    <tr><td>Grade</td><td>Warm white balance (+300K), green saturation −30%, skin protected, gentle S-curve.</td></tr>
+  </table></div>
+
+  <h2>Next steps</h2>
+  <ol class="steps">
+    <li><b>You:</b> upload the clean camera original (the MOV with no captions) to Drive and send me the link. A separate phone audio file, if you have one, helps too.</li>
+    <li><b>You:</b> confirm ManyChat has a “CLAUDE” comment trigger on the ad post. Without it, the CTA goes nowhere.</li>
+    <li><b>Me:</b> render v1. That means a waveform re-sync, the cut, grade, EN+中文 captions, all the graphics on this page, the SFX and the music bed. You get a 1080p MP4 plus a YouTube variant.</li>
+    <li><b>You:</b> one round of notes on timing and copy. Then I lock the cut and export both versions.</li>
+  </ol>
+</div>
+
+<script>
+const beats=[
+ {id:"hook",t:[0,3],src:"41.6–43.0 · 44.6–45.6",label:"HOOK",cls:"hot",
+  q:"“The deal was 5,000.” … “I collected 50%.”",who:"Rebecca",
+  pic:["Cold open mid-sentence with no intro. Punch in to 115% on Rebecca, then cut to the second line at 1.4s.","2.4–3.0s: freeze 4 frames on her smile while the paper card slides up."],
+  gfx:["0.1s: “RM5,000” counts up from RM0 in Fraunces 180px, ink with a clay-italic “5,000”, centred left of frame (8 frames, ease-out).","1.5s: a mono label “COLLECTED” and a clay bar that fills to 50% beneath the number.","2.4s: a lower band in Fraunces italic reads “2½ months after her first Claude class.” / “第一堂 Claude 课后两个半月。”"],
+  sfx:["0.0: a soft paper whoosh in.","0.1–0.4: counter ticks (pencil-on-paper clicks).","1.5: a soft UI “fill” swish.","2.9: paper snap into beat 1. The music starts here."]},
+ {id:"b1",t:[3,10],src:"4.3–12.4",label:"Who",
+  q:"“Hi, I'm Rebecca, and after joining the one-day class, I started to explore AI…”",who:"Rebecca",
+  pic:["Jump-cut out the “the actually” stumble at about 6.0s, with room tone under the cut.","Wide two-shot first, then a 110% punch-in on “explore AI”."],
+  gfx:["Lower-third at +0.4s: “Rebecca” / “CLAUDE MALAYSIA ALUMNA”.","Small mono tag top-left: “AUG 2026 · 1-DAY CLASS”."],
+  sfx:["A soft pop as the lower-third lands, 10 dB under voice."]},
+ {id:"b2",t:[10,18],src:"12.4–20.0",label:"Opportunity",
+  q:"“…somebody was looking for somebody to make a dashboard in a niche that I wasn't even familiar with.”",who:"Rebecca",
+  pic:["Hold the two-shot. Your reaction sells it."],
+  gfx:["On “dashboard”: a line-drawn dashboard wireframe draws on screen-right (ink strokes, 14 frames) with three empty panels.","On “wasn't even familiar with”: a “?” in clay italic Fraunces sits in the empty panel."],
+  sfx:["Pencil-sketch scribble under the draw-on.","A tiny question “plink” on the “?”."]},
+ {id:"b3",t:[18,21],src:"20.0–22.8",label:"Twist",
+  q:"“So what was the niche?” “Trading.” “Trading?”",who:"Kingsley / Rebecca",
+  pic:["Quick cuts. On “Trading.” snap-zoom to 125% on Rebecca, hold 6 frames, then cut to your “Trading?” reaction at 120%."],
+  gfx:["“TRADING.” in Fraunces 160px, ink, centred for 18 frames.","A small mono sub-label reads “US STOCKS” / “美股”."],
+  sfx:["A tape-stop on the zoom: short, 300ms.","A beat of silence on the music (duck −14 dB) for comic timing."]},
+ {id:"b4",t:[21,30],src:"22.8–31.7",label:"Mechanism",
+  q:"“US stocks, so… after prompting and learning more, I managed to close the deal with the client.”",who:"Rebecca",
+  pic:["Trim the “so um” filler. Use a 105% slow push-in over the whole line."],
+  gfx:["The beat-2 wireframe comes back and its panels fill in: a candlestick chart drawn in ink with clay up-candles, a ticker table, and a P/L number.","Three mono chips slide in on cue: LEARN → PROMPT → BUILD, then a fourth chip in clay, “CLOSED ✓”, on “close the deal”."],
+  sfx:["Soft keyboard taps under “prompting”.","A chip-in tick ×3.","A warm two-note chime on “CLOSED”."]},
+ {id:"b5",t:[30,38],src:"31.7–39.5",label:"Recap",
+  q:"“So basically you learn Claude, and now you close your very, very first deal, to build a Claude dashboard for someone else.” “Yes, correct.”",who:"Kingsley / Rebecca",
+  pic:["Cut to the angle that favours you. End on Rebecca's “Yes, correct” nod."],
+  gfx:["Lower-third at +0.3s: “Kingsley Low” / “FOUNDER, CLAUDE MALAYSIA”.","On “very, very first deal”: a mono stamp “DEAL #1” rotates in 0→−4° (rotation stays under 5°, so it still reads calm)."],
+  sfx:["A rubber-stamp thud on “DEAL #1”, low and soft."]},
+ {id:"b6",t:[38,44],src:"39.5–45.6",label:"Proof",
+  q:"“How much is the deal worth?” “The deal was 5,000.” “And have you collected money?” “I collected 50%.”",who:"Kingsley / Rebecca",
+  pic:["This is the full context for the hook lines. Use the alternate angle or a tighter crop so it doesn't feel like a repeat."],
+  gfx:["A ledger card slides in from the right on paper: “DEAL VALUE RM5,000”, then “COLLECTED RM2,500” with a clay bar filling to 50%, and a third line in faint ink, “BALANCE ON DELIVERY”."],
+  sfx:["A paper slide-in.","A soft fill swish on the bar (the same SFX as the hook, so the brain links them)."]},
+ {id:"b7",t:[44,50.5],src:"46.9–53.5",label:"Payback",
+  q:"“That means with just one deal, you make back the whole investment of the one-day class and the two-day class already.” “Almost, yeah.”",who:"Kingsley / Rebecca",
+  pic:["Cut the duplicate “Almost. Almost, yeah.” down to one clean “Almost, yeah.” with her laugh.","Cut “bring another friend” (54.4–58.3) entirely. It's an off-topic promo that breaks the story."],
+  gfx:["Two stacked mono blocks, “1-DAY CLASS” and “2-DAY CLASS”, with one bar labelled “DEAL #1” growing to about 90% of their combined width. No RM figures are shown, per your call.","On “Almost”: a handwritten clay-italic “almost.” pops beside the bar. Honest and charming."],
+  sfx:["A rising soft-synth fill under the bar, which stops short on “almost” for a small comic beat."]},
+ {id:"b8",t:[50.5,62],src:"58.3–70.1",label:"Timeline",
+  q:"“How long did this whole process take you…?” “I started learning Claude in August, and I started taking on my first deal in late October — about two and a half months.”",who:"Kingsley / Rebecca",
+  pic:["Two-shot, then a slow push to Rebecca as she counts the months."],
+  gfx:["A horizontal timeline draws across the lower third: AUG ● (“FIRST CLASS”) → SEP → OCT ● (“FIRST CLIENT”).","A clay bracket spans it, labelled “2½ MONTHS” in Fraunces italic."],
+  sfx:["A pencil line drawing along the timeline.","A soft dot pop at AUG and OCT."]},
+ {id:"b9",t:[62,65],src:"70.1–71.2 · 74.3–75.2",label:"Reaction",
+  q:"“Wow, two and a half months.” … “Yes, correct.”",who:"Kingsley / Rebecca",
+  pic:["Keep only “Wow, two and a half months”, then J-cut to her “Yes, correct.” The ROI line in between is removed for compliance."],
+  gfx:["None. Let the reaction breathe."],
+  sfx:["The music lifts here (a filter opens)."]},
+ {id:"b10",t:[65,69],src:"75.2–78.7",label:"Warmth",
+  q:"“I'm so happy for you, Rebecca. Congrats.”",who:"Kingsley",
+  pic:["Hold the wide shot of you both smiling. If there's a hand-gesture moment, slow it to 80%."],
+  gfx:["None. A 10-frame paper wipe into the end card."],
+  sfx:["The music resolves to its final chord across the wipe."]},
+ {id:"end",t:[69,74],src:"—",label:"END CARD",cls:"end",
+  q:"Comment “CLAUDE”",who:"End card",
+  pic:["See the end-card spec below."],
+  gfx:["Paper ground, two-line Fraunces headline, clay pill CTA, the mark top-right."],
+  sfx:["A soft pencil tick as the pill lands, then the music tail fades by 74s."]}
+];
+const fmt=s=>{const m=Math.floor(s/60),r=(s%60);return m+":"+String(Math.floor(r)).padStart(2,"0")+(r%1?"."+String(Math.round((r%1)*10)):"")};
+const total=74, ruler=document.getElementById("ruler");
+beats.forEach(b=>{const d=document.createElement("div");d.className="seg "+(b.cls||"");d.style.left=(b.t[0]/total*100)+"%";d.style.width="calc("+((b.t[1]-b.t[0])/total*100)+"% - 3px)";d.textContent=b.label;d.title=b.label+" "+fmt(b.t[0])+"–"+fmt(b.t[1]);ruler.appendChild(d)});
+for(let s=0;s<=total;s+=10){const t=document.createElement("div");t.className="tick";t.style.left=(s/total*100)+"%";t.textContent=fmt(s);ruler.appendChild(t)}
+const list=a=>"<ul>"+a.map(x=>"<li>"+x+"</li>").join("")+"</ul>";
+document.getElementById("beats").innerHTML=beats.map(b=>`
+ <section class="beat ${b.id==="hook"?"hook":""}">
+  <div class="tc"><b>${fmt(b.t[0])}–${fmt(b.t[1])}</b><span>${b.label} · src ${b.src}</span></div>
+  <div>
+   <div class="quote">${b.q}<small>${b.who}</small></div>
+   <div class="lanes">
+    <div class="lane"><div class="k">Picture</div>${list(b.pic)}</div>
+    <div class="lane"><div class="k">Motion graphics</div>${list(b.gfx)}</div>
+    <div class="lane"><div class="k">Sound</div>${list(b.sfx)}</div>
+   </div>
+  </div>
+ </section>`).join("");
+</script>
