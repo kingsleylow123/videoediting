@@ -1,0 +1,267 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root{
+  --paper:#FAF7F2; --paper2:#F2EBDF; --card:#FFFDF9; --ink:#211C16; --ink-soft:#5F564B; --ink-faint:#978C7B;
+  --clay:#D97757; --clay-deep:#BE5C3B; --line:rgba(33,28,22,.12); --line-strong:rgba(33,28,22,.22);
+  --display:"Fraunces",Georgia,serif; --body:"Hanken Grotesk",Arial,sans-serif; --mono:"IBM Plex Mono",monospace; --zh:"Noto Sans SC",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:transparent}
+#stage{position:relative;width:1920px;height:1080px}
+.abs{position:absolute}
+.hide{opacity:0}
+.mono{font-family:var(--mono);font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.paper{background:var(--paper);border-radius:28px;box-shadow:0 1px 0 var(--line-strong)}
+/* captions */
+#cap{left:50%;bottom:64px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;
+  background:rgba(250,247,242,.94);border-radius:20px;padding:14px 34px 16px;max-width:1500px;text-align:center}
+#cap .en{font-family:var(--body);font-weight:600;font-size:48px;line-height:1.12;color:var(--ink);white-space:nowrap}
+#cap .en b{color:var(--clay-deep);font-weight:700}
+#cap .zh{font-family:var(--zh);font-weight:500;font-size:32px;line-height:1.2;color:var(--ink-soft)}
+/* lower thirds */
+.lt{bottom:236px;padding:20px 30px 22px;border-radius:13px;background:var(--card);border:1px solid var(--line)}
+.lt .n{font-family:var(--display);font-size:56px;line-height:1;color:var(--ink)}
+.lt .r{font-size:23px;color:var(--clay-deep);margin-top:10px}
+.lt .bar{position:absolute;left:30px;bottom:-1px;height:3px;background:var(--clay);border-radius:2px}
+/* hook */
+#hookCard{right:80px;top:110px;width:760px;padding:46px 54px 50px}
+#hookCard .lbl{font-size:22px;color:var(--ink-faint)}
+#hookNum{font-family:var(--display);font-size:164px;line-height:.95;color:var(--ink);font-variant-numeric:tabular-nums;margin-top:10px;letter-spacing:-.02em}
+#hookNum i{color:var(--clay-deep);font-style:italic}
+#hookColl{margin-top:30px}
+.track{height:18px;border-radius:999px;background:var(--paper2);overflow:hidden;margin-top:12px}
+.fill{height:100%;background:var(--clay);border-radius:999px;width:0}
+.row{display:flex;justify-content:space-between;align-items:baseline}
+.row .v{font-family:var(--display);font-size:44px;color:var(--ink)}
+#hookBand{left:0;right:0;bottom:0;height:250px;background:var(--paper);display:flex;flex-direction:column;justify-content:center;padding-left:120px}
+#hookBand .en{font-family:var(--display);font-style:italic;font-size:76px;color:var(--ink);line-height:1.05}
+#hookBand .en b{color:var(--clay-deep);font-weight:400}
+#hookBand .zh{font-family:var(--zh);font-size:34px;color:var(--ink-soft);margin-top:10px}
+/* tag */
+#tag{left:72px;top:64px;font-size:26px;color:var(--ink);background:rgba(250,247,242,.92);padding:10px 18px;border-radius:8px}
+/* dashboard */
+#dash{right:80px;top:110px;width:760px;height:560px;padding:30px}
+#dash svg{position:absolute;inset:0}
+#dashQ{position:absolute;left:0;right:0;top:170px;text-align:center;font-family:var(--display);font-style:italic;font-size:200px;color:var(--clay-deep);line-height:1}
+#chips{right:80px;top:700px;width:760px;display:flex;gap:12px;justify-content:flex-start}
+.chip{font-size:24px;padding:12px 20px;border-radius:999px;background:var(--paper);color:var(--ink);border:1px solid var(--line-strong)}
+.chip.on{background:var(--clay);color:#FFFDF9;border-color:var(--clay)}
+.arrow{font-family:var(--mono);font-size:24px;color:#FAF7F2;align-self:center;text-shadow:0 1px 3px rgba(0,0,0,.35)}
+/* trading */
+#trade{right:110px;top:250px;width:820px;text-align:center;padding:40px 30px 46px}
+#trade .w{font-family:var(--display);font-size:170px;line-height:1;color:var(--ink);letter-spacing:-.01em}
+#trade .s{font-size:28px;color:var(--clay-deep);margin-top:18px}
+/* stamp */
+#stamp{left:880px;top:220px;font-size:46px;color:var(--clay-deep);border:4px solid var(--clay-deep);border-radius:13px;padding:14px 26px;background:rgba(250,247,242,.9)}
+/* ledger: top strip */
+#ledger{left:50%;top:28px;width:1560px;padding:22px 40px;display:flex;align-items:center;gap:48px}
+#ledger .h{font-size:18px;color:var(--ink-faint);width:150px;line-height:1.4}
+#ledger .item{min-width:0}
+#ledger .k{font-size:18px;color:var(--ink-soft)}
+#ledger .big{font-family:var(--display);font-size:84px;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+#ledger .big i{color:var(--clay-deep)}
+#ledger #lg2{flex:1}
+#ledger .bal{font-size:18px;color:var(--ink-faint);width:170px;line-height:1.4;border-left:1px dashed var(--line-strong);padding-left:24px}
+/* payback: top strip */
+#pay{left:50%;top:28px;width:1560px;padding:24px 40px;display:flex;gap:36px;align-items:center}
+#pay .cap{font-size:18px;color:var(--ink-faint);width:150px;line-height:1.4}
+#pay .col{flex:1;position:relative}
+#pay .blocks{display:flex;gap:10px}
+#pay .blk{flex:1;height:58px;border-radius:13px;background:var(--paper2);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--ink-soft);border:1px solid var(--line)}
+#pay .dealbar{margin-top:10px;height:58px;border-radius:13px;background:var(--clay);width:0;display:flex;align-items:center;padding-left:22px;font-size:20px;color:#FFFDF9;white-space:nowrap;overflow:hidden}
+#almost{position:absolute;right:-6px;bottom:-26px;font-family:var(--display);font-style:italic;font-size:84px;color:var(--clay-deep);transform:rotate(-6deg)}
+/* timeline: top strip */
+#tl{left:50%;top:28px;width:1560px;height:234px}
+#tl svg{position:absolute;inset:0;overflow:visible}
+/* end card */
+#end{inset:0;background:var(--paper);clip-path:inset(0 100% 0 0)}
+#end .wrap{position:absolute;left:150px;top:230px;right:150px}
+#end .l1{font-family:var(--display);font-size:96px;line-height:1.06;color:var(--ink);letter-spacing:-.01em}
+#end .l1 i{color:var(--clay-deep)}
+#end .l2{font-family:var(--body);font-weight:500;font-size:36px;color:var(--ink-soft);margin-top:34px}
+#end .zh{font-family:var(--zh);font-size:30px;color:var(--ink-faint);margin-top:12px}
+#end .pill{display:inline-block;margin-top:52px;font-size:40px;background:var(--clay);color:#FFFDF9;border-radius:999px;padding:22px 46px}
+#end .pill span{font-family:var(--zh);text-transform:none;letter-spacing:0;font-size:32px;margin-left:18px;opacity:.92}
+#end .fine{position:absolute;left:150px;bottom:70px;font-size:17px;color:var(--ink-faint);letter-spacing:.04em}
+#end img{position:absolute;right:150px;top:110px;width:150px;height:150px}
+</style></head>
+<body><div id="stage">
+  <div id="tag" class="abs mono hide">Aug 2026 · 1-day class</div>
+
+  <div id="hookCard" class="abs paper hide">
+    <div class="lbl mono">Deal value</div>
+    <div id="hookNum">RM<i>5,000</i></div>
+    <div id="hookColl" class="hide">
+      <div class="row"><span class="lbl mono">Collected</span><span class="v" id="hookCollV">50%</span></div>
+      <div class="track"><div class="fill" id="hookFill"></div></div>
+    </div>
+  </div>
+  <div id="hookBand" class="abs hide">
+    <div class="en"><b>2½ months</b> after her first Claude class.</div>
+    <div class="zh">第一堂 Claude 课后,两个半月。</div>
+  </div>
+
+  <div id="dash" class="abs paper hide"><svg id="dashSvg" viewBox="0 0 760 560"></svg><div id="dashQ">?</div></div>
+  <div id="chips" class="abs hide">
+    <div class="chip mono" id="c1">Learn</div><div class="arrow">→</div>
+    <div class="chip mono" id="c2">Prompt</div><div class="arrow">→</div>
+    <div class="chip mono" id="c3">Build</div><div class="arrow">→</div>
+    <div class="chip mono on" id="c4">Closed ✓</div>
+  </div>
+
+  <div id="trade" class="abs paper hide"><div class="w">Trading.</div><div class="s mono" id="tradeS">US stocks · 美股</div></div>
+  <div id="stamp" class="abs mono hide">Deal #1</div>
+
+  <div id="ledger" class="abs paper hide">
+    <div class="h mono">Rebecca's<br>first client</div>
+    <div class="item" id="lg1"><div class="k mono">Deal value</div><div class="big" id="lgV">RM<i>5,000</i></div></div>
+    <div class="item" id="lg2"><div class="row"><span class="k mono">Collected</span><span class="big" style="font-size:60px" id="lgC">RM2,500</span></div><div class="track"><div class="fill" id="lgFill"></div></div></div>
+    <div class="bal mono" id="lg3">Balance<br>on delivery</div>
+  </div>
+
+  <div id="pay" class="abs paper hide">
+    <div class="cap mono">What she<br>invested</div>
+    <div class="col">
+      <div class="blocks"><div class="blk mono">1-day class</div><div class="blk mono">2-day class</div></div>
+      <div class="dealbar mono" id="payBar">Deal #1 · collected</div>
+      <div id="almost">almost.</div>
+    </div>
+  </div>
+
+  <div id="tl" class="abs paper hide"><svg id="tlSvg" viewBox="0 0 1560 234"></svg></div>
+
+  <div id="ltR" class="abs lt hide" style="left:96px"><div class="n">Rebecca</div><div class="r mono">Claude Malaysia alumna</div><div class="bar" id="ltRb"></div></div>
+  <div id="ltK" class="abs lt hide" style="right:96px"><div class="n">Kingsley Low</div><div class="r mono">Founder, Claude Malaysia</div><div class="bar" id="ltKb"></div></div>
+
+  <div id="cap" class="abs hide"><div class="en" id="capEn"></div><div class="zh" id="capZh"></div></div>
+
+  <div id="end" class="abs">
+    <img src="mark.svg" alt="Claude Malaysia">
+    <div class="wrap">
+      <div class="l1" id="e1">She didn't know trading.</div>
+      <div class="l1" id="e2">She knew how to <i>work with Claude.</i></div>
+      <div class="l2" id="e3">Your first deal starts with one day. We'll DM you the next class date.</div>
+      <div class="zh" id="e4">她不懂交易,但她懂得用 Claude。留言,我们私信你下一堂课的日期。</div>
+      <div class="pill mono" id="e5">Comment “CLAUDE”<span>留言 CLAUDE</span></div>
+    </div>
+    <div class="fine mono">Individual result; results vary. Claude Malaysia is an independent community, not affiliated with Anthropic.</div>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-clamp(x),3);              // ease-out cubic
+const eio=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const F=1/30;
+// visibility envelope: fade/rise in over dIn, out over dOut
+function env(t,a,b,dIn=10*F,dOut=8*F){ if(t<a||t>b) return 0; return Math.min(eo((t-a)/dIn), eo((b-t)/dOut)); }
+function show(el,o,dy=0,sx=1){ el.style.opacity=o; el.style.transform=(el._base||"")+` translateY(${(1-o)*dy}px) scale(${sx})`; }
+$("cap")._base="translateX(-50%)";["ledger","pay","tl"].forEach(i=>$(i)._base="translateX(-50%)");
+
+let CAPS=[], TOTAL=0;
+function fmtCap(s){ return s.replace(/\*(.+?)\*/g,"<b>$1</b>"); }
+
+// ---------- dashboard svg (deterministic) ----------
+function rnd(seed){ return ()=>{ seed=(seed*16807)%2147483647; return seed/2147483647; }; }
+const R=rnd(7); const candles=[]; let p=300;
+for(let i=0;i<22;i++){ const o=p, c=p+(R()-.58)*46; const hi=Math.min(o,c)-R()*20, lo=Math.max(o,c)+R()*20; candles.push({o,c,hi,lo}); p=c; }
+const LO=Math.min(...candles.map(c=>c.hi)), HI=Math.max(...candles.map(c=>c.lo));
+function dashSVG(draw, fill){
+  // draw: 0..1 wireframe stroke; fill: 0..1 contents
+  const L=2600, off=L*(1-draw);
+  const panels=[[30,30,700,40],[30,92,450,300],[500,92,230,300],[30,414,700,116]];
+  let s=`<g fill="none" stroke="#211C16" stroke-width="2.5" stroke-linecap="round">`;
+  panels.forEach(([x,y,w,h],i)=>{ const per=2*(w+h); s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="13" stroke-dasharray="${per}" stroke-dashoffset="${per*(1-clamp(draw*1.4-i*.13))}"/>`; });
+  s+=`</g>`;
+  if(fill>0){
+    s+=`<text x="50" y="58" font-family="IBM Plex Mono" font-weight="500" font-size="17" letter-spacing="1.5" fill="#5F564B" opacity="${clamp(fill*3)}">US EQUITIES · LIVE DASHBOARD</text>`;
+    s+=`<circle cx="700" cy="50" r="7" fill="#D97757" opacity="${clamp(fill*3)}"/>`;
+    const n=Math.floor(candles.length*clamp(fill*1.25));
+    for(let i=0;i<n;i++){ const c=candles[i]; const x=58+i*19.5; const up=c.c<c.o; const col=up?"#D97757":"#211C16";
+      const y=v=>112+(v-LO)/(HI-LO)*260; s+=`<line x1="${x+6}" x2="${x+6}" y1="${y(c.hi)}" y2="${y(c.lo)}" stroke="${col}" stroke-width="2"/>`;
+      s+=`<rect x="${x}" y="${y(Math.min(c.o,c.c))}" width="12" height="${Math.max(3,Math.abs(c.c-c.o)/(HI-LO)*260)}" rx="2" fill="${up?col:"#FAF7F2"}" stroke="${col}" stroke-width="2"/>`; }
+    const rows=[["NVDA","+2.4%"],["AAPL","+0.8%"],["TSLA","−1.2%"],["MSFT","+1.1%"],["AMZN","+0.6%"]];
+    rows.forEach(([t,v],i)=>{ const o=clamp(fill*2.2-i*.18); const y=140+i*52;
+      s+=`<g opacity="${o}"><text x="522" y="${y}" font-family="IBM Plex Mono" font-weight="500" font-size="22" fill="#211C16">${t}</text><text x="708" y="${y}" text-anchor="end" font-family="IBM Plex Mono" font-weight="500" font-size="22" fill="${v[0]=="+"?"#BE5C3B":"#5F564B"}">${v}</text><line x1="522" x2="708" y1="${y+16}" y2="${y+16}" stroke="rgba(33,28,22,.12)"/></g>`; });
+    const pl=Math.round(12480*eo(clamp(fill*1.6-.5)));
+    s+=`<g opacity="${clamp(fill*2-.6)}"><text x="54" y="462" font-family="IBM Plex Mono" font-weight="500" font-size="17" letter-spacing="1.5" fill="#978C7B">PORTFOLIO P/L (SAMPLE)</text><text x="54" y="512" font-family="Fraunces" font-size="44" fill="#211C16">+$${pl.toLocaleString("en-US")}</text></g>`;
+  }
+  return s;
+}
+// ---------- timeline svg ----------
+function tlSVG(line, aug, oct, br){
+  const x0=150, xo=1250, y=96, L=xo-x0+170;
+  let s=`<line x1="${x0}" y1="${y}" x2="${x0+L*line}" y2="${y}" stroke="#211C16" stroke-width="4" stroke-linecap="round"/>`;
+  [["AUG",x0],["SEP",x0+(xo-x0)*.45],["OCT",x0+(xo-x0)*.86],["NOV",xo+150]].forEach(([n,x])=>{ const o=clamp((line*L-(x-x0))/40+1); s+=`<text x="${x}" y="${y+50}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="500" font-size="22" letter-spacing="2" fill="#978C7B" opacity="${o}">${n}</text>`; });
+  if(aug>0) s+=`<circle cx="${x0}" cy="${y}" r="${15*eo(aug)}" fill="#D97757"/><text x="${x0}" y="${y-30}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="500" font-size="21" letter-spacing="2" fill="#211C16" opacity="${aug}">FIRST CLASS</text>`;
+  if(oct>0) s+=`<circle cx="${xo}" cy="${y}" r="${15*eo(oct)}" fill="#D97757"/><text x="${xo}" y="${y-30}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="500" font-size="21" letter-spacing="2" fill="#211C16" opacity="${oct}">FIRST CLIENT · LATE OCT</text>`;
+  if(br>0){ const w=(xo-x0)*eo(br); s+=`<path d="M${x0} ${y+70} v12 h${w} v-12" fill="none" stroke="#BE5C3B" stroke-width="3"/><text x="${(x0+xo)/2}" y="${y+112}" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="40" fill="#BE5C3B" opacity="${clamp(br*2-1)}">2½ months</text>`; }
+  return s;
+}
+// ---------- the timeline ----------
+window.render=function(t){
+  // HOOK 0 – 3.27
+  const hk=env(t,0.03,3.2,8*F,6*F); show($("hookCard"),hk,30);
+  const cnt=Math.round(5000*eo((t-0.05)/0.75)); $("hookNum").innerHTML=`RM<i>${cnt.toLocaleString("en-US")}</i>`;
+  const hc=env(t,1.5,3.2,8*F,6*F); show($("hookColl"),hc,16);
+  $("hookFill").style.width=(50*eo((t-1.6)/0.6))+"%";
+  $("hookCollV").textContent=Math.round(50*eo((t-1.6)/0.6))+"%";
+  const hb=env(t,2.45,3.27,7*F,1*F); show($("hookBand"),hb,60);
+
+  // tag + lower-thirds
+  show($("tag"),env(t,4.0,8.4),-10);
+  const lr=env(t,3.7,7.4); show($("ltR"),lr,24); $("ltRb").style.width=(eo((t-3.9)/0.5)*120)+"px";
+  const lk=env(t,33.5,37.0); show($("ltK"),lk,24); $("ltKb").style.width=(eo((t-33.7)/0.5)*120)+"px";
+
+  // dashboard: b2 sketch 18.0–22.35, b4 filled 25.9–33.05
+  let draw=0, fill=0, dv=0;
+  if(t<23){ dv=env(t,17.9,22.35); draw=eo((t-17.95)/0.9); }
+  else { dv=env(t,25.9,33.05); draw=1; fill=clamp((t-26.0)/2.6); }
+  show($("dash"),dv,30); if(dv>0) $("dashSvg").innerHTML=dashSVG(draw,fill);
+  const q=env(t,20.3,22.35,6*F,6*F); $("dashQ").style.opacity=q; $("dashQ").style.transform=`scale(${.85+.15*eo((t-20.3)/.3)})`;
+  // chips
+  const cv=env(t,26.3,33.05); show($("chips"),cv,20);
+  [["c1",26.4],["c2",26.9],["c3",28.3],["c4",29.45]].forEach(([id,a])=>{ const o=eo((t-a)/(8*F)); const el=$(id); el.style.opacity=o; el.style.transform=`translateY(${(1-o)*14}px) scale(${id=="c4"?1+.06*Math.sin(clamp((t-a)/.35)*Math.PI):1})`; });
+  document.querySelectorAll("#chips .arrow").forEach((a,i)=>{ a.style.opacity=eo((t-[26.75,28.1,29.3][i])/(6*F)); });
+
+  // trading 23.62–25.8
+  const tr=env(t,23.62,25.75,5*F,6*F); show($("trade"),tr,0,.92+.08*eo((t-23.62)/(6*F)));
+  $("tradeS").style.opacity=eo((t-24.55)/(6*F));
+
+  // stamp 37.35–41.3
+  const st=env(t,37.35,41.3,5*F,8*F); $("stamp").style.opacity=st;
+  $("stamp").style.transform=`rotate(${-4*eo((t-37.35)/(6*F))}deg) scale(${1.25-.25*eo((t-37.35)/(6*F))})`;
+
+  // ledger 43.9–49.7
+  const lg=env(t,43.9,49.7); show($("ledger"),lg,-30);
+  $("lgV").innerHTML=`RM<i>${Math.round(5000*eo((t-44.1)/0.8)).toLocaleString("en-US")}</i>`;
+  const l2=eo((t-47.2)/(8*F)); $("lg2").style.opacity=l2; $("lgFill").style.width=(50*eo((t-47.3)/0.6))+"%";
+  $("lgC").textContent="RM"+Math.round(2500*eo((t-47.3)/0.6)).toLocaleString("en-US");
+  $("lg3").style.opacity=eo((t-48.2)/(8*F));
+
+  // payback 50.6–57.35
+  const pv=env(t,50.6,57.35); show($("pay"),pv,-30);
+  $("payBar").style.width=(88*eio((t-52.2)/3.6))+"%";
+  const al=eo((t-56.5)/(5*F)); $("almost").style.opacity=al; $("almost").style.transform=`rotate(-6deg) scale(${1.3-.3*al})`;
+
+  // timeline 61.6–70.85
+  const tv=env(t,61.55,70.85); show($("tl"),tv,-30);
+  if(tv>0) $("tlSvg").innerHTML=tlSVG(eio((t-61.8)/4.8), eo((t-62.6)/(8*F)), eo((t-66.6)/(8*F)), clamp((t-67.9)/0.9));
+
+  // captions (skip during hook and end card)
+  const c=CAPS.find(c=>t>=c.s&&t<c.e&&c.s>=3.2);
+  if(c){ if($("capEn")._k!==c.s){ $("capEn").innerHTML=fmtCap(c.en); $("capZh").textContent=c.zh; $("capEn")._k=c.s; }
+    show($("cap"),eo((t-c.s)/(4*F)),12); } else { $("cap").style.opacity=0; }
+
+  // end card from TOTAL
+  const e=t-TOTAL; const w=eio(e/(12*F));
+  $("end").style.clipPath=`inset(0 ${100-100*w}% 0 0)`;
+  [["e1",.45],["e2",.65],["e3",1.05],["e4",1.25]].forEach(([id,a])=>{ const o=eo((e-a)/(10*F)); $(id).style.opacity=o; $(id).style.transform=`translateY(${(1-o)*18}px)`; });
+  const pl=eo((e-1.6)/(8*F)); $("e5").style.opacity=pl; $("e5").style.transform=`scale(${pl<1?.96+.08*pl:1})`;
+};
+window.setup=function(data){ CAPS=data.captions; TOTAL=data.total;
+  if(location.hash==="#yt"){ $("e5").innerHTML='Link in description ↓<span>详情见简介</span>'; $("e3").textContent="Your first deal starts with one day. Next class date in the description."; $("e4").textContent="她不懂交易,但她懂得用 Claude。下一堂课的日期见简介。"; } };
+</script>
+</body></html>
