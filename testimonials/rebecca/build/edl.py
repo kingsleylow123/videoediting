@@ -32,9 +32,12 @@ SEGS = [
 ]
 END_CARD = 5.0
 
-def build():
+DROP = {"1day": {"b7a", "b7b"}}   # variant -> segment ids removed
+
+def build(variant=None):
     out, t = [], 0.0
     for sid, a, b, z, fx, fy, beat in SEGS:
+        if variant and sid in DROP.get(variant, ()): continue
         n = round((b - a) * FPS)            # frame-exact duration
         d = n / FPS
         out.append(dict(id=sid, src_in=a, src_out=a + d, dur=d, frames=n, zoom=z, fx=fx, fy=fy, beat=beat, out_in=round(t, 4), out_out=round(t + d, 4)))
@@ -98,11 +101,18 @@ def captions(edl, words):
         c["e"] = round(min(nxt, c["e"] + 0.5), 3)
     return caps
 
+def cut_info(variant):
+    """Output-time gap removed vs the full cut, so graphics/sound keyed to the full cut can be remapped."""
+    if not variant: return None
+    full, _ = build(); gone = [s for s in full if s["id"] in DROP[variant]]
+    return dict(at=gone[0]["out_in"], dur=round(sum(s["dur"] for s in gone), 4))
+
 if __name__ == "__main__":
-    edl, total = build()
+    variant = sys.argv[3] if len(sys.argv) > 3 else None
+    edl, total = build(variant)
     words = json.load(open(sys.argv[1]))
     caps = captions(edl, words)
-    json.dump(dict(fps=FPS, total=total, end_card=END_CARD, segs=edl, captions=caps), open(sys.argv[2], "w"), indent=1)
+    json.dump(dict(variant=variant, cut=cut_info(variant), fps=FPS, total=total, end_card=END_CARD, segs=edl, captions=caps), open(sys.argv[2], "w"), indent=1)
     print(f"body {total:.2f}s + end {END_CARD}s = {total+END_CARD:.2f}s, {len(caps)} caption chunks")
     for i, c in enumerate(caps): print(i, f"{c['s']:6.2f}-{c['e']:6.2f}", c["seg"], c["en"])
     for s_ in edl: print(s_["id"], s_["beat"], s_["out_in"], s_["out_out"])

@@ -5,7 +5,7 @@ const { chromium } = require('playwright'); const fs = require('fs'); const path
   const E = JSON.parse(fs.readFileSync(edlPath)); fs.mkdirSync(out, { recursive: true });
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
   await p.goto('file://' + path.resolve(__dirname, 'overlay.html') + (process.env.VARIANT ? '#' + process.env.VARIANT : ''));
-  await p.evaluate(d => window.setup(d), { captions: E.captions.map(c => ({ ...c, e: Math.min(c.e, E.total) })), total: E.total });
+  await p.evaluate(d => window.setup(d), { captions: E.captions.map(c => ({ ...c, e: Math.min(c.e, E.total) })), total: E.total, cut: E.cut });
   await p.evaluate(() => document.fonts.ready);
   await p.evaluate(() => Promise.all([...document.fonts].map(f => f.load().catch(() => 0))));
   let times = null, frameIdx = null;

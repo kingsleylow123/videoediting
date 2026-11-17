@@ -1,0 +1,592 @@
+{
+ "variant": "1day",
+ "cut": {
+  "at": 49.7667,
+  "dur": 7.6333
+ },
+ "fps": 30,
+ "total": 68.0,
+ "end_card": 5.0,
+ "segs": [
+  {
+   "id": "hookA",
+   "src_in": 54.55,
+   "src_out": 56.05,
+   "dur": 1.5,
+   "frames": 45,
+   "zoom": 1.18,
+   "fx": 0.3,
+   "fy": 0.45,
+   "beat": "hook",
+   "out_in": 0.0,
+   "out_out": 1.5
+  },
+  {
+   "id": "hookB",
+   "src_in": 58.1,
+   "src_out": 59.300000000000004,
+   "dur": 1.2,
+   "frames": 36,
+   "zoom": 1.18,
+   "fx": 0.3,
+   "fy": 0.45,
+   "beat": "hook",
+   "out_in": 1.5,
+   "out_out": 2.7
+  },
+  {
+   "id": "hookC",
+   "src_in": 59.3,
+   "src_out": 59.86666666666667,
+   "dur": 0.5666666666666667,
+   "frames": 17,
+   "zoom": 1.18,
+   "fx": 0.3,
+   "fy": 0.45,
+   "beat": "hook",
+   "out_in": 2.7,
+   "out_out": 3.2667
+  },
+  {
+   "id": "b1a",
+   "src_in": 6.4,
+   "src_out": 11.666666666666668,
+   "dur": 5.266666666666667,
+   "frames": 158,
+   "zoom": 1.0,
+   "fx": 0.5,
+   "fy": 0.5,
+   "beat": "who",
+   "out_in": 3.2667,
+   "out_out": 8.5333
+  },
+  {
+   "id": "b1b",
+   "src_in": 12.38,
+   "src_out": 16.446666666666665,
+   "dur": 4.066666666666666,
+   "frames": 122,
+   "zoom": 1.08,
+   "fx": 0.35,
+   "fy": 0.45,
+   "beat": "who",
+   "out_in": 8.5333,
+   "out_out": 12.6
+  },
+  {
+   "id": "b2",
+   "src_in": 16.8,
+   "src_out": 26.633333333333333,
+   "dur": 9.833333333333334,
+   "frames": 295,
+   "zoom": 1.0,
+   "fx": 0.5,
+   "fy": 0.5,
+   "beat": "opp",
+   "out_in": 12.6,
+   "out_out": 22.4333
+  },
+  {
+   "id": "b3a",
+   "src_in": 26.65,
+   "src_out": 27.816666666666666,
+   "dur": 1.1666666666666667,
+   "frames": 35,
+   "zoom": 1.0,
+   "fx": 0.5,
+   "fy": 0.5,
+   "beat": "twist",
+   "out_in": 22.4333,
+   "out_out": 23.6
+  },
+  {
+   "id": "b3b",
+   "src_in": 28.9,
+   "src_out": 29.799999999999997,
+   "dur": 0.9,
+   "frames": 27,
+   "zoom": 1.28,
+   "fx": 0.3,
+   "fy": 0.42,
+   "beat": "twist",
+   "out_in": 23.6,
+   "out_out": 24.5
+  },
+  {
+   "id": "b3c",
+   "src_in": 30.25,
+   "src_out": 31.55,
+   "dur": 1.3,
+   "frames": 39,
+   "zoom": 1.12,
+   "fx": 0.3,
+   "fy": 0.45,
+   "beat": "twist",
+   "out_in": 24.5,
+   "out_out": 25.8
+  },
+  {
+   "id": "b4a",
+   "src_in": 33.45,
+   "src_out": 36.983333333333334,
+   "dur": 3.533333333333333,
+   "frames": 106,
+   "zoom": 1.05,
+   "fx": 0.35,
+   "fy": 0.48,
+   "beat": "mech",
+   "out_in": 25.8,
+   "out_out": 29.3333
+  },
+  {
+   "id": "b4b",
+   "src_in": 37.6,
+   "src_out": 41.46666666666667,
+   "dur": 3.8666666666666667,
+   "frames": 116,
+   "zoom": 1.08,
+   "fx": 0.35,
+   "fy": 0.48,
+   "beat": "mech",
+   "out_in": 29.3333,
+   "out_out": 33.2
+  },
+  {
+   "id": "b5a",
+   "src_in": 42.24,
+   "src_out": 47.54,
+   "dur": 5.3,
+   "frames": 159,
+   "zoom": 1.08,
+   "fx": 0.68,
+   "fy": 0.45,
+   "beat": "recap",
+   "out_in": 33.2,
+   "out_out": 38.5
+  },
+  {
+   "id": "b5b",
+   "src_in": 48.14,
+   "src_out": 51.70666666666667,
+   "dur": 3.566666666666667,
+   "frames": 107,
+   "zoom": 1.0,
+   "fx": 0.5,
+   "fy": 0.5,
+   "beat": "recap",
+   "out_in": 38.5,
+   "out_out": 42.0667
+  },
+  {
+   "id": "b6a",
+   "src_in": 51.9,
+   "src_out": 53.86666666666667,
+   "dur": 1.9666666666666666,
+   "frames": 59,
+   "zoom": 1.0,
+   "fx": 0.5,
+   "fy": 0.5,
+   "beat": "proof",
+   "out_in": 42.0667,
+   "out_out": 44.0333
+  },
+  {
+   "id": "b6b",
+   "src_in": 54.55,
+   "src_out": 56.05,
+   "dur": 1.5,
+   "frames": 45,
+   "zoom": 1.0,
+   "fx": 0.5,
+   "fy": 0.5,
+   "beat": "proof",
+   "out_in": 44.0333,
+   "out_out": 45.5333
+  },
+  {
+   "id": "b6c",
+   "src_in": 56.35,
+   "src_out": 59.28333333333333,
+   "dur": 2.933333333333333,
+   "frames": 88,
+   "zoom": 1.0,
+   "fx": 0.5,
+   "fy": 0.5,
+   "beat": "proof",
+   "out_in": 45.5333,
+   "out_out": 48.4667
+  },
+  {
+   "id": "b6d",
+   "src_in": 59.8,
+   "src_out": 61.099999999999994,
+   "dur": 1.3,
+   "frames": 39,
+   "zoom": 1.05,
+   "fx": 0.68,
+   "fy": 0.45,
+   "beat": "proof",
+   "out_in": 48.4667,
+   "out_out": 49.7667
+  },
+  {
+   "id": "b8a",
+   "src_in": 76.8,
+   "src_out": 79.5,
+   "dur": 2.7,
+   "frames": 81,
+   "zoom": 1.0,
+   "fx": 0.5,
+   "fy": 0.5,
+   "beat": "timeline",
+   "out_in": 49.7667,
+   "out_out": 52.4667
+  },
+  {
+   "id": "b8b",
+   "src_in": 81.13,
+   "src_out": 82.46333333333332,
+   "dur": 1.3333333333333333,
+   "frames": 40,
+   "zoom": 1.0,
+   "fx": 0.5,
+   "fy": 0.5,
+   "beat": "timeline",
+   "out_in": 52.4667,
+   "out_out": 53.8
+  },
+  {
+   "id": "b8c",
+   "src_in": 82.85,
+   "src_out": 87.98333333333333,
+   "dur": 5.133333333333334,
+   "frames": 154,
+   "zoom": 1.06,
+   "fx": 0.32,
+   "fy": 0.46,
+   "beat": "timeline",
+   "out_in": 53.8,
+   "out_out": 58.9333
+  },
+  {
+   "id": "b8d",
+   "src_in": 88.55,
+   "src_out": 91.58333333333333,
+   "dur": 3.033333333333333,
+   "frames": 91,
+   "zoom": 1.12,
+   "fx": 0.32,
+   "fy": 0.46,
+   "beat": "timeline",
+   "out_in": 58.9333,
+   "out_out": 61.9667
+  },
+  {
+   "id": "b9a",
+   "src_in": 92.0,
+   "src_out": 93.33333333333333,
+   "dur": 1.3333333333333333,
+   "frames": 40,
+   "zoom": 1.08,
+   "fx": 0.68,
+   "fy": 0.45,
+   "beat": "reaction",
+   "out_in": 61.9667,
+   "out_out": 63.3
+  },
+  {
+   "id": "b9b",
+   "src_in": 97.1,
+   "src_out": 97.8,
+   "dur": 0.7,
+   "frames": 21,
+   "zoom": 1.08,
+   "fx": 0.3,
+   "fy": 0.45,
+   "beat": "reaction",
+   "out_in": 63.3,
+   "out_out": 64.0
+  },
+  {
+   "id": "b10",
+   "src_in": 98.85,
+   "src_out": 102.85,
+   "dur": 4.0,
+   "frames": 120,
+   "zoom": 1.0,
+   "fx": 0.5,
+   "fy": 0.5,
+   "beat": "warmth",
+   "out_in": 64.0,
+   "out_out": 68.0
+  }
+ ],
+ "captions": [
+  {
+   "seg": "hookA",
+   "en": "The deal was *RM5,000.*",
+   "zh": "\u8fd9\u5355\u751f\u610f\u503c RM5,000\u3002",
+   "s": 0.0,
+   "e": 1.5
+  },
+  {
+   "seg": "hookB",
+   "en": "I've collected *50%.*",
+   "zh": "\u6211\u5df2\u7ecf\u6536\u4e86 50%\u3002",
+   "s": 1.5,
+   "e": 3.06
+  },
+  {
+   "seg": "b1a",
+   "en": "Hi, I'm Rebecca,",
+   "zh": "\u55e8,\u6211\u662f Rebecca,",
+   "s": 3.267,
+   "e": 3.847
+  },
+  {
+   "seg": "b1a",
+   "en": "and after joining the *one-day class,*",
+   "zh": "\u4e0a\u5b8c\u4e00\u5929\u8bfe\u7a0b\u4e4b\u540e,",
+   "s": 3.847,
+   "e": 8.533
+  },
+  {
+   "seg": "b1b",
+   "en": "I started to explore *AI.*",
+   "zh": "\u6211\u5f00\u59cb\u63a2\u7d22 AI\u3002",
+   "s": 8.533,
+   "e": 12.6
+  },
+  {
+   "seg": "b2",
+   "en": "Then one opportunity came,",
+   "zh": "\u7136\u540e\u4e00\u4e2a\u673a\u4f1a\u6765\u4e86,",
+   "s": 12.6,
+   "e": 16.0
+  },
+  {
+   "seg": "b2",
+   "en": "somebody was looking for",
+   "zh": "\u6709\u4eba\u5728\u627e",
+   "s": 16.0,
+   "e": 17.9
+  },
+  {
+   "seg": "b2",
+   "en": "somebody to make a *dashboard*",
+   "zh": "\u4f1a\u505a\u4eea\u8868\u677f\u7684\u4eba",
+   "s": 17.9,
+   "e": 19.1
+  },
+  {
+   "seg": "b2",
+   "en": "in a niche I wasn't even familiar with.",
+   "zh": "\u800c\u4e14\u662f\u6211\u5b8c\u5168\u4e0d\u719f\u6089\u7684\u9886\u57df\u3002",
+   "s": 19.1,
+   "e": 22.433
+  },
+  {
+   "seg": "b3a",
+   "en": "What was the niche?",
+   "zh": "\u662f\u4ec0\u4e48\u9886\u57df?",
+   "s": 22.433,
+   "e": 23.62
+  },
+  {
+   "seg": "b3b",
+   "en": "*Trading.*",
+   "zh": "\u4ea4\u6613\u3002",
+   "s": 23.62,
+   "e": 24.5
+  },
+  {
+   "seg": "b3c",
+   "en": "Yes, *US stocks.*",
+   "zh": "\u5bf9,\u7f8e\u80a1\u3002",
+   "s": 24.5,
+   "e": 25.8
+  },
+  {
+   "seg": "b4a",
+   "en": "After *prompting* and learning more,",
+   "zh": "\u7ecf\u8fc7\u4e0d\u65ad\u63d0\u793a\u548c\u5b66\u4e60,",
+   "s": 25.8,
+   "e": 29.333
+  },
+  {
+   "seg": "b4b",
+   "en": "I managed to *close*",
+   "zh": "\u6211\u6210\u529f\u62ff\u4e0b\u4e86",
+   "s": 29.333,
+   "e": 30.413
+  },
+  {
+   "seg": "b4b",
+   "en": "the deal with the client.",
+   "zh": "\u8fd9\u4e2a\u5ba2\u6237\u3002",
+   "s": 30.413,
+   "e": 33.2
+  },
+  {
+   "seg": "b5a",
+   "en": "So basically, you learn *Claude,*",
+   "zh": "\u6240\u4ee5\u4f60\u5b66\u4e86 Claude,",
+   "s": 33.2,
+   "e": 34.84
+  },
+  {
+   "seg": "b5a",
+   "en": "and now you close a deal,",
+   "zh": "\u73b0\u5728\u5c31\u6210\u4ea4\u4e86,",
+   "s": 34.84,
+   "e": 37.24
+  },
+  {
+   "seg": "b5a",
+   "en": "your very, very *first deal.*",
+   "zh": "\u4f60\u7684\u7b2c\u4e00\u5355\u3002",
+   "s": 37.24,
+   "e": 38.5
+  },
+  {
+   "seg": "b5b",
+   "en": "to build a *Claude dashboard* for someone else.",
+   "zh": "\u5e2e\u522b\u4eba\u505a\u4e00\u4e2a Claude \u4eea\u8868\u677f\u3002",
+   "s": 38.5,
+   "e": 41.36
+  },
+  {
+   "seg": "b5b",
+   "en": "Yes, correct.",
+   "zh": "\u5bf9,\u6ca1\u9519\u3002",
+   "s": 41.36,
+   "e": 42.067
+  },
+  {
+   "seg": "b6a",
+   "en": "And how much is the deal worth?",
+   "zh": "\u8fd9\u5355\u503c\u591a\u5c11\u94b1?",
+   "s": 42.067,
+   "e": 44.033
+  },
+  {
+   "seg": "b6b",
+   "en": "The deal was *RM5,000.*",
+   "zh": "\u8fd9\u5355\u751f\u610f\u503c RM5,000\u3002",
+   "s": 44.033,
+   "e": 45.533
+  },
+  {
+   "seg": "b6c",
+   "en": "And have you collected the money?",
+   "zh": "\u6536\u5230\u94b1\u4e86\u5417?",
+   "s": 45.533,
+   "e": 47.263
+  },
+  {
+   "seg": "b6c",
+   "en": "I've collected *50%.*",
+   "zh": "\u6211\u5df2\u7ecf\u6536\u4e86 50%\u3002",
+   "s": 47.263,
+   "e": 48.467
+  },
+  {
+   "seg": "b6d",
+   "en": "You've collected 50%?",
+   "zh": "\u5df2\u7ecf\u6536\u4e86 50%?",
+   "s": 48.467,
+   "e": 49.487
+  },
+  {
+   "seg": "b6d",
+   "en": "Yes.",
+   "zh": "\u5bf9\u3002",
+   "s": 49.487,
+   "e": 49.767
+  },
+  {
+   "seg": "b8a",
+   "en": "And how long did",
+   "zh": "\u90a3\u6574\u4e2a\u8fc7\u7a0b",
+   "s": 49.767,
+   "e": 50.367
+  },
+  {
+   "seg": "b8a",
+   "en": "this whole process take you\u2026",
+   "zh": "\u82b1\u4e86\u4f60\u591a\u4e45\u2026\u2026",
+   "s": 50.367,
+   "e": 52.467
+  },
+  {
+   "seg": "b8b",
+   "en": "until you closed your *first client?*",
+   "zh": "\u5230\u4f60\u62ff\u4e0b\u7b2c\u4e00\u4e2a\u5ba2\u6237?",
+   "s": 52.467,
+   "e": 53.8
+  },
+  {
+   "seg": "b8c",
+   "en": "I started learning Claude in *August,*",
+   "zh": "\u6211\u516b\u6708\u5f00\u59cb\u5b66 Claude,",
+   "s": 53.8,
+   "e": 55.85
+  },
+  {
+   "seg": "b8c",
+   "en": "and started taking on my first deal in",
+   "zh": "\u7136\u540e\u5f00\u59cb\u63a5\u6211\u7684\u7b2c\u4e00\u5355,",
+   "s": 55.85,
+   "e": 58.933
+  },
+  {
+   "seg": "b8d",
+   "en": "*October.*",
+   "zh": "\u5728\u5341\u6708\u3002",
+   "s": 58.933,
+   "e": 59.423
+  },
+  {
+   "seg": "b8d",
+   "en": "So that's about *two and a half months.*",
+   "zh": "\u5927\u6982\u4e24\u4e2a\u534a\u6708\u3002",
+   "s": 59.423,
+   "e": 61.987
+  },
+  {
+   "seg": "b9a",
+   "en": "Wow, *two and a half months.*",
+   "zh": "\u54c7,\u4e24\u4e2a\u534a\u6708\u3002",
+   "s": 61.987,
+   "e": 63.3
+  },
+  {
+   "seg": "b9b",
+   "en": "Yes, correct.",
+   "zh": "\u5bf9,\u6ca1\u9519\u3002",
+   "s": 63.3,
+   "e": 64.0
+  },
+  {
+   "seg": "b10",
+   "en": "I'm so happy for you, Rebecca.",
+   "zh": "\u771f\u66ff\u4f60\u9ad8\u5174,Rebecca\u3002",
+   "s": 64.0,
+   "e": 66.25
+  },
+  {
+   "seg": "b10",
+   "en": "Congrats!",
+   "zh": "\u606d\u559c!",
+   "s": 66.25,
+   "e": 66.87
+  },
+  {
+   "seg": "b10",
+   "en": "Thank you.",
+   "zh": "\u8c22\u8c22\u3002",
+   "s": 66.87,
+   "e": 68.39
+  }
+ ]
+}

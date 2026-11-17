@@ -195,13 +195,16 @@ function tlSVG(line, aug, oct, br){
   const x0=150, xo=1250, y=96, L=xo-x0+170;
   let s=`<line x1="${x0}" y1="${y}" x2="${x0+L*line}" y2="${y}" stroke="#211C16" stroke-width="4" stroke-linecap="round"/>`;
   [["AUG",x0],["SEP",x0+(xo-x0)*.45],["OCT",x0+(xo-x0)*.86],["NOV",xo+150]].forEach(([n,x])=>{ const o=clamp((line*L-(x-x0))/40+1); s+=`<text x="${x}" y="${y+50}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="500" font-size="22" letter-spacing="2" fill="#978C7B" opacity="${o}">${n}</text>`; });
-  if(aug>0) s+=`<circle cx="${x0}" cy="${y}" r="${15*eo(aug)}" fill="#D97757"/><text x="${x0}" y="${y-30}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="500" font-size="21" letter-spacing="2" fill="#211C16" opacity="${aug}">FIRST CLASS</text>`;
+  if(aug>0) s+=`<circle cx="${x0}" cy="${y}" r="${15*eo(aug)}" fill="#D97757"/><text x="${x0}" y="${y-30}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="500" font-size="21" letter-spacing="2" fill="#211C16" opacity="${aug}">${window.TL_FIRST||"FIRST CLASS"}</text>`;
   if(oct>0) s+=`<circle cx="${xo}" cy="${y}" r="${15*eo(oct)}" fill="#D97757"/><text x="${xo}" y="${y-30}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="500" font-size="21" letter-spacing="2" fill="#211C16" opacity="${oct}">FIRST CLIENT · LATE OCT</text>`;
   if(br>0){ const w=(xo-x0)*eo(br); s+=`<path d="M${x0} ${y+70} v12 h${w} v-12" fill="none" stroke="#BE5C3B" stroke-width="3"/><text x="${(x0+xo)/2}" y="${y+112}" text-anchor="middle" font-family="Fraunces" font-style="italic" font-size="40" fill="#BE5C3B" opacity="${clamp(br*2-1)}">2½ months</text>`; }
   return s;
 }
 // ---------- the timeline ----------
-window.render=function(t){
+let CUT=null, VAR=new Set(location.hash.slice(1).split("-"));
+window.render=function(t0){
+  // graphics are keyed to the full cut; skip the removed beat
+  const t = CUT && t0>=CUT.at ? t0+CUT.dur : t0;
   // HOOK 0 – 3.27
   const hk=env(t,0.03,3.2,8*F,6*F); show($("hookCard"),hk,30);
   const cnt=Math.round(5000*eo((t-0.05)/0.75)); $("hookNum").innerHTML=`RM<i>${cnt.toLocaleString("en-US")}</i>`;
@@ -251,7 +254,7 @@ window.render=function(t){
   if(tv>0) $("tlSvg").innerHTML=tlSVG(eio((t-61.8)/4.8), eo((t-62.6)/(8*F)), eo((t-66.6)/(8*F)), clamp((t-67.9)/0.9));
 
   // captions (skip during hook and end card)
-  const c=CAPS.find(c=>t>=c.s&&t<c.e&&c.s>=3.2);
+  const c=CAPS.find(c=>t0>=c.s&&t0<c.e&&c.s>=3.2);
   if(c){ if($("capEn")._k!==c.s){ $("capEn").innerHTML=fmtCap(c.en); $("capZh").textContent=c.zh; $("capEn")._k=c.s; }
     show($("cap"),eo((t-c.s)/(4*F)),12); } else { $("cap").style.opacity=0; }
 
@@ -261,7 +264,8 @@ window.render=function(t){
   [["e1",.45],["e2",.65],["e3",1.05],["e4",1.25]].forEach(([id,a])=>{ const o=eo((e-a)/(10*F)); $(id).style.opacity=o; $(id).style.transform=`translateY(${(1-o)*18}px)`; });
   const pl=eo((e-1.6)/(8*F)); $("e5").style.opacity=pl; $("e5").style.transform=`scale(${pl<1?.96+.08*pl:1})`;
 };
-window.setup=function(data){ CAPS=data.captions; TOTAL=data.total;
-  if(location.hash==="#yt"){ $("e5").innerHTML='Link in description ↓<span>详情见简介</span>'; $("e3").textContent="Your first deal starts with one day. Next class date in the description."; $("e4").textContent="她不懂交易,但她懂得用 Claude。下一堂课的日期见简介。"; } };
+window.setup=function(data){ CAPS=data.captions; TOTAL=data.total; CUT=data.cut||null; if(CUT) TOTAL+=CUT.dur;
+  if(VAR.has("1day")){ document.querySelector("#hookBand .en").innerHTML="<b>2½ months</b> after a 1-day Claude class."; document.querySelector("#hookBand .zh").textContent="上完一天 Claude 课程后,两个半月。"; window.TL_FIRST="1-DAY CLASS"; }
+  if(VAR.has("yt")){ $("e5").innerHTML='Link in description ↓<span>详情见简介</span>'; $("e3").textContent="Your first deal starts with one day. Next class date in the description."; $("e4").textContent="她不懂交易,但她懂得用 Claude。下一堂课的日期见简介。"; } };
 </script>
 </body></html>

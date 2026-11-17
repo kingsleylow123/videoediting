@@ -116,8 +116,15 @@ def riser(d):
 def paper_snap():
     t = tt(.09); return bp(rng.standard_normal(len(t)), 1500, 7000) * np.exp(-t * 60)
 
-S = lambda x, t, gdb, pan=0: add(fx, x / (np.abs(x).max() + 1e-9), t, 10 ** (gdb / 20), pan)
-o = {s["id"]: s["out_in"] for s in E["segs"]}; T = E["total"]
+CUT = E.get("cut")
+def remap(t):
+    if not CUT or t < CUT["at"]: return t
+    return None if t < CUT["at"] + CUT["dur"] else t - CUT["dur"]
+def S(x, t, gdb, pan=0):
+    t = remap(t)
+    if t is not None: add(fx, x / (np.abs(x).max() + 1e-9), t, 10 ** (gdb / 20), pan)
+o = {s["id"]: s["out_in"] for s in E["segs"]}; T = E["total"] + (CUT["dur"] if CUT else 0)
+for k in list(o): o[k] = o[k] + (CUT["dur"] if CUT and o[k] >= CUT["at"] else 0)
 # hook
 S(whoosh(.4, 300, 2500), 0.0, -24)
 for i in range(9): S(tick(2400 + i * 60), 0.08 + i * .075, -30 + i * .6)
