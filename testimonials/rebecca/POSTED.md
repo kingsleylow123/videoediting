@@ -12,3 +12,7 @@
 | TikTok | @claudemalaysia | https://www.tiktok.com/@claudemalaysia/video/7709086138341870849 | 1DAY_YOUTUBE_clean — link in bio |
 
 Class link used: https://www.claudemalaysia.com/events
+
+## Comment → DM automation (Blotato, Claude Malaysia workspace)
+- **Instagram** flow `34521` — active. Trigger: top-level comment containing "claude" (any case) on the Rebecca reel only (Blotato post 9463286). DM + button "Grab my seat" → https://www.claudemalaysia.com/a/kingsleylow. Public reply tags the commenter.
+- **Facebook** (pre-existing) flow `27200` — keyword CLAUDE on ALL page posts → claudechallenge.com link. Rebecca FB reel comments currently get that link, not /a/kingsleylow.
