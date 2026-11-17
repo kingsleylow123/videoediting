@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root{--paper:#FAF7F2;--ink:#211C16;--soft:#5F564B;--faint:#978C7B;--clay:#D97757;--deep:#BE5C3B}
+*{box-sizing:border-box}html,body{margin:0;width:1080px;height:1920px;background:var(--paper);overflow:hidden}
+.photo{position:absolute;left:0;top:0;width:1080px;height:1060px;background:url(photo.png) no-repeat;background-size:1900px auto;background-position:-40px -40px}
+.photo::after{content:"";position:absolute;inset:auto 0 0 0;height:160px;background:linear-gradient(to bottom,rgba(250,247,242,0),var(--paper))}
+.tag{position:absolute;left:72px;top:300px;font:500 26px "IBM Plex Mono";letter-spacing:.1em;text-transform:uppercase;background:var(--paper);color:var(--ink);padding:12px 20px;border-radius:8px}
+.wrap{position:absolute;left:72px;right:72px;top:1010px}
+.k{font:500 26px "IBM Plex Mono";letter-spacing:.1em;text-transform:uppercase;color:var(--deep);margin-bottom:22px}
+h1{font-family:"Fraunces",serif;font-weight:400;font-size:104px;line-height:1.02;letter-spacing:-.015em;color:var(--ink);margin:0}
+h1 i{color:var(--deep)}
+.sub{font:500 40px "Hanken Grotesk";color:var(--soft);margin-top:30px;line-height:1.25}
+.pill{display:inline-block;margin-top:36px;font:500 30px "IBM Plex Mono";letter-spacing:.08em;background:var(--clay);color:#FFFDF9;border-radius:999px;padding:16px 30px}
+.mark{position:absolute;right:72px;bottom:110px;width:96px;height:96px}
+.num{position:absolute;right:60px;top:690px;background:var(--paper);border-radius:20px;padding:14px 26px 18px;transform:rotate(-3deg)}
+.num b{display:block;font:400 92px "Fraunces";font-style:italic;color:var(--deep);line-height:1}
+.num span{font:500 20px "IBM Plex Mono";letter-spacing:.1em;color:var(--faint)}
+</style></head><body>
+<div class="photo"></div>
+<div class="tag">Student story · 2½ months</div>
+<div id="v"></div>
+<img class="mark" src="../mark.svg" alt="">
+<script>
+const V={
+a:`<div class="wrap"><div class="k">Claude Malaysia</div><h1>She'd never touched trading.<br><i>A trading client paid her RM5,000.</i></h1><div class="sub">What she built after one Claude class ↓</div></div>`,
+b:`<div class="num"><b>RM5,000</b><span>FIRST CLIENT</span></div><div class="wrap"><div class="k">After a 1-day Claude class</div><h1>What did she build that someone <i>paid RM5,000</i> for?</h1><div class="pill">WATCH TILL THE END →</div></div>`,
+c:`<div class="wrap"><div class="k">Claude Malaysia · student story</div><h1>1 class.<br>2½ months.<br><i>RM5,000.</i></h1><div class="sub">In a niche she'd never touched. Here's how ↓</div></div>`};
+document.getElementById("v").innerHTML=V[location.hash.slice(1)||"a"];
+</script></body></html>
