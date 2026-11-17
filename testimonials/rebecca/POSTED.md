@@ -2,7 +2,8 @@
 
 | Platform | Account | Link | File / CTA |
 |---|---|---|---|
-| YouTube | Claude Malaysia Official (unlisted) | https://www.youtube.com/watch?v=Oib8tws4Wao | 1DAY_YOUTUBE_clean — link in description |
+| YouTube | Claude Malaysia Official (PUBLIC) | https://www.youtube.com/watch?v=746ZzXgsIcM | 1DAY_YOUTUBE_clean — link in description |
+| YouTube (old) | Claude Malaysia Official (unlisted duplicate) | https://www.youtube.com/watch?v=Oib8tws4Wao | 1DAY_YOUTUBE_clean — link in description |
 | Instagram | @claudemalaysiacommunity (Reel) | https://www.instagram.com/reel/Df1uIh5h4TR/ | 1DAY_META_clean — Comment CLAUDE |
 | Facebook | Claude Malaysia Community page | https://facebook.com/reel/1451188297211495/ | 1DAY_META_clean — Comment CLAUDE |
 | LinkedIn | Claude Malaysia community | https://linkedin.com/feed/update/urn:li:ugcPost:7528404835474268160 | 1DAY_YOUTUBE_clean — link in post |
