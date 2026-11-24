@@ -29,12 +29,12 @@ const serveUrl = await bundle({ entryPoint: path.join(root, 'src', 'index.ts'), 
 let n = 0;
 for (const shot of manifest) {
   if (onlyIds.length && !onlyIds.includes(shot.id)) continue;
-  const composition = await selectComposition({ serveUrl, id: shot.id });
+  const composition = await selectComposition({ serveUrl, browserExecutable: process.env.REMOTION_BROWSER ?? null, chromeMode: process.env.REMOTION_BROWSER ? 'chrome-for-testing' : undefined, id: shot.id });
 
   if (stillMode) {
     const out = path.join(outDir, `${shot.id}.png`);
     await renderStill({
-      serveUrl, composition, output: out, scale: SCALE, overwrite: true,
+      serveUrl, browserExecutable: process.env.REMOTION_BROWSER ?? null, chromeMode: process.env.REMOTION_BROWSER ? 'chrome-for-testing' : undefined, composition, output: out, scale: SCALE, overwrite: true,
       frame: Math.floor(composition.durationInFrames * 0.6),
       imageFormat: shot.transparent ? 'png' : 'jpeg',
     });
@@ -43,7 +43,7 @@ for (const shot of manifest) {
     const transparent = !!shot.transparent;
     const out = path.join(outDir, `${shot.id}.${transparent ? 'mov' : 'mp4'}`);
     await renderMedia({
-      serveUrl, composition, outputLocation: out, scale: SCALE, overwrite: true,
+      serveUrl, browserExecutable: process.env.REMOTION_BROWSER ?? null, chromeMode: process.env.REMOTION_BROWSER ? 'chrome-for-testing' : undefined, composition, outputLocation: out, scale: SCALE, overwrite: true,
       codec: transparent ? 'prores' : 'h264',
       proResProfile: transparent ? '4444' : undefined,
       pixelFormat: transparent ? 'yuva444p10le' : 'yuv420p',

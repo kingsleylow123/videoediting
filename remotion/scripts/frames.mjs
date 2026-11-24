@@ -26,12 +26,12 @@ console.log('bundling...');
 // publicDir must be passed explicitly: remotion.config.ts only applies to the CLI,
 // not the programmatic bundle() API. ../media is the public root.
 const serveUrl = await bundle({ entryPoint: path.join(root, 'src', 'index.ts'), publicDir: path.join(root, '..', 'media') });
-const composition = await selectComposition({ serveUrl, id });
+const composition = await selectComposition({ serveUrl, browserExecutable: process.env.REMOTION_BROWSER ?? null, chromeMode: process.env.REMOTION_BROWSER ? 'chrome-for-testing' : undefined, id });
 
 for (const frame of frames) {
   const f = Math.max(0, Math.min(composition.durationInFrames - 1, frame));
   const out = path.join(outDir, `${id}-f${String(f).padStart(4, '0')}.png`);
-  await renderStill({ serveUrl, composition, output: out, frame: f, scale: SCALE, overwrite: true, imageFormat: 'png' });
+  await renderStill({ serveUrl, browserExecutable: process.env.REMOTION_BROWSER ?? null, chromeMode: process.env.REMOTION_BROWSER ? 'chrome-for-testing' : undefined, composition, output: out, frame: f, scale: SCALE, overwrite: true, imageFormat: 'png' });
   console.log('  ->', path.relative(root, out));
 }
 console.log('done');

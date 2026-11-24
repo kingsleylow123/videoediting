@@ -1,0 +1,99 @@
+{
+  "id": "short-13-claude-malaysia",
+  "title": "5 Hours of Admin, Gone",
+  "composition": "Short13ClaudeMY",
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "durationSec": 41
+  },
+  "voiceStatus": "estimated",
+  "vo": [
+    {
+      "beat": "hook",
+      "text": "Five hours of admin. Gone before lunch.",
+      "start": 0.3,
+      "end": 3.2
+    },
+    {
+      "beat": "setup",
+      "text": "If you run a Malaysian business doing one to five million, this is your Monday.",
+      "start": 3.6,
+      "end": 9.0
+    },
+    {
+      "beat": "setup",
+      "text": "Quotations. Follow-ups. Sales reports. Invoice chasing. Meeting notes.",
+      "start": 9.4,
+      "end": 14.0
+    },
+    {
+      "beat": "quiz",
+      "text": "How many of these can AI do today?",
+      "start": 14.4,
+      "end": 17.0
+    },
+    {
+      "beat": "reveal",
+      "text": "All five. No new software. Just Claude and the right prompts.",
+      "start": 18.4,
+      "end": 23.6
+    },
+    {
+      "beat": "offer",
+      "text": "That's what we teach at Claude Malaysia. One day, hands-on, built for founders.",
+      "start": 24.4,
+      "end": 30.6
+    },
+    {
+      "beat": "twist",
+      "text": "You leave with workflows running on your own business. Not theory.",
+      "start": 31.0,
+      "end": 36.4
+    },
+    {
+      "beat": "loop",
+      "text": "Five hours of admin. Gone.",
+      "start": 37.2,
+      "end": 39.6
+    }
+  ],
+  "beats": [
+    {
+      "id": "hook",
+      "start": 0,
+      "end": 3.4
+    },
+    {
+      "id": "setup",
+      "start": 3.4,
+      "end": 14.2
+    },
+    {
+      "id": "quiz",
+      "start": 14.2,
+      "end": 18.2
+    },
+    {
+      "id": "reveal",
+      "start": 18.2,
+      "end": 24.2
+    },
+    {
+      "id": "offer",
+      "start": 24.2,
+      "end": 30.8
+    },
+    {
+      "id": "twist",
+      "start": 30.8,
+      "end": 37
+    },
+    {
+      "id": "loop",
+      "start": 37,
+      "end": 41
+    }
+  ]
+}
